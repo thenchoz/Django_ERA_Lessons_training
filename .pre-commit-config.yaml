@@ -59,6 +59,7 @@ repos:
         args: [ "--load-plugins=pylint_django", "--django-settings-module=app.settings" ]
         additional_dependencies: [
             # pylint dependency
+            django,
             pylint_django,
             # runtime dependencies
             # ...
