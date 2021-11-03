@@ -7,7 +7,7 @@ https://docs.djangoproject.com/en/3.2/ref/contrib/admin/actions/
 
 from django.contrib import admin
 
-from .models import Choice, Question
+from .models import Branch, Choice, Question
 
 
 class ChoiceInline(admin.TabularInline):
@@ -22,8 +22,10 @@ class QuestionAdmin(admin.ModelAdmin):
 
     fieldsets = [
         (None, {"fields": ["question_text"]}),
+        (None, {"fields": ["branch"]}),
     ]
     inlines = [ChoiceInline]
 
 
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(Branch)

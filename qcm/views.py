@@ -24,22 +24,18 @@ class IndexView(generic.ListView):
         return Branch.objects.order_by("branch_name")
 
 
-class DetailView(generic.ListView):
+class DetailBranchView(generic.DetailView):
     """generic view of branch question"""
 
+    model = Branch
     template_name = "qcm/detail_branch.html"
-    context_object_name = "question_list"
 
 
-#    def get_queryset(self):
-#        """Return all question linked to a branch"""
-#        return
+class DetailQuestionView(generic.DetailView):
+    """generic view of detailed question"""
 
-
-def detail_question(request, question_id):
-    """view of detailed question"""
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, "qcm/detail_question.html", {"question": question})
+    model = Question
+    template_name = "qcm/detail_question.html"
 
 
 class ResultsView(generic.DetailView):
@@ -49,7 +45,7 @@ class ResultsView(generic.DetailView):
     template_name = "qcm/results.html"
 
 
-def answer(request, question_id):
+def answer(request, branch_id, question_id):
     """answering question view"""
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -58,7 +54,7 @@ def answer(request, question_id):
         # Redisplay the question answering form.
         return render(
             request,
-            "qcm/detail.html",
+            "qcm/detail_question.html",
             {
                 "question": question,
                 "error_message": "You didn't select a choice.",

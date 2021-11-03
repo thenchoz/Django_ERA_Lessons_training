@@ -2,8 +2,7 @@
 
 {% if given_answer %}
 <p>
-  Your answer was "{{ given_answer.choice_text }}", this answer is {{
-  given_answer.is_true }}.
+  Your answer was "{{ given_answer.choice_text }}", this answer is {{ given_answer.is_true }}.
 </p>
 {% endif %}
 
@@ -13,4 +12,6 @@
   {%endfor%}
 </ul>
 
-<a href="{% url 'qcm:detail' question.id %}">Answer again?</a>
+<a href="{% url 'qcm:detail_question' question.branch.id question.id %}">Answer again?</a>
+<br>
+<a href="{% url 'qcm:detail' question.branch.id %}">Return to branch</a>
