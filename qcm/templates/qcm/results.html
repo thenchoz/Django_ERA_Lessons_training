@@ -12,6 +12,8 @@
   {%endfor%}
 </ul>
 
-<a href="{% url 'qcm:detail_question' question.branch.id question.id %}">Answer again?</a>
-<br>
+<a href="{% url 'qcm:detail_question' question.branch.id question.id %}"
+  >Answer again?</a
+>
+<br />
 <a href="{% url 'qcm:detail' question.branch.id %}">Return to branch</a>
