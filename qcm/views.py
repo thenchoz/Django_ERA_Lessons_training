@@ -61,8 +61,9 @@ def answer(request, branch_id, question_id):
             },
         )
     else:
+        branch = get_object_or_404(Branch, pk=branch_id)
         return render(
             request,
             "qcm/results.html",
-            {"question": question, "given_answer": selected_choice},
+            {"branch": branch, "question": question, "given_answer": selected_choice},
         )
