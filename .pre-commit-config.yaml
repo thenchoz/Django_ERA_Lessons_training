@@ -28,7 +28,7 @@ repos:
       - id: pyupgrade
         args: [ "--py36-plus", "--py37-plus", "--py38-plus", "--py39-plus" ]
   - repo: https://github.com/pycqa/isort
-    rev: 5.9.3
+    rev: 5.10.0
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
@@ -57,7 +57,7 @@ repos:
       - id: pylint
         exclude: "[a-zA-Z]*/(migrations)/(.)*"
         exclude: "manage.py"
-        args: [ "--load-plugins=pylint_django", "--django-settings-module=app.settings" ]
+        args: [ "--load-plugins=pylint_django", "--django-settings-module=era.settings" ]
         additional_dependencies: [
             # pylint dependency
             django,
@@ -65,15 +65,20 @@ repos:
             # runtime dependencies
             # ...
         ]
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: 'v0.910-1'
+#  - repo: https://github.com/pre-commit/mirrors-mypy
+#    rev: 'v0.910-1'
+#    hooks:
+#      - id: mypy
+#        exclude: "[a-zA-Z]*/(migrations)/(.)*"
+#        additional_dependencies: [
+#            # mypy dependencies
+#            djangorestframework-stubs,
+#            django-stubs,
+#            # runtime dependencies
+#            # ...
+#        ]
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: 'v2.4.1'
     hooks:
-      - id: mypy
-        exclude: "[a-zA-Z]*/(migrations)/(.)*"
-        additional_dependencies: [
-            # mypy dependencies
-            djangorestframework-stubs,
-            django-stubs,
-            # runtime dependencies
-            # ...
-        ]
+      - id: prettier
+        exclude: ".pre-commit-config.yaml"
