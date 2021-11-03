@@ -10,12 +10,24 @@ type ignore is here to pass mypy pre-commit for the differents fiels
 from django.db import models
 
 
+class Branch(models.Model):
+    """Branch class
+    a Branch is composed by many question
+    """
+
+    branch_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.branch_name
+
+
 class Question(models.Model):
     """Question class
     for this qcm, a question has 4 possible choice
     only 1 is right
     """
 
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
     question_text = models.CharField(max_length=200)
 
     def __str__(self):

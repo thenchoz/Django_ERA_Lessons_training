@@ -1,13 +1,11 @@
-{% if question_list %}
+{% if branch_list %}
 <ul>
-  {% for question in question_list %}
+  {% for branch in branch_list %}
   <li>
-    <a href="{% url 'qcm:detail' question.id %}"
-      >{{ question.question_text }}</a
-    >
+    <a href="{% url 'qcm:detail' branch.id %}">{{ branch.branch_name }}</a>
   </li>
   {% endfor %}
 </ul>
 {% else %}
-<p>No questions are available.</p>
+<p>No branch are available.</p>
 {% endif %}

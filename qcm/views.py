@@ -10,28 +10,39 @@ https://docs.djangoproject.com/en/3.2/topics/http/views/
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
 
-from .models import Choice, Question
+from .models import Branch, Choice, Question
 
 
 class IndexView(generic.ListView):
     """generic view of index"""
 
     template_name = "qcm/index.html"
-    context_object_name = "question_list"
+    context_object_name = "branch_list"
 
     def get_queryset(self):
         """Return all published questions."""
-        return Question.objects.order_by("id")
+        return Branch.objects.order_by("branch_name")
 
 
-class DetailView(generic.DetailView):
-    """generic view of detailed question"""
+class DetailView(generic.ListView):
+    """generic view of branch question"""
 
-    model = Question
-    template_name = "qcm/detail.html"
+    template_name = "qcm/detail_branch.html"
+    context_object_name = "question_list"
 
 
-class ResultsView(generic.DeleteView):
+#    def get_queryset(self):
+#        """Return all question linked to a branch"""
+#        return
+
+
+def detail_question(request, question_id):
+    """view of detailed question"""
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, "qcm/detail_question.html", {"question": question})
+
+
+class ResultsView(generic.DetailView):
     """generic view of results question"""
 
     model = Question

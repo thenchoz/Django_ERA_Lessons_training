@@ -1,6 +1,6 @@
 <h1>{{ question.question_text }}</h1>
 
-{% if given_answer is not None %}
+{% if given_answer %}
 <p>
   Your answer was "{{ given_answer.choice_text }}", this answer is {{
   given_answer.is_true }}.
