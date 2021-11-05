@@ -1,3 +1,10 @@
+<!-- qcm/detail_branch -->
+
+{% extends 'qcm/base_qcm.html' %}
+
+{% block title %}{{ branch.branch_name }}{% endblock %}
+
+{% block content %}
 {% if branch %}
 <h1>{{ branch.branch_name }}</h1>
 <ul>
@@ -11,3 +18,4 @@
 {% else %}
 <p>No branch are available.</p>
 {% endif %}
+{% endblock %}

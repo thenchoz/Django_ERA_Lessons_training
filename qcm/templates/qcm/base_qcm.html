@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<!-- template/qcm/base_qcm -->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}ERA QCM{% endblock %}</title>
+  </head>
+  <body>
+    <div class="topnav">
+      <a class="active" href="{% url 'qcm:index' %}">Home</a>
+    </div>
+    <main>
+    {% block content %}
+    {% endblock %}
+    </main>
+  </body>
+</html>

@@ -1,3 +1,8 @@
+<!-- qcm/index -->
+
+{% extends 'qcm/base_qcm.html' %}
+
+{% block content %}
 {% if branch_list %}
 <ul>
   {% for branch in branch_list %}
@@ -9,3 +14,4 @@
 {% else %}
 <p>No branch are available.</p>
 {% endif %}
+{% endblock %}

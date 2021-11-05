@@ -1,3 +1,8 @@
+<!-- qcm/detail_question -->
+
+{% extends 'qcm/base_qcm.html' %}
+
+{% block content %}
 <form
   action="{% url 'qcm:answer' question.branch.id question.id %}"
   method="get"
@@ -20,3 +25,4 @@
   </fieldset>
   <input type="submit" value="Answer" />
 </form>
+{% endblock %}
