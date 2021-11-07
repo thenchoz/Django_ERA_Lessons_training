@@ -1,0 +1,19 @@
+<!-- qcm/results_training -->
+
+{% extends 'qcm/base_qcm.html' %}
+
+{% block content %}
+<h1>{{ training.id }}</h1>
+
+<p>
+  Your result is {{ training.results }}%.
+</p>
+
+<ul>
+  {% for question in training.question_set.all %}
+  <li>{{ question.question_text }} -- answer</li>
+  {%endfor%}
+</ul>
+
+<a href="{% url 'qcm:detail' training.branch.id %}">Return to branch</a>
+{% endblock %}

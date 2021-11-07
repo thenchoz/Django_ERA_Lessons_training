@@ -7,10 +7,12 @@ For more information on this file, see
 https://docs.djangoproject.com/en/3.2/topics/http/views/
 """
 
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.views import generic
 
-from .models import Branch, Choice, Question
+from .models import Branch, Choice, Question, Training
 
 
 class IndexView(generic.ListView):
@@ -67,3 +69,92 @@ def answer(request, branch_id, question_id):
             "qcm/results.html",
             {"branch": branch, "question": question, "given_answer": selected_choice},
         )
+
+
+def during_training(request, training_id, question_list):
+    """view during training"""
+    training = get_object_or_404(Training, pk=training_id)
+    training.set_from_db()
+    question_id = training.questions[question_list]
+    question = get_object_or_404(Question, pk=question_id)
+
+    return render(
+        request,
+        "qcm/training.html",
+        {"training": training, "question_list": question_list, "question": question},
+    )
+
+
+def start_training(request, branch_id):
+    """set training view"""
+    branch = get_object_or_404(Branch, pk=branch_id)
+    training = branch.training_set.create()
+    training.set_questions()
+    training.save()
+
+    return during_training(request, training.id, 0)
+
+
+def training_view(request, training_id, question_list):
+    """training view"""
+    training = get_object_or_404(Training, pk=training_id)
+    training.set_from_db()
+    question_id = training.questions[question_list]
+    question = get_object_or_404(Question, pk=question_id)
+
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST["choice"])
+        training.answer(question_list, selected_choice.id)
+    except (KeyError, Choice.DoesNotExist):
+        # change anyway, blank answer
+        training.answer(question_list, None)
+
+    # elif for better lecture case # pylint: disable=R1705
+    if "next" in request.POST and question_list != training.nb_questions - 1:
+        return HttpResponseRedirect(
+            reverse(
+                "qcm:training",
+                args=(
+                    training_id,
+                    question_list + 1,
+                ),
+            )
+        )
+    elif "previous" in request.POST and question_list != 0:
+        return HttpResponseRedirect(
+            reverse(
+                "qcm:training",
+                args=(
+                    training_id,
+                    question_list - 1,
+                ),
+            )
+        )
+    elif "submit" in request.POST:
+        return HttpResponseRedirect(
+            reverse(
+                "qcm:results_training",
+                args=(
+                    training.branch.id,
+                    training_id,
+                ),
+            )
+        )
+    else:
+        # at the begin or the end, doesn't change page
+        return render(
+            request,
+            "qcm/training.html",
+            {
+                "training": training,
+                "question_list": question_list,
+                "question": question,
+            },
+        )
+
+
+class TrainingResultView(generic.DetailView):
+    """generic view to show a test resutl"""
+
+    model = Training
+    template_name = "qcm/results_training.html"

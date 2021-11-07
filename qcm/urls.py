@@ -25,4 +25,22 @@ urlpatterns = [
         views.answer,
         name="answer",
     ),
+    path(
+        "branch-<int:branch_id>/training/", views.start_training, name="start_training"
+    ),
+    path(
+        "training-<int:training_id>/question-<int:question_list>/answer/",
+        views.during_training,
+        name="training",
+    ),
+    path(
+        "training-<int:training_id>/question-<int:question_list>/",
+        views.training_view,
+        name="training_process",
+    ),
+    path(
+        "branch-<int:branch_id>/training-<int:pk>/result/",
+        views.TrainingResultView.as_view(),
+        name="results_training",
+    ),
 ]

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!-- qcm/training -->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Training{% endblock %}</title>
+  </head>
+  <body>
+    <main>
+      <form action="{% url 'qcm:training_process' training.id question_list %}" method="post">
+      {% csrf_token %}
+        <fieldset>
+          <legend><h1>{{ question.question_text }}</h1></legend>
+          {% for choice in question.choice_set.all %}
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"/>
+            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+          {% endfor %}
+        </fieldset>
+      <input type="submit" name="next" value="Next" />
+      <input type="submit" name="previous" value="Previous" />
+      <input type="submit" name="submit" value="Submit" />
+      </form>
+    </main>
+  </body>
+</html>

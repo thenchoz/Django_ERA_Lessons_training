@@ -7,7 +7,7 @@ https://docs.djangoproject.com/en/3.2/ref/contrib/admin/actions/
 
 from django.contrib import admin
 
-from .models import Branch, Choice, Question
+from .models import Branch, Choice, Question, Training
 
 
 class ChoiceInline(admin.TabularInline):
@@ -29,3 +29,5 @@ class QuestionAdmin(admin.ModelAdmin):
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Branch)
+admin.site.register(Training)  # Temporary, for testing purpose
+# ToDo: remove training # pylint: disable=W0511
