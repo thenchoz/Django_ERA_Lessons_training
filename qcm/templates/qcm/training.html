@@ -12,7 +12,7 @@
         <fieldset>
           <legend><h1>{{ question.question_text }}</h1></legend>
           {% for choice in question.choice_set.all %}
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"/>
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" {% ifequal selected_choice choice.id %}checked="checked"{% endifequal %}/>
             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
           {% endfor %}
         </fieldset>

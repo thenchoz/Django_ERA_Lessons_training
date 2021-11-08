@@ -76,11 +76,17 @@ def during_training(request, training_id, question_list):
     training = get_object_or_404(Training, pk=training_id)
     training.set_from_db()
     question = training.questions.all()[question_list]
+    selected_choice = training.answers[question_list]
 
     return render(
         request,
         "qcm/training.html",
-        {"training": training, "question_list": question_list, "question": question},
+        {
+            "training": training,
+            "question_list": question_list,
+            "question": question,
+            "selected_choice": selected_choice,
+        },
     )
 
 
