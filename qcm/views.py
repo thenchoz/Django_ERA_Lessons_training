@@ -75,8 +75,7 @@ def during_training(request, training_id, question_list):
     """view during training"""
     training = get_object_or_404(Training, pk=training_id)
     training.set_from_db()
-    question_id = training.questions[question_list]
-    question = get_object_or_404(Question, pk=question_id)
+    question = training.questions.all()[question_list]
 
     return render(
         request,
@@ -89,6 +88,7 @@ def start_training(request, branch_id):
     """set training view"""
     branch = get_object_or_404(Branch, pk=branch_id)
     training = branch.training_set.create()
+    training.save()
     training.set_questions()
     training.save()
 
@@ -99,8 +99,7 @@ def training_view(request, training_id, question_list):
     """training view"""
     training = get_object_or_404(Training, pk=training_id)
     training.set_from_db()
-    question_id = training.questions[question_list]
-    question = get_object_or_404(Question, pk=question_id)
+    question = training.questions.all()[question_list]
 
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])

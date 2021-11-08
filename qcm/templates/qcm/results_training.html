@@ -3,15 +3,16 @@
 {% extends 'qcm/base_qcm.html' %}
 
 {% block content %}
-<h1>{{ training.id }}</h1>
+<h1>{{ training.id }} {{ training }}</h1>
 
 <p>
   Your result is {{ training.results }}%.
 </p>
 
 <ul>
-  {% for question in training.question_set.all %}
-  <li>{{ question.question_text }} -- answer</li>
+  {% for question in training.questions.all %}
+  <li><a href="{% url 'qcm:results' training.branch.id question.id %}">
+      {{ question.id }} - {{ question.question_text }} -- answer</a></li>
   {%endfor%}
 </ul>
 
