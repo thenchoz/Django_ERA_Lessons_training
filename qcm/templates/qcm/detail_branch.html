@@ -7,26 +7,26 @@
 {% block content %}
 {% if branch %}
 <h1>{{ branch.branch_name }}</h1>
-<h2>List of Questions</h2>
+<h2>List of Questions set</h2>
 <ul>
-  {% for question in branch.question_set.all %}
+  {% for questions_set in branch.questionsset_set.all %}
   <li>
-    <a href="{% url 'qcm:detail_question' branch.id question.id %}">
-      {{ question.id }} - {{ question.question_text }}</a>
+    <a href="{% url 'qcm:detail_questions_set' branch.id questions_set.id %}">
+      {{ questions_set.id }} - {{ questions_set.questions_set_name }}</a>
   </li>
   {% endfor %}
 </ul>
-{% if branch.training_set.all %}
 <h2>List of Training</h2>
 <ul>
-  {% for training in branch.training_set.all %}
+  {% for questions_set in branch.questionsset_set.all %}
+  {% for training in questions_set.training_set.all %}
   <li>
     <a href="{% url 'qcm:results_training' branch.id training.id %}">{{ training }} - {{ training.results }}%</a>
   </li>
   {% endfor %}
+  {% endfor %}
 </ul>
-{% endif %}
-<a href="{% url 'qcm:start_training' branch.id %}">Start a training</a>
+<!-- <a href="{% url 'qcm:start_training' branch.id %}">Start a training</a> -->
 {% else %}
 <p>No branch are available.</p>
 {% endif %}

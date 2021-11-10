@@ -1,0 +1,33 @@
+<!-- qcm/detail_questions_set -->
+
+{% extends 'qcm/base_qcm.html' %}
+
+{% block title %}{{ questionsset.questions_set_name }}{% endblock %}
+
+{% block content %}
+{% if questionsset %}
+<h1>{{ questionsset.questions_set_name }}</h1>
+<h2>List of Questions</h2>
+<ul>
+  {% for question in questionsset.question_set.all %}
+  <li>
+    <a href="{% url 'qcm:detail_question' questionsset.branch.id question.id %}">
+      {{ question.id }} - {{ question.question_text }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% if questionsset.training_set %}
+<h2>List of Training</h2>
+<ul>
+  {% for training in questionsset.training_set.all %}
+  <li>
+    <a href="{% url 'qcm:results_training' questionsset.branch.id training.id %}">{{ training }} - {{ training.results }}%</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+<a href="{% url 'qcm:start_training' questionsset.id %}">Start a training</a>
+{% else %}
+<p>No question are available.</p>
+{% endif %}
+{% endblock %}
