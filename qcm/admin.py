@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.http import urlencode
 
-from .models import Choice, Question, QuestionsSet, Training
+from .models import Branch, Choice, Question, QuestionsSet, Training
 
 NB_CHOICE_PER_QUESTION = 4
 
@@ -63,36 +63,38 @@ class QuestionAdmin(admin.ModelAdmin):
 
     fieldsets = [
         (None, {"fields": ["question_text"]}),
-        (None, {"fields": ["branch"]}),
+        (None, {"fields": ["questions_set"]}),
     ]
     inlines = [ChoiceInline]
 
-    list_display = ("question_text", "branch")
-    list_filter = ["branch"]
+    list_display = ("question_text", "questions_set")
+    list_filter = ["questions_set"]
     search_fields = ["question_text"]
 
     # ToDo: Question field should not be able to modify QuestionsSet name # pylint: disable=W0511
 
 
 class QuestionsSetAdminForm(forms.ModelForm):
-    """To have differents branch name"""
+    """To have differents questions_set name"""
 
-    def clean_branch_name(self):
+    def clean_questions_set_name(self):
         """raise validation error if this name allready exist"""
-        for name in QuestionsSet.objects.all().values_list("branch_name", flat=True):
-            if name == self.cleaned_data["branch_name"]:
-                raise forms.ValidationError("This branch already exists.")
+        for name in QuestionsSet.objects.all().values_list(
+            "questions_set_name", flat=True
+        ):
+            if name == self.cleaned_data["questions_set_name"]:
+                raise forms.ValidationError("This questions set already exists.")
 
-        return self.cleaned_data["branch_name"]
+        return self.cleaned_data["questions_set_name"]
 
 
 @admin.register(QuestionsSet)
 class QuestionsSetAdmin(admin.ModelAdmin):
-    """Model to create new branch"""
+    """Model to create new questions_set"""
 
     form = QuestionsSetAdminForm
 
-    list_display = ("branch_name", "view_questions")
+    list_display = ("questions_set_name", "view_questions")
 
     def view_questions(self, obj):  # pylint: disable=R0201
         """count and display related question"""
@@ -100,9 +102,47 @@ class QuestionsSetAdmin(admin.ModelAdmin):
         url = (
             reverse("admin:qcm_question_changelist")
             + "?"
-            + urlencode({"branch__id": f"{obj.id}"})
+            + urlencode({"questions_set__id": f"{obj.id}"})
         )
         return format_html('<a href="{}">{} Questions</a>', url, count)
+
+    def get_form(self, request, obj=None, *args, **kwargs):  # pylint: disable=W1113
+        del args  # Ignored parameters
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields["questions_set_name"].label = "Name"
+        return form
+
+
+class BranchAdminForm(forms.ModelForm):
+    """To have differents branch name"""
+
+    def clean_branch_name(self):
+        """raise validation error if this name allready exist"""
+        for name in Branch.objects.all().values_list("branch_name", flat=True):
+            if name == self.cleaned_data["branch_name"]:
+                raise forms.ValidationError("This branch already exists.")
+
+        return self.cleaned_data["branch_name"]
+
+
+@admin.register(Branch)
+class BranchAdmin(admin.ModelAdmin):
+    """Model to create new branch"""
+
+    form = BranchAdminForm
+
+    # list_display = ("branch_name")#, "view_questions")
+
+    """
+    def view_questions(self, obj):  # pylint: disable=R0201
+        \"""count and display related question\"""
+        count = obj.question_set.count()
+        url = (
+            reverse("admin:qcm_question_changelist")
+            + "?"
+            + urlencode({"questions_set__id": f"{obj.id}"})
+        )
+        return format_html('<a href="{}">{} Questions</a>', url, count)"""
 
     def get_form(self, request, obj=None, *args, **kwargs):  # pylint: disable=W1113
         del args  # Ignored parameters

@@ -15,9 +15,9 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 
-class QuestionsSet(models.Model):  # <-- changed model name
-    """QuestionsSet class
-    a QuestionsSet is composed by many question
+class Branch(models.Model):
+    """Branch class
+    a Branch is composed by many question
     """
 
     branch_name = models.CharField(max_length=100)
@@ -26,16 +26,15 @@ class QuestionsSet(models.Model):  # <-- changed model name
         return self.branch_name
 
 
-# pylint: disable = W0105
-"""class Branch(models.Model):
-    Branch class
-    a Branch is composed by many question
+class QuestionsSet(models.Model):
+    """QuestionsSet class
+    a QuestionsSet is composed by many question
+    """
 
-
-    branch_name = models.CharField(max_length=100)
+    questions_set_name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.branch_name"""
+        return self.questions_set_name
 
 
 class Question(models.Model):
@@ -45,7 +44,7 @@ class Question(models.Model):
     this restriction is applied in the admin panel
     """
 
-    branch = models.ForeignKey(QuestionsSet, on_delete=models.CASCADE)
+    questions_set = models.ForeignKey(QuestionsSet, on_delete=models.CASCADE)
     question_text = models.CharField(max_length=200)
 
     def __str__(self):
@@ -74,13 +73,13 @@ def shuffle_choices(question):
 
 class Training(models.Model):
     """Training class
-    a Training consist of a set of question in a specific branch
+    a Training consist of a set of question in a specific questions_set
     this class convert a training into and from a db field
     """
 
     # pylint: disable=R0902
 
-    branch = models.ForeignKey(QuestionsSet, on_delete=models.CASCADE)
+    questions_set = models.ForeignKey(QuestionsSet, on_delete=models.CASCADE)
     questions = models.ManyToManyField(Question)
     choice_order = models.CharField(max_length=250, null=True)
     questions_results = models.CharField(max_length=250, null=True)
@@ -96,18 +95,18 @@ class Training(models.Model):
 
     def __str__(self):
         return (
-            self.branch.branch_name
+            self.questions_set.questions_set_name
             + " "
             + self.training_date.strftime("%d.%m.%Y %H:%M")
         )
 
     def set_questions(self):
-        """get branch related question, shuffle them and take _nb_question_ of them
+        """get questions_set related question, shuffle them and take _nb_question_ of them
         then it shuffle the answer choice, and save it as tulpe in tuple
         it alswo set the answers list to the right size
         it also translate it with json into char for db storage"""
 
-        all_question_id = list(self.branch.question_set.all())
+        all_question_id = list(self.questions_set.question_set.all())
         if len(all_question_id) < self.nb_questions:
             self.nb_questions = len(all_question_id)
         shuffle(all_question_id)
