@@ -2,8 +2,10 @@
 <!-- template/qcm/base_qcm -->
 <html>
   <head>
+  {% load static %}
     <meta charset="utf-8">
     <title>{% block title %}ERA QCM{% endblock %}</title>
+    <link rel="icon"href="{% static 'favicon.ico' %}">
   </head>
   <body>
     <div class="topnav">
