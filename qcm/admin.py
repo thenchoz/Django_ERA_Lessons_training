@@ -75,11 +75,12 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 class QuestionsSetAdminForm(forms.ModelForm):
-    """To have differents questions_set name"""
+    """To have differents questions_set name in the same branch"""
 
     def clean_questions_set_name(self):
         """raise validation error if this name allready exist"""
-        for name in QuestionsSet.objects.all().values_list(
+        branch = self.cleaned_data.get("branch")
+        for name in branch.questionsset_set.all().values_list(
             "questions_set_name", flat=True
         ):
             if name == self.cleaned_data["questions_set_name"]:
@@ -94,7 +95,8 @@ class QuestionsSetAdmin(admin.ModelAdmin):
 
     form = QuestionsSetAdminForm
 
-    list_display = ("questions_set_name", "view_questions")
+    list_display = ("questions_set_name", "branch", "view_questions")
+    list_filter = ["branch"]
 
     def view_questions(self, obj):  # pylint: disable=R0201
         """count and display related question"""
@@ -102,7 +104,7 @@ class QuestionsSetAdmin(admin.ModelAdmin):
         url = (
             reverse("admin:qcm_question_changelist")
             + "?"
-            + urlencode({"question_set__id": f"{obj.id}"})
+            + urlencode({"questions_set__id": f"{obj.id}"})
         )
         return format_html('<a href="{}">{} Questions</a>', url, count)
 
@@ -139,7 +141,7 @@ class BranchAdmin(admin.ModelAdmin):
         url = (
             reverse("admin:qcm_questionsset_changelist")
             + "?"
-            + urlencode({"questionsset_set__id": f"{obj.id}"})
+            + urlencode({"branch__id": f"{obj.id}"})
         )
         return format_html('<a href="{}">{} Questions set</a>', url, count)
 
