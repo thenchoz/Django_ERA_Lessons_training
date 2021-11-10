@@ -13,7 +13,7 @@
     {% if error_message %}
     <p><strong>{{ error_message }}</strong></p>
     {% endif %}
-    {% for choice in question.choice_set.all %}
+    {% for choice in question.choice_shuffled %}
     <input
       type="radio"
       name="choice"

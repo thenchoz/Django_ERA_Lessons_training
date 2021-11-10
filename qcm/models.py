@@ -52,7 +52,7 @@ class QuestionsSet(models.Model):
     def __str__(self):
         return self.questions_set_name
 
-    def shuffled_question(self):
+    def question_shuffled(self):
         """return related questions, order shuffle"""
         questions = sorted(self.question_set.all(), key=lambda x: random())
         return questions
@@ -71,12 +71,12 @@ class Question(models.Model):
     def __str__(self):
         return self.question_text
 
-    def shuffled_choice(self):
+    def choice_shuffled(self):
         """return related choices, order shuffle"""
         choices = sorted(self.choice_set.all(), key=lambda x: random())
         return choices
 
-    def shuffled_choice_id(self):
+    def choice_id_shuffled(self):
         """return related choices id, order shuffle"""
         choices = sorted(
             self.choice_set.all().values_list("id", flat=True), key=lambda x: random()
@@ -131,9 +131,10 @@ class Training(models.Model):
         then it shuffle the answer choice, and save it as tulpe in tuple
         it alswo set the answers list to the right size
         it also translate it with json into char for db storage"""
+        # ToDo: should be done on create # pylint: disable=W0511
 
         # get shuffled question, keep only nb_questions of them if enough
-        all_question = self.questions_set.shuffled_question()
+        all_question = self.questions_set.question_shuffled()
 
         if len(all_question) < self.nb_questions:
             self.nb_questions = len(all_question)
@@ -143,7 +144,7 @@ class Training(models.Model):
         # get shuffle choice for each, save order
         # unused for choice now
         for question in all_question:
-            choices = question.shuffled_choice_id()
+            choices = question.choice_id_shuffled()
             self.questions_choice_shuffle.append((question.id, choices))
 
         self.answers = [None] * self.nb_questions
@@ -156,11 +157,13 @@ class Training(models.Model):
 
     def set_from_db(self):
         """convert method that recreate list from database saved"""
+        # ToDo: should be done on create # pylint: disable=W0511
         self.questions_choice_shuffle = json.loads(self.choice_order)
         self.answers = json.loads(self.questions_answers)
 
     def get_question(self, list_i):
         """return question _list_i_ in the list"""
+        # ToDo: should verify it exist # pylint: disable=W0511
         question_id = self.questions_choice_shuffle[list_i][0]
         question = self.questions.get(pk=question_id)
         return question

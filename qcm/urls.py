@@ -27,25 +27,27 @@ urlpatterns = [
     ),
     path(
         "branch-<int:branch_id>/question-<int:question_id>/answer/",
-        views.answer,
+        views.question_backend,
         name="answer",
     ),
     path(
-        "branch-<int:branch_id>/training/", views.start_training, name="start_training"
+        "branch-<int:branch_id>/questions_set-<int:questions_set_id>/training/",
+        views.start_training,
+        name="start_training",
     ),
     path(
         "training-<int:training_id>/question-<int:question_list>/answer/",
-        views.during_training,
+        views.during_training_view,
         name="training",
     ),
     path(
         "training-<int:training_id>/question-<int:question_list>/",
-        views.training_view,
+        views.training_backend,
         name="training_process",
     ),
     path(
         "branch-<int:branch_id>/training-<int:pk>/result/",
-        views.TrainingResultView.as_view(),
+        views.ResultsTrainingView.as_view(),
         name="results_training",
     ),
 ]

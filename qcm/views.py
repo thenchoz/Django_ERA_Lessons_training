@@ -54,7 +54,7 @@ class ResultsView(generic.DetailView):
     template_name = "qcm/results.html"
 
 
-def answer(request, branch_id, question_id):
+def question_backend(request, branch_id, question_id):
     """answering question view"""
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -78,8 +78,8 @@ def answer(request, branch_id, question_id):
         )
 
 
-def during_training(request, training_id, question_list):
-    """view during training"""
+def during_training_view(request, training_id, question_list):
+    """manage view during training"""
     training = get_object_or_404(Training, pk=training_id)
     training.set_from_db()
     question = training.get_question(question_list)
@@ -97,19 +97,20 @@ def during_training(request, training_id, question_list):
     )
 
 
-def start_training(request, branch_id):
-    """set training view"""
-    branch = get_object_or_404(QuestionsSet, pk=branch_id)
-    training = branch.training_set.create()
+def start_training(request, branch_id, questions_set_id):
+    """set training"""
+    del branch_id  # Ignored parameters
+    questions_set = get_object_or_404(QuestionsSet, pk=questions_set_id)
+    training = questions_set.training_set.create()
     training.save()
     training.set_questions()
     training.save()
 
-    return during_training(request, training.id, 0)
+    return during_training_view(request, training.id, 0)
 
 
-def training_view(request, training_id, question_list):
-    """training view"""
+def training_backend(request, training_id, question_list):
+    """training backend, manage db post"""
     training = get_object_or_404(Training, pk=training_id)
     training.set_from_db()
     question = training.get_question(question_list)
@@ -165,7 +166,7 @@ def training_view(request, training_id, question_list):
         )
 
 
-class TrainingResultView(generic.DetailView):
+class ResultsTrainingView(generic.DetailView):
     """generic view to show a test resutl"""
 
     model = Training
