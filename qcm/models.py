@@ -15,9 +15,9 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 
-class Branch(models.Model):
-    """Branch class
-    a Branch is composed by many question
+class QuestionsSet(models.Model):  # <-- changed model name
+    """QuestionsSet class
+    a QuestionsSet is composed by many question
     """
 
     branch_name = models.CharField(max_length=100)
@@ -26,13 +26,26 @@ class Branch(models.Model):
         return self.branch_name
 
 
+# pylint: disable = W0105
+"""class Branch(models.Model):
+    Branch class
+    a Branch is composed by many question
+
+
+    branch_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.branch_name"""
+
+
 class Question(models.Model):
     """Question class
-    for this qcm, a question has 4 possible choice
-    only 1 is right
+    a question belongs to a question set
+    for this qcm, a question has 4 possible choice, only 1 is right
+    this restriction is applied in the admin panel
     """
 
-    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    branch = models.ForeignKey(QuestionsSet, on_delete=models.CASCADE)
     question_text = models.CharField(max_length=200)
 
     def __str__(self):
@@ -67,7 +80,7 @@ class Training(models.Model):
 
     # pylint: disable=R0902
 
-    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    branch = models.ForeignKey(QuestionsSet, on_delete=models.CASCADE)
     questions = models.ManyToManyField(Question)
     choice_order = models.CharField(max_length=250, null=True)
     questions_results = models.CharField(max_length=250, null=True)

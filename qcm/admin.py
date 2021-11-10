@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.http import urlencode
 
-from .models import Branch, Choice, Question, Training
+from .models import Choice, Question, QuestionsSet, Training
 
 NB_CHOICE_PER_QUESTION = 4
 
@@ -71,26 +71,26 @@ class QuestionAdmin(admin.ModelAdmin):
     list_filter = ["branch"]
     search_fields = ["question_text"]
 
-    # ToDo: Question field should not be able to modify Branch name # pylint: disable=W0511
+    # ToDo: Question field should not be able to modify QuestionsSet name # pylint: disable=W0511
 
 
-class BranchAdminForm(forms.ModelForm):
+class QuestionsSetAdminForm(forms.ModelForm):
     """To have differents branch name"""
 
     def clean_branch_name(self):
         """raise validation error if this name allready exist"""
-        for name in Branch.objects.all().values_list("branch_name", flat=True):
+        for name in QuestionsSet.objects.all().values_list("branch_name", flat=True):
             if name == self.cleaned_data["branch_name"]:
                 raise forms.ValidationError("This branch already exists.")
 
         return self.cleaned_data["branch_name"]
 
 
-@admin.register(Branch)
-class BranchAdmin(admin.ModelAdmin):
+@admin.register(QuestionsSet)
+class QuestionsSetAdmin(admin.ModelAdmin):
     """Model to create new branch"""
 
-    form = BranchAdminForm
+    form = QuestionsSetAdminForm
 
     list_display = ("branch_name", "view_questions")
 

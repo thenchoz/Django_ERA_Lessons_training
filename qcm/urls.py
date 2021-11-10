@@ -9,7 +9,7 @@ from . import views
 app_name = "qcm"
 urlpatterns = [
     path("", views.IndexView.as_view(), name="index"),
-    path("branch-<int:pk>/", views.DetailBranchView.as_view(), name="detail"),
+    path("branch-<int:pk>/", views.DetailQuestionsSetView.as_view(), name="detail"),
     path(
         "branch-<int:branch_id>/question-<int:pk>/",
         views.DetailQuestionView.as_view(),

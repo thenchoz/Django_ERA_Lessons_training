@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
-from .models import Branch, Choice, Question, Training
+from .models import Choice, Question, QuestionsSet, Training
 
 
 class IndexView(generic.ListView):
@@ -23,13 +23,13 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return all published questions."""
-        return Branch.objects.order_by("branch_name")
+        return QuestionsSet.objects.order_by("branch_name")
 
 
-class DetailBranchView(generic.DetailView):
+class DetailQuestionsSetView(generic.DetailView):
     """generic view of branch question"""
 
-    model = Branch
+    model = QuestionsSet
     template_name = "qcm/detail_branch.html"
 
 
@@ -63,7 +63,7 @@ def answer(request, branch_id, question_id):
             },
         )
     else:
-        branch = get_object_or_404(Branch, pk=branch_id)
+        branch = get_object_or_404(QuestionsSet, pk=branch_id)
         return render(
             request,
             "qcm/results.html",
@@ -92,7 +92,7 @@ def during_training(request, training_id, question_list):
 
 def start_training(request, branch_id):
     """set training view"""
-    branch = get_object_or_404(Branch, pk=branch_id)
+    branch = get_object_or_404(QuestionsSet, pk=branch_id)
     training = branch.training_set.create()
     training.save()
     training.set_questions()
