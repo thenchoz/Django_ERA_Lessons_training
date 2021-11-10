@@ -28,9 +28,11 @@ class Branch(models.Model):
 
 class QuestionsSet(models.Model):
     """QuestionsSet class
+    a QuestionsSet belongs to a given branch
     a QuestionsSet is composed by many question
     """
 
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
     questions_set_name = models.CharField(max_length=100)
 
     def __str__(self):

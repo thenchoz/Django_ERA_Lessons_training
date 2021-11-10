@@ -102,7 +102,7 @@ class QuestionsSetAdmin(admin.ModelAdmin):
         url = (
             reverse("admin:qcm_question_changelist")
             + "?"
-            + urlencode({"questions_set__id": f"{obj.id}"})
+            + urlencode({"question_set__id": f"{obj.id}"})
         )
         return format_html('<a href="{}">{} Questions</a>', url, count)
 
@@ -131,18 +131,17 @@ class BranchAdmin(admin.ModelAdmin):
 
     form = BranchAdminForm
 
-    # list_display = ("branch_name")#, "view_questions")
+    list_display = ("branch_name", "view_questions_set")
 
-    """
-    def view_questions(self, obj):  # pylint: disable=R0201
-        \"""count and display related question\"""
-        count = obj.question_set.count()
+    def view_questions_set(self, obj):  # pylint: disable=R0201
+        """count and display related questions_set"""
+        count = obj.questionsset_set.count()
         url = (
-            reverse("admin:qcm_question_changelist")
+            reverse("admin:qcm_questionsset_changelist")
             + "?"
-            + urlencode({"questions_set__id": f"{obj.id}"})
+            + urlencode({"questionsset_set__id": f"{obj.id}"})
         )
-        return format_html('<a href="{}">{} Questions</a>', url, count)"""
+        return format_html('<a href="{}">{} Questions set</a>', url, count)
 
     def get_form(self, request, obj=None, *args, **kwargs):  # pylint: disable=W1113
         del args  # Ignored parameters
