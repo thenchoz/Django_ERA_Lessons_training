@@ -82,7 +82,7 @@ def during_training(request, training_id, question_list):
     """view during training"""
     training = get_object_or_404(Training, pk=training_id)
     training.set_from_db()
-    question = training.questions.all()[question_list]
+    question = training.get_question(question_list)
     selected_choice = training.answers[question_list]
 
     return render(
@@ -112,7 +112,7 @@ def training_view(request, training_id, question_list):
     """training view"""
     training = get_object_or_404(Training, pk=training_id)
     training.set_from_db()
-    question = training.questions.all()[question_list]
+    question = training.get_question(question_list)
 
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])

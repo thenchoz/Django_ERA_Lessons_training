@@ -8,7 +8,7 @@ type ignore is here to pass mypy pre-commit for the differents fiels
 """
 
 import json
-from random import shuffle
+from random import random
 
 from django.db import models
 from django.shortcuts import get_object_or_404
@@ -25,6 +25,20 @@ class Branch(models.Model):
     def __str__(self):
         return self.branch_name
 
+    def question_set(self):
+        """get every question from all questions set link to this branch"""
+        questions = []
+        for questions_set in self.questionsset_set.all():
+            questions.append(questions_set.question_set.all())
+        return questions
+
+    def training_set(self):
+        """get every training from all questions set link to this branch"""
+        trainings = []
+        for questions_set in self.questionsset_set.all():
+            trainings.append(questions_set.training_set.all())
+        return trainings
+
 
 class QuestionsSet(models.Model):
     """QuestionsSet class
@@ -37,6 +51,11 @@ class QuestionsSet(models.Model):
 
     def __str__(self):
         return self.questions_set_name
+
+    def shuffled_question(self):
+        """return related questions, order shuffle"""
+        questions = sorted(self.question_set.all(), key=lambda x: random())
+        return questions
 
 
 class Question(models.Model):
@@ -52,6 +71,18 @@ class Question(models.Model):
     def __str__(self):
         return self.question_text
 
+    def shuffled_choice(self):
+        """return related choices, order shuffle"""
+        choices = sorted(self.choice_set.all(), key=lambda x: random())
+        return choices
+
+    def shuffled_choice_id(self):
+        """return related choices id, order shuffle"""
+        choices = sorted(
+            self.choice_set.all().values_list("id", flat=True), key=lambda x: random()
+        )
+        return choices
+
 
 class Choice(models.Model):
     """Choice class
@@ -66,13 +97,6 @@ class Choice(models.Model):
         return self.choice_text
 
 
-def shuffle_choices(question):
-    """shuffle question choices, used in Training"""
-    choices = list(question.choice_set.all().values_list("id", flat=True))
-    shuffle(choices)
-    return choices
-
-
 class Training(models.Model):
     """Training class
     a Training consist of a set of question in a specific questions_set
@@ -84,7 +108,7 @@ class Training(models.Model):
     questions_set = models.ForeignKey(QuestionsSet, on_delete=models.CASCADE)
     questions = models.ManyToManyField(Question)
     choice_order = models.CharField(max_length=250, null=True)
-    questions_results = models.CharField(max_length=250, null=True)
+    questions_answers = models.CharField(max_length=250, null=True)
     training_date = models.DateTimeField("Training date", null=True)
     results = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     nb_questions = models.SmallIntegerField(default=30)
@@ -108,21 +132,24 @@ class Training(models.Model):
         it alswo set the answers list to the right size
         it also translate it with json into char for db storage"""
 
-        all_question_id = list(self.questions_set.question_set.all())
-        if len(all_question_id) < self.nb_questions:
-            self.nb_questions = len(all_question_id)
-        shuffle(all_question_id)
-        for question in all_question_id[: self.nb_questions]:
+        # get shuffled question, keep only nb_questions of them if enough
+        all_question = self.questions_set.shuffled_question()
+
+        if len(all_question) < self.nb_questions:
+            self.nb_questions = len(all_question)
+        for question in all_question[: self.nb_questions]:
             self.questions.add(question)
 
-        for question in self.questions.all():
-            choices = shuffle_choices(question)
+        # get shuffle choice for each, save order
+        # unused for choice now
+        for question in all_question:
+            choices = question.shuffled_choice_id()
             self.questions_choice_shuffle.append((question.id, choices))
 
         self.answers = [None] * self.nb_questions
 
         self.choice_order = json.dumps(self.questions_choice_shuffle)
-        self.questions_results = json.dumps(self.answers)
+        self.questions_answers = json.dumps(self.answers)
 
         self.results = 0
         self.training_date = timezone.now()
@@ -130,7 +157,13 @@ class Training(models.Model):
     def set_from_db(self):
         """convert method that recreate list from database saved"""
         self.questions_choice_shuffle = json.loads(self.choice_order)
-        self.answers = json.loads(self.questions_results)
+        self.answers = json.loads(self.questions_answers)
+
+    def get_question(self, list_i):
+        """return question _list_i_ in the list"""
+        question_id = self.questions_choice_shuffle[list_i][0]
+        question = self.questions.get(pk=question_id)
+        return question
 
     def get_choices(self, question_id):
         """return choices id, shuffle, for a given question"""
@@ -147,13 +180,13 @@ class Training(models.Model):
             if answer_id is not None:
                 answer = get_object_or_404(Choice, pk=answer_id)
                 if answer.is_true:
-                    self.results += 1 / self.nb_questions
+                    self.results += 100 / self.nb_questions
         return self.results
 
     def answer(self, list_i, choice):
         """set change, time, and save training"""
         self.answers[list_i] = choice
-        self.questions_results = json.dumps(self.answers)
+        self.questions_answers = json.dumps(self.answers)
 
         self.training_date = timezone.now()
 

@@ -11,7 +11,7 @@
       {% csrf_token %}
         <fieldset>
           <legend><h1>{{ question.question_text }}</h1></legend>
-          {% for choice in question.choice_set.all %}
+          {% for choice in question.shuffled_choice %}
             <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" {% ifequal selected_choice choice.id %}checked="checked"{% endifequal %}/>
             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
           {% endfor %}
