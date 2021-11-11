@@ -118,13 +118,13 @@ class QuestionsSubsetAdmin(admin.ModelAdmin):
 class BranchAdminForm(forms.ModelForm):
     """To have differents branch name"""
 
-    def clean_branch_name(self):
+    def clean_name(self):
         """raise validation error if this name allready exist"""
-        for name in Branch.objects.all().values_list("branch_name", flat=True):
-            if name == self.cleaned_data["branch_name"]:
+        for name in Branch.objects.all().values_list("name", flat=True):
+            if name == self.cleaned_data["name"]:
                 raise forms.ValidationError("This branch already exists.")
 
-        return self.cleaned_data["branch_name"]
+        return self.cleaned_data["name"]
 
 
 @admin.register(Branch)
@@ -133,7 +133,7 @@ class BranchAdmin(admin.ModelAdmin):
 
     form = BranchAdminForm
 
-    list_display = ("branch_name", "view_questions_set")
+    list_display = ("name", "view_questions_set")
 
     def view_questions_set(self, obj):  # pylint: disable=R0201
         """count and display related questions_set"""
@@ -148,7 +148,7 @@ class BranchAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, *args, **kwargs):  # pylint: disable=W1113
         del args  # Ignored parameters
         form = super().get_form(request, obj, **kwargs)
-        form.base_fields["branch_name"].label = "Name"
+        form.base_fields["name"].label = "Name"
         return form
 
 
