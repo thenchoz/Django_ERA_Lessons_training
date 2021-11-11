@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
-from .models import Branch, Choice, Question, QuestionsSet, Training
+from .models import Branch, Choice, Question, QuestionsSubset, Training
 
 
 class IndexView(generic.ListView):
@@ -23,7 +23,7 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return all branch, alphabetic order"""
-        return Branch.objects.order_by("branch_name")
+        return Branch.objects.order_by("name")
 
 
 class DetailBranchView(generic.DetailView):
@@ -33,10 +33,10 @@ class DetailBranchView(generic.DetailView):
     template_name = "qcm/detail_branch.html"
 
 
-class DetailQuestionsSetView(generic.DetailView):
+class DetailQuestionsSubsetView(generic.DetailView):
     """generic view of branch question"""
 
-    model = QuestionsSet
+    model = QuestionsSubset
     template_name = "qcm/detail_questions_set.html"
 
 
@@ -100,7 +100,7 @@ def during_training_view(request, training_id, question_list):
 def start_training(request, branch_id, questions_set_id):
     """set training"""
     del branch_id  # Ignored parameters
-    questions_set = get_object_or_404(QuestionsSet, pk=questions_set_id)
+    questions_set = get_object_or_404(QuestionsSubset, pk=questions_set_id)
     training = questions_set.training_set.create()
     training.save()
     training.set_questions()

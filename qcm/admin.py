@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.http import urlencode
 
-from .models import Branch, Choice, Question, QuestionsSet, Training
+from .models import Branch, Choice, Question, QuestionsSubset, Training
 
 NB_CHOICE_PER_QUESTION = 4
 
@@ -71,10 +71,10 @@ class QuestionAdmin(admin.ModelAdmin):
     list_filter = ["questions_set"]
     search_fields = ["question_text"]
 
-    # ToDo: Question field should not be able to modify QuestionsSet name # pylint: disable=W0511
+    # ToDo: Question field should not be able to modify QuestionsSubset name # pylint: disable=W0511
 
 
-class QuestionsSetAdminForm(forms.ModelForm):
+class QuestionsSubsetAdminForm(forms.ModelForm):
     """To have differents questions_set name in the same branch"""
 
     def clean_questions_set_name(self):
@@ -89,11 +89,11 @@ class QuestionsSetAdminForm(forms.ModelForm):
         return self.cleaned_data["questions_set_name"]
 
 
-@admin.register(QuestionsSet)
-class QuestionsSetAdmin(admin.ModelAdmin):
+@admin.register(QuestionsSubset)
+class QuestionsSubsetAdmin(admin.ModelAdmin):
     """Model to create new questions_set"""
 
-    form = QuestionsSetAdminForm
+    form = QuestionsSubsetAdminForm
 
     list_display = ("questions_set_name", "branch", "view_questions")
     list_filter = ["branch"]

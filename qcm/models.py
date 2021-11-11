@@ -15,12 +15,27 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 
-class Branch(models.Model):
+class SetOfQuestion(models.Model):
+    """Abstract class, another way of regrouping question"""
+
+    class Meta:
+        abstract = True
+
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    def get_questions_shuffled(self):
+        """random, will do"""
+
+
+class Branch(SetOfQuestion):
     """Branch class
     a Branch is composed by many question
     """
 
-    branch_name = models.CharField(max_length=100)
+    branch_name = SetOfQuestion.name
 
     def __str__(self):
         return self.branch_name
@@ -40,10 +55,10 @@ class Branch(models.Model):
         return trainings
 
 
-class QuestionsSet(models.Model):
-    """QuestionsSet class
-    a QuestionsSet belongs to a given branch
-    a QuestionsSet is composed by many question
+class QuestionsSubset(models.Model):
+    """QuestionsSubset class
+    a QuestionsSubset belongs to a given branch
+    a QuestionsSubset is composed by many question
     """
 
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
@@ -65,7 +80,7 @@ class Question(models.Model):
     this restriction is applied in the admin panel
     """
 
-    questions_set = models.ForeignKey(QuestionsSet, on_delete=models.CASCADE)
+    questions_set = models.ForeignKey(QuestionsSubset, on_delete=models.CASCADE)
     question_text = models.CharField(max_length=200)
 
     def __str__(self):
@@ -105,7 +120,7 @@ class Training(models.Model):
 
     # pylint: disable=R0902
 
-    questions_set = models.ForeignKey(QuestionsSet, on_delete=models.CASCADE)
+    questions_set = models.ForeignKey(QuestionsSubset, on_delete=models.CASCADE)
     questions = models.ManyToManyField(Question)
     choice_order = models.CharField(max_length=250, null=True)
     questions_answers = models.CharField(max_length=250, null=True)

@@ -12,7 +12,7 @@ urlpatterns = [
     path("branch-<int:pk>/", views.DetailBranchView.as_view(), name="detail"),
     path(
         "branch-<int:branch_id>/questions_set-<int:pk>/",
-        views.DetailQuestionsSetView.as_view(),
+        views.DetailQuestionsSubsetView.as_view(),
         name="detail_questions_set",
     ),
     path(

@@ -9,7 +9,7 @@
 <h1>{{ branch.branch_name }}</h1>
 <h2>List of Questions set</h2>
 <ul>
-  {% for questions_set in branch.questionsset_set.all %}
+  {% for questions_set in branch.questionssubset_set.all %}
   <li>
     <a href="{% url 'qcm:detail_questions_set' branch.id questions_set.id %}">
       {{ questions_set.id }} - {{ questions_set.questions_set_name }}</a>
@@ -18,7 +18,7 @@
 </ul>
 <h2>List of Training</h2>
 <ul>
-  {% for questions_set in branch.questionsset_set.all %}
+  {% for questions_set in branch.questionssubset_set.all %}
   {% for training in questions_set.training_set.all %}
   <li>
     <a href="{% url 'qcm:results_training' branch.id training.id %}">{{ training }} - {{ training.results }}%</a>
