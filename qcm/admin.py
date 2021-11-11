@@ -80,7 +80,7 @@ class QuestionsSubsetAdminForm(forms.ModelForm):
     def clean_questions_set_name(self):
         """raise validation error if this name allready exist"""
         branch = self.cleaned_data.get("branch")
-        for name in branch.questionsset_set.all().values_list(
+        for name in branch.questionssubset_set.all().values_list(
             "questions_set_name", flat=True
         ):
             if name == self.cleaned_data["questions_set_name"]:
@@ -137,9 +137,9 @@ class BranchAdmin(admin.ModelAdmin):
 
     def view_questions_set(self, obj):  # pylint: disable=R0201
         """count and display related questions_set"""
-        count = obj.questionsset_set.count()
+        count = obj.questionssubset_set.count()
         url = (
-            reverse("admin:qcm_questionsset_changelist")
+            reverse("admin:qcm_questionssubset_changelist")
             + "?"
             + urlencode({"branch__id": f"{obj.id}"})
         )
