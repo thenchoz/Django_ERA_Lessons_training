@@ -162,9 +162,8 @@ class Training(models.Model):
         for question in all_question[: self.nb_questions]:
             self.questions.add(question)
 
-        # get shuffle choice for each, save order
-        # unused for choice now
-        for question in all_question:
+            # get shuffle choice for each, save order
+            # unused for choice now
             choices = question.choice_id_shuffled()
             self.questions_choice_shuffle.append((question.id, choices))
 
