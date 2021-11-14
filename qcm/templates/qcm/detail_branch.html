@@ -18,12 +18,10 @@
 </ul>
 <h2>List of Training</h2>
 <ul>
-  {% for questions_set in branch.questionssubset_set.all %}
-  {% for training in questions_set.training_set.all %}
+  {% for training in branch.get_training_ordered_datetime %}
   <li>
     <a href="{% url 'qcm:results_training' branch.id training.id %}">{{ training }} - {{ training.results }}%</a>
   </li>
-  {% endfor %}
   {% endfor %}
 </ul>
 {% else %}

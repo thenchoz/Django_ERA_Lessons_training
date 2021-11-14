@@ -8,6 +8,7 @@ type ignore is here to pass mypy pre-commit for the differents fiels
 """
 
 import json
+from itertools import chain
 from random import random
 
 from django.db import models
@@ -44,19 +45,27 @@ class Branch(QuestionsSet):
         """get every question from all questions subset link to this branch"""
         questions = []
         for questions_set in self.questionssubset_set.all():
-            questions.append(questions_set.question_set.all())
+            questions = list(chain(questions, questions_set.question_set.all()))
         return questions
 
     def training_set(self):
         """get every training from all questions subset link to this branch"""
         trainings = []
         for questions_set in self.questionssubset_set.all():
-            trainings.append(questions_set.training_set.all())
+            trainings = list(chain(trainings, questions_set.training_set.all()))
         return trainings
 
     def get_questions_shuffled(self):
         """return all questions from every subset, shuffled"""
-        return self.question_set()
+        questions = sorted(self.question_set(), key=lambda x: random())
+        return questions
+
+    def get_training_ordered_datetime(self):
+        """return all training from every subset, ordered by datetime"""
+        trainings = sorted(
+            self.training_set(), key=lambda training: training.training_date
+        )
+        return trainings
 
 
 class QuestionsSubset(QuestionsSet):
