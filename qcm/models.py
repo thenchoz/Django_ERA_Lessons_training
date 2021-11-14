@@ -41,18 +41,22 @@ class Branch(QuestionsSet):
         return self.branch_name
 
     def question_set(self):
-        """get every question from all questions set link to this branch"""
+        """get every question from all questions subset link to this branch"""
         questions = []
-        for questions_set in self.questionsset_set.all():
+        for questions_set in self.questionssubset_set.all():
             questions.append(questions_set.question_set.all())
         return questions
 
     def training_set(self):
-        """get every training from all questions set link to this branch"""
+        """get every training from all questions subset link to this branch"""
         trainings = []
-        for questions_set in self.questionsset_set.all():
+        for questions_set in self.questionssubset_set.all():
             trainings.append(questions_set.training_set.all())
         return trainings
+
+    def get_questions_shuffled(self):
+        """return all questions from every subset, shuffled"""
+        return self.question_set()
 
 
 class QuestionsSubset(QuestionsSet):
