@@ -11,7 +11,7 @@ from random import randrange
 
 from django.test import TestCase
 
-from .models import Branch, Choice, Question, QuestionsSubset
+from .models import Branch, Choice, Question, QuestionsSubset, Training
 
 
 def create_branch(branch_name):
@@ -47,7 +47,7 @@ def create_question(question_text, questions_subset_id=None):
     return questions_subset.question_set.create(question_text=question_text)
 
 
-def create_choice(choice_text, is_true, question_id=None):
+def create_choice(choice_text, is_true=False, question_id=None):
     """usage fct
     create a choice with choie_text as text and is_true as boolean
     using the question corresponding to question_id
@@ -58,6 +58,19 @@ def create_choice(choice_text, is_true, question_id=None):
     else:
         question = Question.objects.get(id=question_id)
     return question.choice_set.create(choice_text=choice_text, is_true=is_true)
+
+
+def create_training(questions_subset_id=None):
+    """usage fct
+    create a training
+    using the questions_subset corresponding to questions_subset_id
+    empty basic branch and questions_subset if questions_subset_id is None
+    """
+    if questions_subset_id is None:
+        questions_subset = create_questions_subset(questions_subset_name="empty name")
+    else:
+        questions_subset = QuestionsSubset.objects.get(id=questions_subset_id)
+    return questions_subset.training_set.create()
 
 
 class BranchModelTest(TestCase):
@@ -82,7 +95,7 @@ class BranchModelTest(TestCase):
         )
 
         # create questions and get queryset
-        nb_questions = randrange(100)
+        nb_questions = randrange(1, 100)
         questions = []
         for i in range(nb_questions):
             question = questions_subset.question_set.create(
@@ -104,7 +117,7 @@ class BranchModelTest(TestCase):
         test if not equal base list
         """
         branch = create_branch(branch_name="branch shuffled")
-        nb_subsets = randrange(10)
+        nb_subsets = randrange(1, 10)
 
         # create subsets
         questions_subsets = []
@@ -116,7 +129,7 @@ class BranchModelTest(TestCase):
             questions_subsets.append(questions_subset)
 
         # create questions and get queryset
-        nb_questions = randrange(100)
+        nb_questions = randrange(1, 100)
         questions = []
         for i in range(nb_questions):
             jndice = randrange(nb_subsets)
@@ -154,7 +167,7 @@ class QuestionsSubsetModelTest(TestCase):
         )
 
         # create questions and get queryset
-        nb_questions = randrange(100)
+        nb_questions = randrange(1, 100)
         questions = []
         for i in range(nb_questions):
             question = questions_subset.question_set.create(
@@ -185,8 +198,18 @@ class ChoiceModelTest(TestCase):
     """class to test the Choice model"""
 
     def test_create_choice(self):
-        """test a question creation"""
+        """test a choice creation"""
         choice_text = "empty choice"
         choice = create_choice(choice_text=choice_text, is_true=True)
         choices = Choice.objects.all()
         self.assertQuerysetEqual(choices, [choice])
+
+
+class TrainingModelTest(TestCase):
+    """class to test the Training model"""
+
+    def test_create_training(self):
+        """test a training creation"""
+        training = create_training()
+        trainings = Training.objects.all()
+        self.assertQuerysetEqual(trainings, [training])
