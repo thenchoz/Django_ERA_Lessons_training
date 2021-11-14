@@ -135,11 +135,10 @@ class Training(models.Model):
     answers = []  # type: list[id] # choice_id for each question
 
     def __str__(self):
-        return (
-            self.questions_set.questions_set_name
-            + " "
-            + self.training_date.strftime("%d.%m.%Y %H:%M")
-        )
+        training_str = self.questions_set.questions_set_name
+        if self.training_date is not None:
+            training_str += " " + self.training_date.strftime("%d.%m.%Y %H:%M")
+        return training_str
 
     def set_questions(self):
         """get questions_set related question, shuffle them and take _nb_question_ of them
