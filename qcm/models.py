@@ -76,6 +76,9 @@ class QuestionsSubset(QuestionsSet):
         questions = sorted(self.question_set.all(), key=lambda x: random())
         return questions
 
+    def get_questions_shuffled(self):
+        return self.question_shuffled()
+
 
 class Question(models.Model):
     """Question class
