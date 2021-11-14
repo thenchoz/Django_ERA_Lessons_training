@@ -70,6 +70,68 @@ class BranchModelTest(TestCase):
         branchs = Branch.objects.all()
         self.assertQuerysetEqual(branchs, [branch])
 
+    def test_get_questions_shuffled_is_complete_and_unique_with_one_subset(self):
+        """test fct Branch::get_questions_shuffled
+        test if all questions are in queryset
+        test if queryset is the same size as all question
+        test if not equal base list
+        """
+        branch = create_branch(branch_name="branch shuffled")
+        questions_subset = create_questions_subset(
+            questions_subset_name="questions shuffled", branch_id=branch.id
+        )
+
+        # create questions and get queryset
+        nb_questions = randrange(100)
+        questions = []
+        for i in range(nb_questions):
+            question = questions_subset.question_set.create(
+                question_text="random " + str(i)
+            )
+            questions.append(question)
+        questions_shuffled = branch.get_questions_shuffled()
+
+        # test for all question in queryset
+        self.assertEqual(len(questions_shuffled), len(questions))
+        for question in questions:
+            self.assertTrue(question in questions_shuffled)
+        self.assertNotEqual(questions, questions_shuffled)
+
+    def test_get_questions_shuffled_is_complete_and_unique_with_n_subset(self):
+        """test fct Branch::get_questions_shuffled
+        test if all questions are in queryset
+        test if queryset is the same size as all question
+        test if not equal base list
+        """
+        branch = create_branch(branch_name="branch shuffled")
+        nb_subsets = randrange(10)
+
+        # create subsets
+        questions_subsets = []
+        for i in range(nb_subsets):
+            questions_subset = create_questions_subset(
+                questions_subset_name="questions shuffled " + str(i),
+                branch_id=branch.id,
+            )
+            questions_subsets.append(questions_subset)
+
+        # create questions and get queryset
+        nb_questions = randrange(100)
+        questions = []
+        for i in range(nb_questions):
+            jndice = randrange(nb_subsets)
+            question = questions_subsets[jndice].question_set.create(
+                question_text="random " + str(i)
+            )
+            questions.append(question)
+        questions_shuffled = branch.get_questions_shuffled()
+
+        # test for all question in queryset
+        self.assertEqual(len(questions_shuffled), len(questions))
+        for question in questions:
+            self.assertTrue(question in questions_shuffled)
+        self.assertNotEqual(questions, questions_shuffled)
+
 
 class QuestionsSubsetModelTest(TestCase):
     """class to test the Questions subset model"""
@@ -85,14 +147,15 @@ class QuestionsSubsetModelTest(TestCase):
         """test fct QuestionsSubset::get_questions_shuffled
         test if all questions are in queryset
         test if queryset is the same size as all question
+        test if not equal base list
         """
         questions_subset = create_questions_subset(
             questions_subset_name="questions shuffled"
         )
-        questions = []
-        nb_questions = randrange(100)
 
         # create questions and get queryset
+        nb_questions = randrange(100)
+        questions = []
         for i in range(nb_questions):
             question = questions_subset.question_set.create(
                 question_text="random " + str(i)
@@ -101,28 +164,9 @@ class QuestionsSubsetModelTest(TestCase):
         questions_shuffled = questions_subset.get_questions_shuffled()
 
         # test for all question in queryset
+        self.assertEqual(len(questions_shuffled), len(questions))
         for question in questions:
             self.assertTrue(question in questions_shuffled)
-        self.assertEqual(len(questions_shuffled), len(questions))
-
-    def test_get_questions_shuffled_is_shuffled(self):
-        """test fct QuestionSubset::get_questions_shuffled
-        test if result are shuffled
-        """
-        questions_subset = create_questions_subset(
-            questions_subset_name="questions shuffled"
-        )
-        questions = []
-        nb_questions = randrange(100)
-
-        # create questions and get queryset
-        for i in range(nb_questions):
-            question = questions_subset.question_set.create(
-                question_text="random " + str(i)
-            )
-            questions.append(question)
-        questions_shuffled = questions_subset.get_questions_shuffled()
-
         self.assertNotEqual(questions, questions_shuffled)
 
 
