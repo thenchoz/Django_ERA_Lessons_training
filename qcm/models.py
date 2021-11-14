@@ -15,7 +15,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 
-class SetOfQuestion(models.Model):
+class QuestionsSet(models.Model):
     """Abstract class, another way of regrouping question"""
 
     class Meta:
@@ -30,12 +30,12 @@ class SetOfQuestion(models.Model):
         """random, will do"""
 
 
-class Branch(SetOfQuestion):
+class Branch(QuestionsSet):
     """Branch class
     a Branch is composed by many question
     """
 
-    branch_name = SetOfQuestion.name
+    branch_name = QuestionsSet.name
 
     def __str__(self):
         return self.branch_name
@@ -55,14 +55,14 @@ class Branch(SetOfQuestion):
         return trainings
 
 
-class QuestionsSubset(models.Model):
+class QuestionsSubset(QuestionsSet):
     """QuestionsSubset class
     a QuestionsSubset belongs to a given branch
     a QuestionsSubset is composed by many question
     """
 
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
-    questions_set_name = models.CharField(max_length=100)
+    questions_set_name = QuestionsSet.name
 
     def __str__(self):
         return self.questions_set_name
@@ -80,7 +80,7 @@ class Question(models.Model):
     this restriction is applied in the admin panel
     """
 
-    questions_set = models.ForeignKey(QuestionsSubset, on_delete=models.CASCADE)
+    questions_subset = models.ForeignKey(QuestionsSubset, on_delete=models.CASCADE)
     question_text = models.CharField(max_length=200)
 
     def __str__(self):
@@ -124,7 +124,7 @@ class Training(models.Model):
     questions = models.ManyToManyField(Question)
     choice_order = models.CharField(max_length=250, null=True)
     questions_answers = models.CharField(max_length=250, null=True)
-    training_date = models.DateTimeField("Training date", null=True)
+    training_date = models.DateTimeField("Training date", auto_now=True)
     results = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     nb_questions = models.SmallIntegerField(default=30)
     # for now, maybe a changeable settings in the future

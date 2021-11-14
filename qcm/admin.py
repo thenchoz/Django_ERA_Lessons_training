@@ -63,12 +63,12 @@ class QuestionAdmin(admin.ModelAdmin):
 
     fieldsets = [
         (None, {"fields": ["question_text"]}),
-        (None, {"fields": ["questions_set"]}),
+        (None, {"fields": ["questions_subset"]}),
     ]
     inlines = [ChoiceInline]
 
-    list_display = ("question_text", "questions_set")
-    list_filter = ["questions_set"]
+    list_display = ("question_text", "questions_subset")
+    list_filter = ["questions_subset"]
     search_fields = ["question_text"]
 
     # ToDo: Question field should not be able to modify QuestionsSubset name # pylint: disable=W0511
