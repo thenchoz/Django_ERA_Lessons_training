@@ -62,6 +62,7 @@ repos:
             # pylint dependency
             django,
             pylint_django,
+            django_polymorphic,
             # runtime dependencies
             # ...
         ]

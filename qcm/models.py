@@ -14,9 +14,10 @@ from random import random
 from django.db import models
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from polymorphic.models import PolymorphicModel
 
 
-class QuestionsSet(models.Model):
+class QuestionsSet(PolymorphicModel):
     """Abstract class, another way of regrouping question"""
 
     class Meta:
@@ -151,7 +152,7 @@ class Training(models.Model):
     answers = []  # type: list[id] # choice_id for each question
 
     def __str__(self):
-        training_str = self.questions_set.questions_set_name
+        training_str = self.questions_set.name
         if self.training_date is not None:
             training_str += " " + self.training_date.strftime("%d.%m.%Y %H:%M")
         return training_str
@@ -164,7 +165,7 @@ class Training(models.Model):
         # ToDo: should be done on create # pylint: disable=W0511
 
         # get shuffled question, keep only nb_questions of them if enough
-        all_question = self.questions_set.question_shuffled()
+        all_question = self.questions_set.get_questions_shuffled()
 
         if len(all_question) < self.nb_questions:
             self.nb_questions = len(all_question)
