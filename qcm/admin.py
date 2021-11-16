@@ -16,6 +16,10 @@ from .models import Branch, Choice, Question, QuestionsSubset, Training
 NB_CHOICE_PER_QUESTION = 4
 
 
+class QcmAdminSite(admin.AdminSite):
+    """class to adapte the admin site"""
+
+
 class ChoiceAdminForm(forms.BaseInlineFormSet):
     """Form that check the right nb of right choice"""
 
