@@ -63,6 +63,7 @@ repos:
             django,
             pylint_django,
             django_polymorphic,
+            psycopg2,
             # runtime dependencies
             # ...
         ]
