@@ -80,13 +80,11 @@ class QuestionsSubsetAdminForm(forms.ModelForm):
     def clean_questions_set_name(self):
         """raise validation error if this name allready exist"""
         branch = self.cleaned_data.get("branch")
-        for name in branch.questionssubset_set.all().values_list(
-            "questions_set_name", flat=True
-        ):
+        for name in branch.questionssubset_set.all().values_list("name", flat=True):
             if name == self.cleaned_data["questions_set_name"]:
                 raise forms.ValidationError("This questions set already exists.")
 
-        return self.cleaned_data["questions_set_name"]
+        return self.cleaned_data["name"]
 
 
 @admin.register(QuestionsSubset)
@@ -95,7 +93,7 @@ class QuestionsSubsetAdmin(admin.ModelAdmin):
 
     form = QuestionsSubsetAdminForm
 
-    list_display = ("questions_set_name", "branch", "view_questions")
+    list_display = ("name", "branch", "view_questions")
     list_filter = ["branch"]
 
     def view_questions(self, obj):  # pylint: disable=R0201
@@ -111,7 +109,7 @@ class QuestionsSubsetAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, *args, **kwargs):  # pylint: disable=W1113
         del args  # Ignored parameters
         form = super().get_form(request, obj, **kwargs)
-        form.base_fields["questions_set_name"].label = "Name"
+        # form.base_fields["questions_set_name"].label = "Name"
         return form
 
 

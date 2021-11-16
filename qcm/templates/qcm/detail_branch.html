@@ -7,6 +7,7 @@
 {% block content %}
 {% if branch %}
 <h1>{{ branch.branch_name }}</h1>
+{% if branch.questionssubset_set.all %}
 <h2>List of Questions set</h2>
 <ul>
   {% for questions_set in branch.questionssubset_set.all %}
@@ -16,6 +17,7 @@
   </li>
   {% endfor %}
 </ul>
+{% if branch.get_training_ordered_datetime %}
 <h2>List of Training</h2>
 <ul>
   {% for training in branch.get_training_ordered_datetime %}
@@ -24,6 +26,10 @@
   </li>
   {% endfor %}
 </ul>
+{% endif %}
+{% else %}
+<p>No questions are available.</p>
+{% endif %}
 {% else %}
 <p>No branch are available.</p>
 {% endif %}
