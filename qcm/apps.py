@@ -8,7 +8,6 @@ https://docs.djangoproject.com/fr/3.2/ref/applications/
 """
 
 from django.apps import AppConfig
-from django.contrib.admin.apps import AdminConfig
 
 
 class QcmConfig(AppConfig):
@@ -16,9 +15,3 @@ class QcmConfig(AppConfig):
 
     default_auto_field = "django.db.models.BigAutoField"
     name = "qcm"
-
-
-class QcmAdminConfig(AdminConfig):
-    """qcm admin configuration"""
-
-    default_site = "qcm.admin.QcmAdminSite"

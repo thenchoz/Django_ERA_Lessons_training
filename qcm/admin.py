@@ -19,6 +19,83 @@ NB_CHOICE_PER_QUESTION = 4
 class QcmAdminSite(admin.AdminSite):
     """class to adapte the admin site"""
 
+    site_header = "ERA QCM Administration"
+    site_title = "QCM"
+    index_title = "ERA Administration"
+
+
+qcm_admin_site = QcmAdminSite(name="qcm_admin")
+
+
+class BranchAdminForm(forms.ModelForm):
+    """To have differents branch name"""
+
+    def clean_name(self):
+        """raise validation error if this name allready exist"""
+        for name in Branch.objects.all().values_list("name", flat=True):
+            if name == self.cleaned_data["name"]:
+                raise forms.ValidationError("This branch already exists.")
+
+        return self.cleaned_data["name"]
+
+
+class BranchAdmin(admin.ModelAdmin):
+    """Model to create new branch"""
+
+    form = BranchAdminForm
+
+    list_display = ("name", "view_questions_set")
+
+    ordering = ["name"]
+    search_fields = ["name"]
+
+    def view_questions_set(self, obj):  # pylint: disable=R0201
+        """count and display related questions_set"""
+        count = obj.questionssubset_set.count()
+        url = (
+            reverse("qcm_admin:qcm_questionssubset_changelist")
+            + "?"
+            + urlencode({"branch__id": f"{obj.id}"})
+        )
+        return format_html('<a href="{}">{} Questions set</a>', url, count)
+
+
+class QuestionsSubsetAdminForm(forms.ModelForm):
+    """To have differents questions_set name in the same branch"""
+
+    def clean_questions_set_name(self):
+        """raise validation error if this name allready exist"""
+        branch = self.cleaned_data.get("branch")
+        for name in branch.questionssubset_set.all().values_list("name", flat=True):
+            if name == self.cleaned_data["questions_set_name"]:
+                raise forms.ValidationError("This questions set already exists.")
+
+        return self.cleaned_data["name"]
+
+
+class QuestionsSubsetAdmin(admin.ModelAdmin):
+    """Model to create new questions_set"""
+
+    form = QuestionsSubsetAdminForm
+
+    autocomplete_fields = ["branch"]
+
+    list_display = ("name", "branch", "view_questions")
+    list_filter = ["branch"]
+
+    ordering = ["branch", "name"]
+    search_fields = ["name"]
+
+    def view_questions(self, obj):  # pylint: disable=R0201
+        """count and display related question"""
+        count = obj.question_set.count()
+        url = (
+            reverse("qcm_admin:qcm_question_changelist")
+            + "?"
+            + urlencode({"questions_set__id": f"{obj.id}"})
+        )
+        return format_html('<a href="{}">{} Questions</a>', url, count)
+
 
 class ChoiceAdminForm(forms.BaseInlineFormSet):
     """Form that check the right nb of right choice"""
@@ -29,6 +106,7 @@ class ChoiceAdminForm(forms.BaseInlineFormSet):
     actual_right_choice = 0
 
     def clean(self):
+        """count is_true boolean, need one and only one"""
         super().clean()
         for form in self.forms:
             self.actual_nb_choice += 1
@@ -60,8 +138,14 @@ class ChoiceInline(admin.TabularInline):
 
     can_delete = False
 
+    def get_form(self, request, obj=None, *args, **kwargs):  # pylint: disable=W1113
+        """rename form field"""
+        del args  # Ignored parameters
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields["is_true"].label = "Correct anwser"
+        return form
 
-@admin.register(Question)
+
 class QuestionAdmin(admin.ModelAdmin):
     """Model to create new question in the admin panel"""
 
@@ -71,88 +155,19 @@ class QuestionAdmin(admin.ModelAdmin):
     ]
     inlines = [ChoiceInline]
 
+    autocomplete_fields = ["questions_subset"]
+
     list_display = ("question_text", "questions_subset")
     list_filter = ["questions_subset"]
     search_fields = ["question_text"]
 
+    ordering = ["questions_subset", "question_text"]
+
     # ToDo: Question field should not be able to modify QuestionsSubset name # pylint: disable=W0511
 
 
-class QuestionsSubsetAdminForm(forms.ModelForm):
-    """To have differents questions_set name in the same branch"""
-
-    def clean_questions_set_name(self):
-        """raise validation error if this name allready exist"""
-        branch = self.cleaned_data.get("branch")
-        for name in branch.questionssubset_set.all().values_list("name", flat=True):
-            if name == self.cleaned_data["questions_set_name"]:
-                raise forms.ValidationError("This questions set already exists.")
-
-        return self.cleaned_data["name"]
-
-
-@admin.register(QuestionsSubset)
-class QuestionsSubsetAdmin(admin.ModelAdmin):
-    """Model to create new questions_set"""
-
-    form = QuestionsSubsetAdminForm
-
-    list_display = ("name", "branch", "view_questions")
-    list_filter = ["branch"]
-
-    def view_questions(self, obj):  # pylint: disable=R0201
-        """count and display related question"""
-        count = obj.question_set.count()
-        url = (
-            reverse("admin:qcm_question_changelist")
-            + "?"
-            + urlencode({"questions_set__id": f"{obj.id}"})
-        )
-        return format_html('<a href="{}">{} Questions</a>', url, count)
-
-    def get_form(self, request, obj=None, *args, **kwargs):  # pylint: disable=W1113
-        del args  # Ignored parameters
-        form = super().get_form(request, obj, **kwargs)
-        # form.base_fields["questions_set_name"].label = "Name"
-        return form
-
-
-class BranchAdminForm(forms.ModelForm):
-    """To have differents branch name"""
-
-    def clean_name(self):
-        """raise validation error if this name allready exist"""
-        for name in Branch.objects.all().values_list("name", flat=True):
-            if name == self.cleaned_data["name"]:
-                raise forms.ValidationError("This branch already exists.")
-
-        return self.cleaned_data["name"]
-
-
-@admin.register(Branch)
-class BranchAdmin(admin.ModelAdmin):
-    """Model to create new branch"""
-
-    form = BranchAdminForm
-
-    list_display = ("name", "view_questions_set")
-
-    def view_questions_set(self, obj):  # pylint: disable=R0201
-        """count and display related questions_set"""
-        count = obj.questionssubset_set.count()
-        url = (
-            reverse("admin:qcm_questionssubset_changelist")
-            + "?"
-            + urlencode({"branch__id": f"{obj.id}"})
-        )
-        return format_html('<a href="{}">{} Questions set</a>', url, count)
-
-    def get_form(self, request, obj=None, *args, **kwargs):  # pylint: disable=W1113
-        del args  # Ignored parameters
-        form = super().get_form(request, obj, **kwargs)
-        form.base_fields["name"].label = "Name"
-        return form
-
-
-admin.site.register(Training)  # Temporary, for testing purpose
+qcm_admin_site.register(Branch, BranchAdmin)
+qcm_admin_site.register(QuestionsSubset, QuestionsSubsetAdmin)
+qcm_admin_site.register(Question, QuestionAdmin)
+qcm_admin_site.register(Training)  # Temporary, for testing purpose
 # ToDo: remove training # pylint: disable=W0511

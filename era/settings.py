@@ -31,9 +31,8 @@ ALLOWED_HOSTS = credentials.ALLOWED_HOSTS
 
 INSTALLED_APPS = [
     "qcm.apps.QcmConfig",
-    "qcm.apps.QcmAdminConfig",  # replaces 'django.contrib.admin'
     "polymorphic",
-    # "django.contrib.admin",
+    "django.contrib.admin.apps.SimpleAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
