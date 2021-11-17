@@ -101,3 +101,11 @@ STATIC_ROOT = credentials.STATIC_ROOT
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = credentials.DEFAULT_AUTO_FIELD
+
+# Deployement settings
+
+SECURE_SSL_REDIRECT = True
+
+CSRF_COOKIE_SECURE = True
+
+SESSION_COOKIE_SECURE = True
