@@ -4,7 +4,7 @@
 
 {% block content %}
 <form
-  action="{% url 'qcm:answer' question.questions_set.branch.id question.id %}"
+  action="{% url 'qcm:answer' question.questions_subset.parent_branch.id question.id %}"
   method="get"
 >
   {% csrf_token %}

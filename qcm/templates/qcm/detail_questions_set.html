@@ -12,7 +12,7 @@
 <ul>
   {% for question in questionssubset.question_set.all %}
   <li>
-    <a href="{% url 'qcm:detail_question' questionssubset.branch.id question.id %}">
+    <a href="{% url 'qcm:detail_question' questionssubset.parent_branch.id question.id %}">
       {{ question.id }} - {{ question.question_text }}</a>
   </li>
   {% endfor %}
@@ -22,15 +22,15 @@
 <ul>
   {% for training in questionssubset.training_set.all %}
   <li>
-    <a href="{% url 'qcm:results_training' questionssubset.branch.id training.id %}">{{ training }} - {{ training.results }}%</a>
+    <a href="{% url 'qcm:results_training' questionssubset.parent_branch.id training.id %}">{{ training }} - {{ training.results }}%</a>
   </li>
   {% endfor %}
 </ul>
 {% endif %}
-<a href="{% url 'qcm:start_training' questionssubset.branch.id questionssubset.id %}">Start a training</a><br>
+<a href="{% url 'qcm:start_training' questionssubset.parent_branch.id questionssubset.id %}">Start a training</a><br>
 {% else %}
 <p>No questions are available.</p>
 {% endif %}
 {% endif %}
-<a href="{% url 'qcm:detail' questionssubset.branch.id %}">Return to branch.</a>
+<a href="{% url 'qcm:detail' questionssubset.parent_branch.id %}">Return to branch.</a>
 {% endblock %}

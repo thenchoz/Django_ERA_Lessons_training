@@ -75,7 +75,7 @@ class QuestionsSubset(QuestionsSet):
     a QuestionsSubset is composed by many question
     """
 
-    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    parent_branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
     questions_set_name = QuestionsSet.name
 
     def __str__(self):

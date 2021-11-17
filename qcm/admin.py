@@ -65,7 +65,7 @@ class QuestionsSubsetAdminForm(forms.ModelForm):
 
     def clean_name(self):
         """raise validation error if this name allready exist"""
-        branch = self.cleaned_data.get("branch")
+        branch = self.cleaned_data.get("parent_branch")
         for name in branch.questionssubset_set.all().values_list("name", flat=True):
             if name == self.cleaned_data["name"]:
                 raise forms.ValidationError("This questions set already exists.")
@@ -78,12 +78,12 @@ class QuestionsSubsetAdmin(admin.ModelAdmin):
 
     form = QuestionsSubsetAdminForm
 
-    autocomplete_fields = ["branch"]
+    autocomplete_fields = ["parent_branch"]
 
-    list_display = ("name", "branch", "view_questions")
-    list_filter = ["branch"]
+    list_display = ("name", "parent_branch", "view_questions")
+    list_filter = ["parent_branch"]
 
-    ordering = ["branch", "name"]
+    ordering = ["parent_branch", "name"]
     search_fields = ["name"]
 
     def view_questions(self, obj):  # pylint: disable=R0201

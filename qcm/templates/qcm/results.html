@@ -17,9 +17,9 @@
   {%endfor%}
 </ul>
 
-<a href="{% url 'qcm:detail_question' question.questions_set.branch.id question.id %}"
+<a href="{% url 'qcm:detail_question' question.questions_subset.parent_branch.id question.id %}"
   >Answer again?</a
 >
 <br />
-<a href="{% url 'qcm:detail' question.questions_set.branch.id %}">Return to branch</a>
+<a href="{% url 'qcm:detail' question.questions_subset.parent_branch.id %}">Return to branch</a>
 {% endblock %}

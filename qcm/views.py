@@ -148,7 +148,7 @@ def training_backend(request, training_id, question_list):
             reverse(
                 "qcm:results_training",
                 args=(
-                    training.questions_set.branch.id,
+                    training.questions_set.parent_branch.id,
                     training_id,
                 ),
             )
