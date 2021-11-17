@@ -92,7 +92,7 @@ class QuestionsSubsetAdmin(admin.ModelAdmin):
         url = (
             reverse("qcm_admin:qcm_question_changelist")
             + "?"
-            + urlencode({"questions_set__id": f"{obj.id}"})
+            + urlencode({"questions_subset__id": f"{obj.id}"})
         )
         return format_html('<a href="{}">{} Questions</a>', url, count)
 
