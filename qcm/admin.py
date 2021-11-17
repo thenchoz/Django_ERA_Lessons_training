@@ -55,7 +55,7 @@ class BranchAdmin(admin.ModelAdmin):
         url = (
             reverse("qcm_admin:qcm_questionssubset_changelist")
             + "?"
-            + urlencode({"branch__id": f"{obj.id}"})
+            + urlencode({"parent_branch__id": f"{obj.id}"})
         )
         return format_html('<a href="{}">{} Questions set</a>', url, count)
 
@@ -65,10 +65,12 @@ class QuestionsSubsetAdminForm(forms.ModelForm):
 
     def clean_name(self):
         """raise validation error if this name allready exist"""
-        branch = self.cleaned_data.get("parent_branch")
-        for name in branch.questionssubset_set.all().values_list("name", flat=True):
-            if name == self.cleaned_data["name"]:
-                raise forms.ValidationError("This questions set already exists.")
+        branch_id = self.data.get("parent_branch")
+        if branch_id is not None:
+            branch = Branch.objects.get(pk=branch_id)
+            for name in branch.questionssubset_set.all().values_list("name", flat=True):
+                if name == self.cleaned_data["name"]:
+                    raise forms.ValidationError("This questions set already exists.")
 
         return self.cleaned_data["name"]
 
