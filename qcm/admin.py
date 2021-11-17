@@ -63,11 +63,11 @@ class BranchAdmin(admin.ModelAdmin):
 class QuestionsSubsetAdminForm(forms.ModelForm):
     """To have differents questions_set name in the same branch"""
 
-    def clean_questions_set_name(self):
+    def clean_name(self):
         """raise validation error if this name allready exist"""
         branch = self.cleaned_data.get("branch")
         for name in branch.questionssubset_set.all().values_list("name", flat=True):
-            if name == self.cleaned_data["questions_set_name"]:
+            if name == self.cleaned_data["name"]:
                 raise forms.ValidationError("This questions set already exists.")
 
         return self.cleaned_data["name"]
