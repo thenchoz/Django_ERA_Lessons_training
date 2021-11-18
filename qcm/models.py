@@ -20,16 +20,19 @@ from polymorphic.models import PolymorphicModel
 class QuestionsSet(PolymorphicModel):
     """Abstract class, another way of regrouping question"""
 
-    class Meta:
-        abstract = True
-
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
 
+    def get_branch_id(self):
+        """get branch id, to manage diff between Branch and Questions Subset subclass"""
+        return self.id
+
     def get_questions_shuffled(self):
-        """random, will do"""
+        """random, abstract on superclass"""
+        # pylint: disable=R0201
+        return []
 
 
 class Branch(QuestionsSet):
@@ -39,29 +42,33 @@ class Branch(QuestionsSet):
 
     branch_name = QuestionsSet.name
 
-    def question_set(self):
+    def get_branch_id(self):
+        return self.id
+
+    def __get_question_set(self):
         """get every question from all questions subset link to this branch"""
         questions = []
         for questions_set in self.questionssubset_set.all():
             questions = list(chain(questions, questions_set.question_set.all()))
         return questions
 
-    def training_set(self):
+    def __get_training_set(self):
         """get every training from all questions subset link to this branch"""
         trainings = []
+        trainings = list(chain(trainings, self.training_set.all()))
         for questions_set in self.questionssubset_set.all():
             trainings = list(chain(trainings, questions_set.training_set.all()))
         return trainings
 
     def get_questions_shuffled(self):
         """return all questions from every subset, shuffled"""
-        questions = sorted(self.question_set(), key=lambda x: random())
+        questions = sorted(self.__get_question_set(), key=lambda x: random())
         return questions
 
     def get_training_ordered_datetime(self):
         """return all training from every subset, ordered by datetime"""
         trainings = sorted(
-            self.training_set(), key=lambda training: training.training_date
+            self.__get_training_set(), key=lambda training: training.training_date
         )
         return trainings
 
@@ -74,6 +81,9 @@ class QuestionsSubset(QuestionsSet):
 
     parent_branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
     questions_set_name = QuestionsSet.name
+
+    def get_branch_id(self):
+        return self.parent_branch.id
 
     def question_shuffled(self):
         """return related questions, order shuffle"""
@@ -131,10 +141,10 @@ class Training(models.Model):
 
     # pylint: disable=R0902
 
-    questions_set = models.ForeignKey(QuestionsSubset, on_delete=models.CASCADE)
+    questions_set = models.ForeignKey(QuestionsSet, on_delete=models.CASCADE)
     questions = models.ManyToManyField(Question)
-    choice_order = models.CharField(max_length=250, null=True)
-    questions_answers = models.CharField(max_length=250, null=True)
+    choice_order = models.CharField(max_length=1500, null=True)
+    questions_answers = models.CharField(max_length=1500, null=True)
     training_date = models.DateTimeField("Training date", auto_now=True)
     results = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     nb_questions = models.SmallIntegerField(default=30)
@@ -157,6 +167,8 @@ class Training(models.Model):
         it alswo set the answers list to the right size
         it also translate it with json into char for db storage"""
         # ToDo: should be done on create # pylint: disable=W0511
+
+        self.questions_choice_shuffle = []
 
         # get shuffled question, keep only nb_questions of them if enough
         all_question = self.questions_set.get_questions_shuffled()

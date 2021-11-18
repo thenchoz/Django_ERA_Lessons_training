@@ -27,6 +27,7 @@
   {% endfor %}
 </ul>
 {% endif %}
+<a href="{% url 'qcm:start_training_branch' branch.id %}">Start a general training</a>
 {% else %}
 <p>No questions are available.</p>
 {% endif %}

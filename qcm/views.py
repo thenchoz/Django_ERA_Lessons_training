@@ -97,7 +97,18 @@ def during_training_view(request, training_id, question_list):
     )
 
 
-def start_training(request, branch_id, questions_set_id):
+def start_training_branch(request, branch_id):
+    """set training"""
+    branch = get_object_or_404(Branch, pk=branch_id)
+    training = branch.training_set.create()
+    training.save()
+    training.set_questions()
+    training.save()
+
+    return during_training_view(request, training.id, 0)
+
+
+def start_training_questions_subset(request, branch_id, questions_set_id):
     """set training"""
     del branch_id  # Ignored parameters
     questions_set = get_object_or_404(QuestionsSubset, pk=questions_set_id)
@@ -148,7 +159,7 @@ def training_backend(request, training_id, question_list):
             reverse(
                 "qcm:results_training",
                 args=(
-                    training.questions_set.parent_branch.id,
+                    training.questions_set.get_branch_id(),
                     training_id,
                 ),
             )
