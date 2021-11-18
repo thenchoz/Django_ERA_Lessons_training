@@ -9,12 +9,17 @@ repos:
     rev: v4.0.1
     hooks:
       # See https://pre-commit.com/hooks.html for more hooks
+      - id: check-added-large-files
       - id: check-ast
       - id: check-case-conflict
       - id: check-executables-have-shebangs
+      - id: check-json
       - id: check-merge-conflict
+      - id: check-yaml
       - id: debug-statements
+      - id: detect-private-key
       - id: end-of-file-fixer
+      - id: mixed-line-ending
       - id: name-tests-test
         args: [ "--django" ]
       - id: trailing-whitespace
@@ -31,10 +36,12 @@ repos:
     rev: 5.10.0
     hooks:
       - id: isort
+        exclude: "[a-zA-Z]*/(migrations)/(.)*"
   - repo: https://github.com/psf/black
     rev: 21.10b0
     hooks:
       - id: black
+        exclude: "[a-zA-Z]*/(migrations)/(.)*"
   - repo: https://github.com/pycqa/bandit
     rev: 1.7.0
     hooks:
@@ -55,8 +62,7 @@ repos:
     rev: "v2.11.1"
     hooks:
       - id: pylint
-        exclude: "[a-zA-Z]*/(migrations)/(.)*"
-        exclude: "manage.py"
+        exclude: "[a-zA-Z]*/migrations/(.)*|manage.py"
         args: [ "--load-plugins=pylint_django", "--django-settings-module=era.settings" ]
         additional_dependencies: [
             # pylint dependency
