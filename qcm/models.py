@@ -3,8 +3,6 @@ Django models for qcm app.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/3.2/topics/db/models/
-
-type ignore is here to pass mypy pre-commit for the differents fiels
 """
 
 import json
