@@ -39,9 +39,6 @@ class Branch(QuestionsSet):
 
     branch_name = QuestionsSet.name
 
-    def __str__(self):
-        return self.branch_name
-
     def question_set(self):
         """get every question from all questions subset link to this branch"""
         questions = []
@@ -77,9 +74,6 @@ class QuestionsSubset(QuestionsSet):
 
     parent_branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
     questions_set_name = QuestionsSet.name
-
-    def __str__(self):
-        return self.questions_set_name
 
     def question_shuffled(self):
         """return related questions, order shuffle"""
