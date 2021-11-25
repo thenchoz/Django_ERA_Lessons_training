@@ -6,34 +6,36 @@
 
 {% block content %}
 {% if branch %}
-<h1>{{ branch.branch_name }}</h1>
-{% if branch.questionssubset_set.all %}
-<h2>List of Questions set</h2>
-<ul>
-  {% for questions_set in branch.questionssubset_set.all %}
-  <li>
-    <a href="{% url 'qcm:detail_questions_set' branch.id questions_set.id %}">
-      {{ questions_set.id }} - {{ questions_set.questions_set_name }}</a>
-  </li>
-  {% endfor %}
-</ul>
-{% if branch.get_training_ordered_datetime %}
-<h2>List of Training</h2>
-<ul>
-  {% for training in branch.get_training_ordered_datetime %}
-  <li>
-    <a href="{% url 'qcm:results_training' branch.id training.id %}">{{ training }} - {{ training.results }}%</a>
-  </li>
-  {% endfor %}
-</ul>
-{% endif %}
-<a href="{% url 'qcm:start_training_branch' branch.id %}">Start a general training</a>
+  <h1>{{ branch.branch_name }}</h1>
+  {% if branch.questionssubset_set.all %}
+    <h2>List of Questions set</h2>
+    <ul>
+      {% for questions_set in branch.questionssubset_set.all %}
+        <li>
+          <a href="{% url 'qcm:detail_questions_set' branch.id questions_set.id %}">
+          {{ questions_set.id }} - {{ questions_set.questions_set_name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+    {% if branch.get_training_ordered_datetime %}
+      <h2>List of Training</h2>
+      <ul>
+        {% for training in branch.get_training_ordered_datetime %}
+          <li>
+            <a href="{% url 'qcm:results_training' branch.id training.id %}">{{ training }} - {{ training.results }}%</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <a href="{% url 'qcm:start_training_branch' branch.id %}">Start a general training</a>
+  {% else %}
+    <p>No questions are available.</p>
+  {% endif %}
+  <br>
+  <a href="{% url 'qcm:create_questions_subset' branch.id %}">Create a new quesions subset</a>
+  <br>
+  <a class="confirm_delete" href="{% url 'qcm:delete_branch' branch.id %}" method="post">Delete</a>
 {% else %}
-<p>No questions are available.</p>
-{% endif %}
-<br>
-<a href="{% url 'qcm:create_questions_subset' branch.id %}">Create a new quesions subset</a>
-{% else %}
-<p>No branch are available.</p>
+  <p>No branch are available.</p>
 {% endif %}
 {% endblock %}

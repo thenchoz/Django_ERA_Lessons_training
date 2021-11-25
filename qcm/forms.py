@@ -41,4 +41,8 @@ class QuestionsSubsetForm(ModelForm):
     def clean(self):
         """Chekc that name does not already exist inside the given branch"""
         data = self.cleaned_data
+        branch = data.get("parent_branch")
+        for name in branch.questionssubset_set.all().values_list("name", flat=True):
+            if name == data.get("name"):
+                raise ValidationError("This name already exist")
         return data

@@ -204,6 +204,15 @@ def create_branch_view(request):
     return render(request, "qcm/create_branch.html", {"form": branch_form})
 
 
+def delete_branch_view(request, branch_id):
+    """view to delete a Branch"""
+
+    branch = get_object_or_404(Branch, pk=branch_id)
+    branch.delete()
+
+    return HttpResponseRedirect(reverse("qcm:index"))
+
+
 def create_questions_subset_view(request, branch_id):
     """view to create a new questions subset"""
     # ToDo: limited access #pylint: disable=W0511

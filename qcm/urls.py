@@ -2,6 +2,7 @@
 qcm URL Configuration
 """
 
+
 from django.urls import path
 
 from . import views
@@ -11,6 +12,9 @@ urlpatterns = [
     path("", views.IndexView.as_view(), name="index"),
     path("branch-<int:pk>/", views.DetailBranchView.as_view(), name="detail"),
     path("create_branch/", views.create_branch_view, name="create_branch"),
+    path(
+        "delete_branch-<int:branch_id>/", views.delete_branch_view, name="delete_branch"
+    ),
     path(
         "branch-<int:branch_id>/create_questions_subset/",
         views.create_questions_subset_view,
