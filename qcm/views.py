@@ -250,6 +250,16 @@ def create_questions_subset_view(request, branch_id):
     )
 
 
+def delete_questions_subset_view(request, questions_subset_id):
+    """view to delete a questions subset"""
+
+    questions_subset = get_object_or_404(QuestionsSubset, pk=questions_subset_id)
+    branch_id = questions_subset.parent_branch.id
+    questions_subset.delete()
+
+    return HttpResponseRedirect(reverse("qcm:detail", args=(branch_id,)))
+
+
 def create_question_view(request, questions_subset_id):
     """view to create a new questions subset"""
     # ToDo: limited access #pylint: disable=W0511

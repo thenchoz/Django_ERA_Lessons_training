@@ -34,7 +34,7 @@
   <br>
   <a href="{% url 'qcm:create_questions_subset' branch.id %}">Create a new quesions subset</a>
   <br>
-  <a class="confirm_delete" href="{% url 'qcm:delete_branch' branch.id %}" method="post">Delete</a>
+  <a class="confirm_delete" href="{% url 'qcm:delete_branch' branch.id %}" method="post" onClick="return confirm('Are you sure?');">Delete</a>
 {% else %}
   <p>No branch are available.</p>
 {% endif %}

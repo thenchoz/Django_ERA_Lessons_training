@@ -21,6 +21,11 @@ urlpatterns = [
         name="create_questions_subset",
     ),
     path(
+        "delete_questions_subset-<int:questions_subset_id>/",
+        views.delete_questions_subset_view,
+        name="delete_questions_subset",
+    ),
+    path(
         "questions_subset-<int:questions_subset_id>/create_question/",
         views.create_question_view,
         name="create_question",
