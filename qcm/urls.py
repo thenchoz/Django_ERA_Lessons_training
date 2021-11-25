@@ -21,6 +21,11 @@ urlpatterns = [
         name="create_questions_subset",
     ),
     path(
+        "questions_subset-<int:questions_subset_id>/create_question/",
+        views.create_question_view,
+        name="create_question",
+    ),
+    path(
         "branch-<int:branch_id>/questions_set-<int:pk>/",
         views.DetailQuestionsSubsetView.as_view(),
         name="detail_questions_set",

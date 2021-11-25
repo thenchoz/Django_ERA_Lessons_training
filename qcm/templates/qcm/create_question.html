@@ -1,0 +1,12 @@
+{% extends 'qcm/base_qcm.html' %}
+
+{% block content %}
+  <h2>Create a new question for {{ questions_subset.name }}<h2>
+  <form action="{% url 'qcm:create_question' questionssubset.id %}" method="post">
+  {% csrf_token %}
+    {{ form }}
+    <input type="submit" name="create" value="Create">
+    <input type="submit" name="create_add" value="Create and add another">
+  </form>
+  <a href="{% url 'qcm:detail' questionssubset.parent_branch.id %}">Return to branch.</a>
+{% endblock %}

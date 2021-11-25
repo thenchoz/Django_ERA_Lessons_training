@@ -31,6 +31,8 @@
 {% else %}
 <p>No questions are available.</p>
 {% endif %}
+  <a href="{% url 'qcm:create_question' questionssubset.id %}">Create a new quesion</a>
 {% endif %}
+<br>
 <a href="{% url 'qcm:detail' questionssubset.parent_branch.id %}">Return to branch.</a>
 {% endblock %}

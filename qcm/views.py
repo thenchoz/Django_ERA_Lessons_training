@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
-from .forms import BranchForm, QuestionsSubsetForm
+from .forms import BranchForm, QuestionForm, QuestionsSubsetForm
 from .models import Branch, Choice, Question, QuestionsSubset, Training
 
 
@@ -224,7 +224,10 @@ def create_questions_subset_view(request, branch_id):
             questions_subset_form = QuestionsSubsetForm(request.POST, branch=branch)
 
             if questions_subset_form.is_valid():
-                questions_subset = questions_subset_form.save()
+                questions_subset = questions_subset_form.save(commit=False)
+                questions_subset.parent_branch = branch
+                questions_subset.save()
+
                 return HttpResponseRedirect(
                     reverse(
                         "qcm:detail_questions_set",
@@ -234,6 +237,7 @@ def create_questions_subset_view(request, branch_id):
                         ),
                     )
                 )
+
         except ValidationError:
             questions_subset_form.clean()
     else:
@@ -243,4 +247,55 @@ def create_questions_subset_view(request, branch_id):
         request,
         "qcm/create_questions_subset.html",
         {"form": questions_subset_form, "branch": branch},
+    )
+
+
+def create_question_view(request, questions_subset_id):
+    """view to create a new questions subset"""
+    # ToDo: limited access #pylint: disable=W0511
+
+    questions_subset = get_object_or_404(QuestionsSubset, pk=questions_subset_id)
+
+    if request.method == "POST":
+        try:
+            question_form = QuestionForm(
+                request.POST, questions_subset=questions_subset
+            )
+
+            if question_form.is_valid():
+                question = question_form.save(commit=False)
+                question.questions_subset = questions_subset
+                question.save()
+
+                question_form.save_choices(question)
+
+                # elif for better lecture case # pylint: disable=R1705
+                if "create" in request.POST:
+                    return HttpResponseRedirect(
+                        reverse(
+                            "qcm:detail_questions_set",
+                            args=(
+                                questions_subset.parent_branch.id,
+                                questions_subset.id,
+                            ),
+                        )
+                    )
+
+                elif "create_add" in request.POST:
+                    return HttpResponseRedirect(
+                        reverse(
+                            "qcm:create_question",
+                            args=(questions_subset.id,),
+                        )
+                    )
+
+        except ValidationError:
+            question_form.clean()
+    else:
+        question_form = QuestionForm(questions_subset=questions_subset)
+
+    return render(
+        request,
+        "qcm/create_question.html",
+        {"form": question_form, "questionssubset": questions_subset},
     )
