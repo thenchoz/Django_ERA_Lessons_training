@@ -1,0 +1,10 @@
+{% extends 'qcm/base_qcm.html' %}
+
+{% block content %}
+  <h2>Create a new branch<h2>
+  <form action="{% url 'qcm:create_branch' %}" method="post">
+  {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Create">
+  </form>
+{% endblock %}

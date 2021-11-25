@@ -7,11 +7,13 @@ For more information on this file, see
 https://docs.djangoproject.com/en/3.2/topics/http/views/
 """
 
+from django.core.exceptions import ValidationError
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
+from .forms import BranchForm, QuestionsSubsetForm
 from .models import Branch, Choice, Question, QuestionsSubset, Training
 
 
@@ -182,3 +184,54 @@ class ResultsTrainingView(generic.DetailView):
 
     model = Training
     template_name = "qcm/results_training.html"
+
+
+def create_branch_view(request):
+    """view to create a new Branch"""
+    # ToDo: limited access #pylint: disable=W0511
+
+    if request.method == "POST":
+        try:
+            branch_form = BranchForm(request.POST)
+            if branch_form.is_valid():
+                branch = branch_form.save()
+                return HttpResponseRedirect(reverse("qcm:detail", args=(branch.id,)))
+        except ValidationError:
+            branch_form.clean()
+    else:
+        branch_form = BranchForm()
+
+    return render(request, "qcm/create_branch.html", {"form": branch_form})
+
+
+def create_questions_subset_view(request, branch_id):
+    """view to create a new questions subset"""
+    # ToDo: limited access #pylint: disable=W0511
+
+    branch = get_object_or_404(Branch, pk=branch_id)
+
+    if request.method == "POST":
+        try:
+            questions_subset_form = QuestionsSubsetForm(request.POST, branch=branch)
+
+            if questions_subset_form.is_valid():
+                questions_subset = questions_subset_form.save()
+                return HttpResponseRedirect(
+                    reverse(
+                        "qcm:detail_questions_set",
+                        args=(
+                            questions_subset.parent_branch.id,
+                            questions_subset.id,
+                        ),
+                    )
+                )
+        except ValidationError:
+            questions_subset_form.clean()
+    else:
+        questions_subset_form = QuestionsSubsetForm(branch=branch)
+
+    return render(
+        request,
+        "qcm/create_questions_subset.html",
+        {"form": questions_subset_form, "branch": branch},
+    )

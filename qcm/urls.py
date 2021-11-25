@@ -10,6 +10,12 @@ app_name = "qcm"
 urlpatterns = [
     path("", views.IndexView.as_view(), name="index"),
     path("branch-<int:pk>/", views.DetailBranchView.as_view(), name="detail"),
+    path("create_branch/", views.create_branch_view, name="create_branch"),
+    path(
+        "branch-<int:branch_id>/create_questions_subset/",
+        views.create_questions_subset_view,
+        name="create_questions_subset",
+    ),
     path(
         "branch-<int:branch_id>/questions_set-<int:pk>/",
         views.DetailQuestionsSubsetView.as_view(),
