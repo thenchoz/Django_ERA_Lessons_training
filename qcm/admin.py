@@ -42,7 +42,7 @@ class BranchAdmin(admin.ModelAdmin):
         """count and display related questions_set"""
         count = obj.questionssubset_set.count()
         url = (
-            reverse("qcm_admin:qcm_questionssubset_changelist")
+            reverse("admin:qcm_questionssubset_changelist")
             + "?"
             + urlencode({"parent_branch__id": f"{obj.id}"})
         )
@@ -81,7 +81,7 @@ class QuestionsSubsetAdmin(admin.ModelAdmin):
         """count and display related question"""
         count = obj.question_set.count()
         url = (
-            reverse("qcm_admin:qcm_question_changelist")
+            reverse("admin:qcm_question_changelist")
             + "?"
             + urlencode({"questions_subset__id": f"{obj.id}"})
         )

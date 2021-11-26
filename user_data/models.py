@@ -6,6 +6,7 @@ https://docs.djangoproject.com/en/3.2/topics/db/models/
 """
 
 import uuid
+from itertools import chain
 
 from django.contrib.auth import get_user_model as User
 from django.db import models
@@ -28,6 +29,21 @@ class Student(PolymorphicModel):
 
     user = models.OneToOneField(User(), on_delete=models.CASCADE)
     lessons = models.ManyToManyField(Lesson, blank=True)
+
+    def _get_branch(self):
+        """return list of all accessible branch"""
+
+        branchs = []
+        for lesson in self.lessons.all():
+            branchs = list(chain(branchs, lesson.branch_set.all()))
+
+        return branchs
+
+    def get_alpha_branch(self):
+        """return alphabetic list of all accessible branch"""
+
+        branchs = sorted(self._get_branch(), key=lambda branch: branch.name)
+        return branchs
 
 
 class Instructor(Student):

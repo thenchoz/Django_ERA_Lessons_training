@@ -34,11 +34,13 @@
   {% else %}
     <p>No questions are available.</p>
   {% endif %}
-  <a href="{% url 'qcm:create_question' questionssubset.id %}">Create a new quesion</a>
-  <br>
-  <a class="confirm_delete" href="{% url 'qcm:delete_questions_subset' questionssubset.id %}" method="post" onClick="return confirm('Are you sure?');">
-  Delete</a>
-  <br>
+  {% if user.is_staff or user.is_instructor %}
+    <a href="{% url 'qcm:create_question' questionssubset.id %}">Create a new quesion</a>
+    <br>
+    <a class="confirm_delete" href="{% url 'qcm:delete_questions_subset' questionssubset.id %}" method="post" onClick="return confirm('Are you sure?');">
+    Delete</a>
+    <br>
+  {% endif %}
 {% endif %}
 <a href="{% url 'qcm:detail' questionssubset.parent_branch.id %}">Return to branch.</a>
 {% endblock %}

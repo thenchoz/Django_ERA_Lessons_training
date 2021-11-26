@@ -7,7 +7,8 @@ https://docs.djangoproject.com/en/3.2/ref/contrib/admin/actions/
 
 from django.contrib import admin
 
-from .models import Instructor, Student
+from .models import Instructor, Lesson, Student
 
 admin.site.register(Student)
 admin.site.register(Instructor)
+admin.site.register(Lesson)

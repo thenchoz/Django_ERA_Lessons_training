@@ -28,7 +28,10 @@ class IndexView(generic.ListView):
         """Return all branch link to a specific user, alphabetic order"""
         user = self.request.user
         if user.is_authenticated:
-            return Branch.objects.order_by("name")
+            if user.is_student:
+                return user.student.get_alpha_branch()
+            if user.is_staff:
+                return Branch.objects.all().order_by("name")
         return None
 
 

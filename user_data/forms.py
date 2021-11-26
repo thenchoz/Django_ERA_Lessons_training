@@ -17,6 +17,8 @@ class RegisterForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=True)
+        user.is_student = True
+        user.save()
         student = Student(user=user)
         student.save()
         return user

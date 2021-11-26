@@ -14,5 +14,7 @@
 {% else %}
 <p>No branch are available.</p>
 {% endif %}
-<a href="{% url 'qcm:create_branch' %}">Create a new Branch</a>
+{% if user.is_staff or user.is_instructor %}
+  <a href="{% url 'qcm:create_branch' %}">Create a new Branch</a>
+{% endif %}
 {% endblock %}
