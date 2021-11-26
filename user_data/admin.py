@@ -7,9 +7,9 @@ https://docs.djangoproject.com/en/3.2/ref/contrib/admin/actions/
 
 from django.contrib import admin
 
-# from django.contrib.auth.admin import UserAdmin
+from .models import Instructor, Student
 
-# from .models import Student
+# from django.contrib.auth.admin import UserAdmin
 
 
 class UserDataAdminSite(admin.AdminSite):
@@ -22,4 +22,5 @@ class UserDataAdminSite(admin.AdminSite):
 
 user_data_admin_site = UserDataAdminSite(name="user_data_admin")
 
-# admin.site.register(Student, UserAdmin)
+user_data_admin_site.register(Student)
+user_data_admin_site.register(Instructor)
