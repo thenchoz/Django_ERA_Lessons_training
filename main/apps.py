@@ -8,6 +8,7 @@ https://docs.djangoproject.com/fr/3.2/ref/applications/
 """
 
 from django.apps import AppConfig
+from django.contrib.admin.apps import AdminConfig
 
 
 class MainConfig(AppConfig):
@@ -15,3 +16,9 @@ class MainConfig(AppConfig):
 
     default_auto_field = "django.db.models.BigAutoField"
     name = "main"
+
+
+class MainAdminConfig(AdminConfig):
+    """main admin configuration"""
+
+    default_site = "main.admin_site.EraAdminSite"

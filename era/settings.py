@@ -30,7 +30,7 @@ ALLOWED_HOSTS = credentials.ALLOWED_HOSTS
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    # "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "polymorphic",
     "crispy_forms",
     "main.apps.MainConfig",
+    "main.apps.MainAdminConfig",
     "qcm.apps.QcmConfig",
     "user_data.apps.UserDataConfig",
 ]
