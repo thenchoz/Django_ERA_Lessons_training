@@ -27,10 +27,10 @@ class Student(PolymorphicModel):
     """Student class"""
 
     user = models.OneToOneField(User(), on_delete=models.CASCADE)
-    lessons = models.ManyToManyField(Lesson)
+    lessons = models.ManyToManyField(Lesson, blank=True)
 
 
 class Instructor(Student):
     """Instructor class"""
 
-    teaching = models.ManyToManyField(Lesson)
+    teaching = models.ManyToManyField(Lesson, blank=True)

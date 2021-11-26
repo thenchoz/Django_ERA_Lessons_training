@@ -14,6 +14,8 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from polymorphic.models import PolymorphicModel
 
+from user_data.models import Lesson, Student
+
 
 class QuestionsSet(PolymorphicModel):
     """Abstract class, another way of regrouping question"""
@@ -39,6 +41,7 @@ class Branch(QuestionsSet):
     """
 
     branch_name = QuestionsSet.name
+    lesson = models.ManyToManyField(Lesson)
 
     def get_branch_id(self):
         return self.id
@@ -139,6 +142,7 @@ class Training(models.Model):
 
     # pylint: disable=R0902
 
+    user = models.ForeignKey(Student, on_delete=models.CASCADE)
     questions_set = models.ForeignKey(QuestionsSet, on_delete=models.CASCADE)
     questions = models.ManyToManyField(Question)
     choice_order = models.CharField(max_length=1500, null=True)

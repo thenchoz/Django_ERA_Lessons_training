@@ -7,6 +7,7 @@ For more information on this file, see
 https://docs.djangoproject.com/en/3.2/topics/http/views/
 """
 
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -24,8 +25,11 @@ class IndexView(generic.ListView):
     context_object_name = "branch_list"
 
     def get_queryset(self):
-        """Return all branch, alphabetic order"""
-        return Branch.objects.order_by("name")
+        """Return all branch link to a specific user, alphabetic order"""
+        user = self.request.user
+        if user.is_authenticated:
+            return Branch.objects.order_by("name")
+        return None
 
 
 class DetailBranchView(generic.DetailView):
@@ -56,6 +60,7 @@ class ResultsView(generic.DetailView):
     template_name = "qcm/results.html"
 
 
+@login_required
 def question_backend(request, branch_id, question_id):
     """answering question view"""
     question = get_object_or_404(Question, pk=question_id)
@@ -80,6 +85,7 @@ def question_backend(request, branch_id, question_id):
         )
 
 
+@login_required
 def during_training_view(request, training_id, question_list):
     """manage view during training"""
     training = get_object_or_404(Training, pk=training_id)
@@ -99,10 +105,12 @@ def during_training_view(request, training_id, question_list):
     )
 
 
+@login_required
 def start_training_branch(request, branch_id):
     """set training"""
     branch = get_object_or_404(Branch, pk=branch_id)
-    training = branch.training_set.create()
+    student = request.user.student
+    training = branch.training_set.create(user=student)
     training.save()
     training.set_questions()
     training.save()
@@ -110,11 +118,13 @@ def start_training_branch(request, branch_id):
     return during_training_view(request, training.id, 0)
 
 
+@login_required
 def start_training_questions_subset(request, branch_id, questions_set_id):
     """set training"""
     del branch_id  # Ignored parameters
     questions_set = get_object_or_404(QuestionsSubset, pk=questions_set_id)
-    training = questions_set.training_set.create()
+    student = request.user.student
+    training = questions_set.training_set.create(user=student)
     training.save()
     training.set_questions()
     training.save()
@@ -122,6 +132,7 @@ def start_training_questions_subset(request, branch_id, questions_set_id):
     return during_training_view(request, training.id, 0)
 
 
+@login_required
 def training_backend(request, training_id, question_list):
     """training backend, manage db post"""
     training = get_object_or_404(Training, pk=training_id)
@@ -186,6 +197,7 @@ class ResultsTrainingView(generic.DetailView):
     template_name = "qcm/results_training.html"
 
 
+@login_required
 def create_branch_view(request):
     """view to create a new Branch"""
     # ToDo: limited access #pylint: disable=W0511
@@ -204,6 +216,7 @@ def create_branch_view(request):
     return render(request, "qcm/create_branch.html", {"form": branch_form})
 
 
+@login_required
 def delete_branch_view(request, branch_id):
     """view to delete a Branch"""
 
@@ -213,6 +226,7 @@ def delete_branch_view(request, branch_id):
     return HttpResponseRedirect(reverse("qcm:index"))
 
 
+@login_required
 def create_questions_subset_view(request, branch_id):
     """view to create a new questions subset"""
     # ToDo: limited access #pylint: disable=W0511
@@ -250,6 +264,7 @@ def create_questions_subset_view(request, branch_id):
     )
 
 
+@login_required
 def delete_questions_subset_view(request, questions_subset_id):
     """view to delete a questions subset"""
 
@@ -260,6 +275,7 @@ def delete_questions_subset_view(request, questions_subset_id):
     return HttpResponseRedirect(reverse("qcm:detail", args=(branch_id,)))
 
 
+@login_required
 def create_question_view(request, questions_subset_id):
     """view to create a new questions subset"""
     # ToDo: limited access #pylint: disable=W0511
