@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "polymorphic",
     "crispy_forms",
+    "main.apps.MainConfig",
     "qcm.apps.QcmConfig",
     "user_data.apps.UserDataConfig",
 ]
@@ -119,4 +120,4 @@ CRISPY_TEMPLATE_PACK = credentials.CRISPY_TEMPLATE_PACK
 LOGIN_REDIRECT_URL = credentials.LOGIN_REDIRECT_URL
 LOGOUT_REDIRECT_URL = credentials.LOGOUT_REDIRECT_URL
 
-# AUTH_USER_MODEL = credentials.AUTH_USER_MODEL
+AUTH_USER_MODEL = credentials.AUTH_USER_MODEL
