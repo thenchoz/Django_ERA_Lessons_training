@@ -10,7 +10,16 @@
   <body>
     <div class="topnav">
       <a class="active" href="{% url 'qcm:index' %}">Home</a>
+      {% if user.is_authenticated %}
+        <a class="active" href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a class="active" href="{% url 'user_data:register' %}">Register</a>
+        <a class="active" href="{% url 'login' %}">Login</a>
+      {% endif %}
     </div>
+    {% if user.is_authenticated %}
+      <p>Hello {{ user.username }}</p>
+    {% endif %}
     <main>
     {% block content %}
     {% endblock %}

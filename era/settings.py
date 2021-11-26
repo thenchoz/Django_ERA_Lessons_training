@@ -30,14 +30,16 @@ ALLOWED_HOSTS = credentials.ALLOWED_HOSTS
 # Application definition
 
 INSTALLED_APPS = [
-    "qcm.apps.QcmConfig",
-    "polymorphic",
-    "django.contrib.admin.apps.SimpleAdminConfig",
+    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "polymorphic",
+    "crispy_forms",
+    "qcm.apps.QcmConfig",
+    "user_data.apps.UserDataConfig",
 ]
 
 MIDDLEWARE = [
@@ -109,3 +111,12 @@ SECURE_SSL_REDIRECT = credentials.SECURE_SSL_REDIRECT
 CSRF_COOKIE_SECURE = credentials.CSRF_COOKIE_SECURE
 
 SESSION_COOKIE_SECURE = credentials.SESSION_COOKIE_SECURE
+
+# Login data
+
+CRISPY_TEMPLATE_PACK = credentials.CRISPY_TEMPLATE_PACK
+
+LOGIN_REDIRECT_URL = credentials.LOGIN_REDIRECT_URL
+LOGOUT_REDIRECT_URL = credentials.LOGOUT_REDIRECT_URL
+
+# AUTH_USER_MODEL = credentials.AUTH_USER_MODEL

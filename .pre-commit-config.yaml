@@ -70,6 +70,7 @@ repos:
             pylint_django,
             django_polymorphic,
             psycopg2,
+            django_crispy_forms,
             # runtime dependencies
             # ...
         ]
