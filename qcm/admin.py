@@ -16,17 +16,6 @@ from .models import Branch, Choice, Question, QuestionsSubset, Training
 NB_CHOICE_PER_QUESTION = 4
 
 
-class QcmAdminSite(admin.AdminSite):
-    """class to adapte the admin site"""
-
-    site_header = "ERA QCM Administration"
-    site_title = "QCM"
-    index_title = "ERA Administration"
-
-
-qcm_admin_site = QcmAdminSite(name="qcm_admin")
-
-
 class BranchAdminForm(forms.ModelForm):
     """To have differents branch name"""
 
@@ -168,8 +157,8 @@ class QuestionAdmin(admin.ModelAdmin):
     # ToDo: Question field should not be able to modify QuestionsSubset name # pylint: disable=W0511
 
 
-qcm_admin_site.register(Branch, BranchAdmin)
-qcm_admin_site.register(QuestionsSubset, QuestionsSubsetAdmin)
-qcm_admin_site.register(Question, QuestionAdmin)
-qcm_admin_site.register(Training)  # Temporary, for testing purpose
+admin.site.register(Branch, BranchAdmin)
+admin.site.register(QuestionsSubset, QuestionsSubsetAdmin)
+admin.site.register(Question, QuestionAdmin)
+admin.site.register(Training)  # Temporary, for testing purpose
 # ToDo: remove training # pylint: disable=W0511

@@ -30,7 +30,7 @@ ALLOWED_HOSTS = credentials.ALLOWED_HOSTS
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    # "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "polymorphic",
     "crispy_forms",
+    "main.apps.MainConfig",
+    "main.apps.MainAdminConfig",
     "qcm.apps.QcmConfig",
     "user_data.apps.UserDataConfig",
 ]
@@ -119,4 +121,4 @@ CRISPY_TEMPLATE_PACK = credentials.CRISPY_TEMPLATE_PACK
 LOGIN_REDIRECT_URL = credentials.LOGIN_REDIRECT_URL
 LOGOUT_REDIRECT_URL = credentials.LOGOUT_REDIRECT_URL
 
-# AUTH_USER_MODEL = credentials.AUTH_USER_MODEL
+AUTH_USER_MODEL = credentials.AUTH_USER_MODEL
