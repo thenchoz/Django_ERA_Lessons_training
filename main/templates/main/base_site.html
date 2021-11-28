@@ -12,7 +12,7 @@
   </head>
   <body>
     <div class="topnav">
-      <a class="active" href="{% url 'qcm:index' %}">Home</a>
+      <a class="active" href="{% url 'main:index' %}">Home</a>
       {% if user.is_authenticated %}
         <a class="active" href="{% url 'logout' %}">Logout</a>
       {% else %}

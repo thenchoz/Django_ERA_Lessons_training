@@ -13,3 +13,6 @@ class EraUser(AbstractUser):
     """Own user type for this website"""
 
     is_student = models.BooleanField(default=False)
+    is_instructor = models.BooleanField(default=False)
+    is_pilot = models.BooleanField(default=True)
+    is_beta_test = models.BooleanField(default=False)

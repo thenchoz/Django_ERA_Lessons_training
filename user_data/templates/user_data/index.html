@@ -1,0 +1,26 @@
+<!-- user_data/index -->
+
+{% extends 'user_data/base_user_data.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  {% if lesson_list %}
+  <ul>
+    {% for lesson in lesson_list %}
+    <li>
+      <a href="{% url 'user_data:detail_lesson' lesson.id %}">{{ lesson.name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No lesson are available.</p>
+  {% endif %}
+  {% if user.is_student or user.is_instructor %}
+    <a href="{% url 'user_data:join_lesson' %}">Join a new lesson</a>
+  {% endif %}
+    <br>
+    <a href="{% url 'user_data:create_lesson' %}">Create a new lesson</a>
+  {% if user.is_instructor %}
+  {% endif %}
+{% endif %}
+{% endblock %}
