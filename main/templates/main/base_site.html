@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- template/main/base_site -->
 
+{% load static %}
+
 <html>
   <head>
-  {% load static %}
     <meta charset="utf-8">
     <title>{% block title %}ERA{% endblock %}</title>
     {% block favicon %}
@@ -12,7 +13,7 @@
   </head>
   <body>
     <div class="topnav">
-      <a class="active" href="{% url 'qcm:index' %}">Home</a>
+      <a class="active" href="{% url 'main:index' %}">Home</a>
       {% if user.is_authenticated %}
         <a class="active" href="{% url 'logout' %}">Logout</a>
       {% else %}

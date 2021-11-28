@@ -5,10 +5,10 @@ For more information on this file, see
 https://docs.djangoproject.com/en/3.2/topics/db/models/
 """
 
-import uuid
 from itertools import chain
 
 from django.contrib.auth import get_user_model as User
+from django.contrib.auth.hashers import check_password
 from django.db import models
 from polymorphic.models import PolymorphicModel
 
@@ -16,12 +16,17 @@ from polymorphic.models import PolymorphicModel
 class Lesson(models.Model):
     """Lesson class"""
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
     name = models.CharField(max_length=100)
 
     can_join = models.BooleanField(default=True)
     password = models.CharField(max_length=250)
+
+    def __str__(self):
+        return self.name
+
+    def check_password(self, password):
+        """fct to check password, using django auth hash"""
+        return check_password(password, self.password)
 
 
 class Student(PolymorphicModel):
@@ -44,6 +49,9 @@ class Student(PolymorphicModel):
 
         branchs = sorted(self._get_branch(), key=lambda branch: branch.name)
         return branchs
+
+    def __str__(self):
+        return self.user.username
 
 
 class Instructor(Student):
