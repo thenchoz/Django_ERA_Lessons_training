@@ -122,6 +122,18 @@ def training_backend(request, training_id, question_list):
                 ),
             )
         )
+    elif ("next" in request.POST and question_list == training.nb_questions - 1) or (
+        "previous" in request.POST and question_list == 0
+    ):
+        return HttpResponseRedirect(
+            reverse(
+                "qcm:training",
+                args=(
+                    training_id,
+                    question_list,
+                ),
+            )
+        )
     else:
         # at the begin or the end, doesn't change page
         return render(
