@@ -33,7 +33,7 @@ urlpatterns = [
     path(
         "branch-<int:branch_id>/questions_set-<int:pk>/",
         views.DetailQuestionsSubsetView.as_view(),
-        name="detail_questions_set",
+        name="detail_questions_subset",
     ),
     path(
         "branch-<int:branch_id>/question-<int:pk>/",

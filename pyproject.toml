@@ -18,6 +18,10 @@ disable = """
 """
 enable = "useless-suppression"
 
+[tool.pylint.SIMILARITIES]
+ignore-docstrings="yes"
+ignore-imports="yes"
+
 [tool.pylint.REPORTS]
 reports="no"
 
