@@ -17,6 +17,11 @@ from django.views import generic
 
 from .forms import LessonCreationForm, LessonJoinForm, RegisterForm
 from .models import Lesson
+from .shortcuts import (
+    check_user_personnal,
+    manage_instructor_form,
+    manage_personnal_form,
+)
 
 
 class IndexView(generic.ListView):
@@ -48,7 +53,7 @@ def register_view(request):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect(reverse("qcm:index"))
+            return HttpResponseRedirect(reverse("login"))
 
     else:
         form = RegisterForm()
@@ -59,29 +64,25 @@ def register_view(request):
 @login_required
 def create_lesson_view(request):
     """view to create a new lesson"""
-    user = request.user
-    if not user.is_instructor:
-        return HttpResponseRedirect(reverse("main:index"))
 
-    if request.method == "POST":
-        try:
-            lesson_form = LessonCreationForm(request.POST)
-            if lesson_form.is_valid():
-                lesson = lesson_form.save()
+    try:
+        (instructor, lesson_form) = manage_instructor_form(
+            request, form=LessonCreationForm
+        )
+        if lesson_form.is_valid():
+            lesson = lesson_form.save()
 
-                user.student.teaching.add(lesson)
-                user.student.lessons.add(lesson)
+            instructor.teaching.add(lesson)
+            instructor.lessons.add(lesson)
 
-                return HttpResponseRedirect(
-                    reverse(
-                        "user_data:detail_lesson",
-                        args=(lesson.id,),
-                    )
+            return HttpResponseRedirect(
+                reverse(
+                    "user_data:detail_lesson",
+                    args=(lesson.id,),
                 )
-        except ValidationError:
-            lesson_form.clean()
-    else:
-        lesson_form = LessonCreationForm()
+            )
+    except ValidationError:
+        lesson_form.clean()
 
     return render(request, "user_data/create_lesson.html", {"form": lesson_form})
 
@@ -90,17 +91,17 @@ class DetailLessonView(UserPassesTestMixin, generic.DetailView):
     """view lesson"""
 
     def test_func(self):
+        """test if user is either staff or authenticated right personnal"""
         user = self.request.user
         if user.is_staff:
             return True
-        if not user.is_authenticated or (
-            not user.is_student and not user.is_instructor
-        ):
+        student = check_user_personnal(self.request)
+        if student is None:
             return False
 
         lesson = self.get_object()
 
-        return user.student.lessons.filter(id=lesson.id).exists()
+        return student.lessons.filter(id=lesson.id).exists()
 
     model = Lesson
     template_name = "user_data/detail_lesson.html"
@@ -109,30 +110,24 @@ class DetailLessonView(UserPassesTestMixin, generic.DetailView):
 @login_required
 def joint_lesson_view(request):
     """view to join an existing lesson"""
-    user = request.user
-    if not user.is_student and not user.is_instructor:
-        return HttpResponseRedirect(reverse("main:index"))
 
-    if request.method == "POST":
-        try:
-            lesson_form = LessonJoinForm(request.POST)
+    try:
+        (personnal, lesson_form) = manage_personnal_form(request, form=LessonJoinForm)
+        if lesson_form.is_valid():
+            lesson = lesson_form.validate_lesson(personnal)
 
-            if lesson_form.is_valid():
-                lesson = lesson_form.validate_lesson(user)
+            if lesson is not None:
+                if not lesson.can_join:
+                    raise ValidationError("You are not allowed to join this lesson.")
 
-                if lesson is not None:
-                    user.student.lessons.add(lesson)
-                    return HttpResponseRedirect(
-                        reverse(
-                            "user_data:detail_lesson",
-                            args=(lesson.id,),
-                        )
+                personnal.lessons.add(lesson)
+                return HttpResponseRedirect(
+                    reverse(
+                        "user_data:detail_lesson",
+                        args=(lesson.id,),
                     )
-
-        except (ObjectDoesNotExist, ValidationError):
-            lesson_form.clean()
-
-    else:
-        lesson_form = LessonJoinForm()
+                )
+    except (ObjectDoesNotExist, ValidationError):
+        lesson_form.clean()
 
     return render(request, "user_data/join_lesson.html", {"form": lesson_form})

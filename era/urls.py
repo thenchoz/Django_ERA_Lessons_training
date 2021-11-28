@@ -23,5 +23,5 @@ urlpatterns = [
     path("qcm/", include("qcm.urls")),
     path("user_data/", include("user_data.urls")),
     path("admin/", admin.site.urls),
-    path("", include("django.contrib.auth.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
 ]

@@ -49,13 +49,13 @@ class LessonJoinForm(forms.Form):
             return lesson
         return None
 
-    def validate_lesson(self, user):
+    def validate_lesson(self, student):
         """check if lesson is already"""
 
         lesson = self.find_lesson()
         if lesson is None:
             raise ObjectDoesNotExist("This lesson does not exist")
-        if user.student.lessons.filter(id=lesson.id).exists():
+        if student.lessons.filter(id=lesson.id).exists():
             raise ValidationError("You are already subscribed to this lesson")
 
         return lesson

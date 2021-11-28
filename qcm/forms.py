@@ -16,9 +16,9 @@ class BranchForm(forms.ModelForm):
         fields = ["name", "lesson"]
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop("user", "")
+        student = kwargs.pop("student", "")
         super().__init__(*args, **kwargs)
-        lessons = user.student.lessons
+        lessons = student.lessons
         self.fields["lesson"].queryset = lessons
 
     def clean_name(self):

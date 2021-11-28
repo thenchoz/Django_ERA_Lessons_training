@@ -14,6 +14,12 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
+from user_data.shortcuts import (
+    check_user_instructor,
+    check_user_personnal,
+    check_user_student,
+)
+
 from .forms import BranchForm, QuestionForm, QuestionsSubsetForm
 from .models import Branch, Choice, Question, QuestionsSubset, Training
 
@@ -27,11 +33,13 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """Return all branch link to a specific user, alphabetic order"""
         user = self.request.user
-        if user.is_authenticated:
-            if user.is_student:
-                return user.student.get_alpha_branch()
-            if user.is_staff:
-                return Branch.objects.all().order_by("name")
+        if user.is_staff:
+            return Branch.objects.all().order_by("name")
+
+        student = check_user_student(self.request)
+        if student is not None:
+            return student.get_alpha_branch()
+
         return None
 
 
@@ -203,26 +211,21 @@ class ResultsTrainingView(generic.DetailView):
 @login_required
 def create_branch_view(request):
     """view to create a new Branch"""
-    # ToDo: limited access #pylint: disable=W0511
-    user = request.user
-    if not user.is_student and not user.is_instructor:
-        return HttpResponseRedirect(
-            request(
-                "main:index",
-                args=(),
-            )
-        )
+
+    personnal = check_user_personnal(request)
+    if personnal is None:
+        return HttpResponseRedirect(reverse("main:index"))
 
     if request.method == "POST":
         try:
-            branch_form = BranchForm(request.POST, user=user)
+            branch_form = BranchForm(request.POST, student=personnal)
             if branch_form.is_valid():
                 branch = branch_form.save()
                 return HttpResponseRedirect(reverse("qcm:detail", args=(branch.id,)))
         except ValidationError:
             branch_form.clean()
     else:
-        branch_form = BranchForm(user=user)
+        branch_form = BranchForm(student=personnal)
 
     return render(request, "qcm/create_branch.html", {"form": branch_form})
 
@@ -230,6 +233,10 @@ def create_branch_view(request):
 @login_required
 def delete_branch_view(request, branch_id):
     """view to delete a Branch"""
+
+    instructor = check_user_instructor(request)
+    if instructor is None:
+        return HttpResponseRedirect(reverse("qcm:detail", args=(branch_id)))
 
     branch = get_object_or_404(Branch, pk=branch_id)
     branch.delete()
@@ -240,7 +247,10 @@ def delete_branch_view(request, branch_id):
 @login_required
 def create_questions_subset_view(request, branch_id):
     """view to create a new questions subset"""
-    # ToDo: limited access #pylint: disable=W0511
+
+    instructor = check_user_instructor(request)
+    if instructor is None:
+        return HttpResponseRedirect(reverse("qcm:detail", args=(branch_id)))
 
     branch = get_object_or_404(Branch, pk=branch_id)
 
@@ -279,6 +289,12 @@ def create_questions_subset_view(request, branch_id):
 def delete_questions_subset_view(request, questions_subset_id):
     """view to delete a questions subset"""
 
+    instructor = check_user_instructor(request)
+    if instructor is None:
+        return HttpResponseRedirect(
+            reverse("qcm:detail_questions_subset", args=(questions_subset_id))
+        )
+
     questions_subset = get_object_or_404(QuestionsSubset, pk=questions_subset_id)
     branch_id = questions_subset.parent_branch.id
     questions_subset.delete()
@@ -289,7 +305,12 @@ def delete_questions_subset_view(request, questions_subset_id):
 @login_required
 def create_question_view(request, questions_subset_id):
     """view to create a new questions subset"""
-    # ToDo: limited access #pylint: disable=W0511
+
+    instructor = check_user_instructor(request)
+    if instructor is None:
+        return HttpResponseRedirect(
+            reverse("qcm:detail_questions_subset", args=(questions_subset_id))
+        )
 
     questions_subset = get_object_or_404(QuestionsSubset, pk=questions_subset_id)
 
