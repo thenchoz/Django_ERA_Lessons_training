@@ -13,7 +13,13 @@ class BranchForm(forms.ModelForm):
 
     class Meta:
         model = Branch
-        fields = ["name"]
+        fields = ["name", "lesson"]
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user", "")
+        super().__init__(*args, **kwargs)
+        lessons = user.student.lessons
+        self.fields["lesson"].queryset = lessons
 
     def clean_name(self):
         """Check that name does not already exist"""

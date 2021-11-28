@@ -204,17 +204,25 @@ class ResultsTrainingView(generic.DetailView):
 def create_branch_view(request):
     """view to create a new Branch"""
     # ToDo: limited access #pylint: disable=W0511
+    user = request.user
+    if not user.is_student and not user.is_instructor:
+        return HttpResponseRedirect(
+            request(
+                "main:index",
+                args=(),
+            )
+        )
 
     if request.method == "POST":
         try:
-            branch_form = BranchForm(request.POST)
+            branch_form = BranchForm(request.POST, user=user)
             if branch_form.is_valid():
                 branch = branch_form.save()
                 return HttpResponseRedirect(reverse("qcm:detail", args=(branch.id,)))
         except ValidationError:
             branch_form.clean()
     else:
-        branch_form = BranchForm()
+        branch_form = BranchForm(user=user)
 
     return render(request, "qcm/create_branch.html", {"form": branch_form})
 

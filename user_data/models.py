@@ -35,6 +35,9 @@ class Student(PolymorphicModel):
     user = models.OneToOneField(User(), on_delete=models.CASCADE)
     lessons = models.ManyToManyField(Lesson, blank=True)
 
+    def __str__(self):
+        return self.user.username
+
     def _get_branch(self):
         """return list of all accessible branch"""
 
@@ -49,9 +52,6 @@ class Student(PolymorphicModel):
 
         branchs = sorted(self._get_branch(), key=lambda branch: branch.name)
         return branchs
-
-    def __str__(self):
-        return self.user.username
 
 
 class Instructor(Student):
