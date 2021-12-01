@@ -95,6 +95,19 @@ class Training(models.Model):
         return self.questions_choice_shuffle[0][1]  # bad ! If not empty
         # ToDo: correct that # pylint: disable=W0511
 
+    def get_answers(self):
+        """get answered answer"""
+        answers = []
+        for choice in self.answers:
+            if choice is not None:
+                answer = get_object_or_404(Choice, pk=choice)
+                answers.append(answer)
+            else:
+                # put other stuff
+                answers.append(None)
+
+        return answers
+
     def check_answer(self):
         """calculate percent of correct answer"""
         self.results = 0
