@@ -100,5 +100,5 @@ def create_question_view(request, questions_subset_id):
     return render(
         request,
         "qcm/create_question.html",
-        {"form": question_form, "questionssubset": questions_subset},
+        {"form": question_form, "questions_subset": questions_subset},
     )

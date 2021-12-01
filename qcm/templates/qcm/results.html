@@ -9,13 +9,13 @@
 
 {% if given_answer %}
 <p>
-  {% blocktranslate with choice_text=given_answer.choice_text right=given_answer.is_true|yesno:"true,false" %}Your answer was "{{ choice_text }}", this answer is {{ right }}.{% endblocktranslate %}
+  {% blocktranslate with choice_text=given_answer.choice_text right=given_answer.is_true|yesno:_("true,false") %}Your answer was "{{ choice_text }}", this answer is {{ right }}.{% endblocktranslate %}
 </p>
 {% endif %}
 
 <ul>
   {% for choice in question.choice_set.all %}
-  <li>{{ choice.choice_text }} -- {{ choice.is_true }}</li>
+  <li>{{ choice.choice_text }} -- {{ choice.is_true|yesno:_("true,false") }}</li>
   {%endfor%}
 </ul>
 

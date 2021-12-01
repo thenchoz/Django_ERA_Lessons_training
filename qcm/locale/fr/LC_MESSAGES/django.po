@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-01 19:07+0100\n"
+"POT-Creation-Date: 2021-12-01 22:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: templates/qcm/create_branch.html:6
+#: templates/qcm/create_branch.html:8
 msgid "Create a new branch"
 msgstr "Créer une nouvelle branche"
 
-#: templates/qcm/create_question.html:6
+#: templates/qcm/create_question.html:8
 msgid "Create a new question for"
 msgstr "Créer une nouvelle question pour"
 
-#: templates/qcm/create_question.html:13
+#: templates/qcm/create_question.html:15
 #: templates/qcm/create_questions_subset.html:12
 #: templates/qcm/detail_questions_set.html:47
 msgid "Return to branch."
@@ -34,7 +34,7 @@ msgstr "Retour à la branche"
 
 #: templates/qcm/create_questions_subset.html:6
 #, fuzzy, python-format
-#| msgid "Create a new questions subset for %(branch.name)s"
+#| msgid "Create a new questions subset for %(name)s"
 msgid "Create a new questions subset for %(name)s"
 msgstr "Créer un nouveau sous-set de questions pour %(branch.name)s"
 
@@ -68,6 +68,12 @@ msgstr "Supprimer"
 msgid "No branch are available."
 msgstr "Aucune branche n'est disponible"
 
+#: templates/qcm/detail_question.html:28
+#, fuzzy
+#| msgid "Answer again?"
+msgid "Answer"
+msgstr "Répondre"
+
 #: templates/qcm/detail_questions_set.html:13
 msgid "List of Questions"
 msgstr "Liste des questions"
@@ -84,11 +90,12 @@ msgstr "Créer une nouvelle question"
 msgid "Create a new Branch"
 msgstr "Créer une nouvelle branche"
 
+#: templates/qcm/results.html:12 templates/qcm/results.html:18
+msgid "true,false"
+msgstr "vrai, fausse"
+
 #: templates/qcm/results.html:12
-#, fuzzy, python-format
-#| msgid ""
-#| "Your answer was \"%(given_answer.choice_text)s\", this answer is "
-#| "%(given_answer.is_true)s."
+#, python-format
 msgid "Your answer was \"%(choice_text)s\", this answer is %(right)s."
 msgstr "Votre réponse était \"%(choice_text)s\", cette réponse est %(right)s."
 
@@ -96,16 +103,31 @@ msgstr "Votre réponse était \"%(choice_text)s\", cette réponse est %(right)s.
 msgid "Answer again?"
 msgstr "Répondre à nouveau ?"
 
-#: templates/qcm/results.html:26 templates/qcm/results_training.html:21
+#: templates/qcm/results.html:26 templates/qcm/results_training.html:27
 msgid "Return to branch"
 msgstr "Retourner à la branche"
 
 #: templates/qcm/results_training.html:11
 #, fuzzy, python-format
-#| msgid "Your result is %(training.results)s%%."
 msgid "Your result is %(result)s%%."
 msgstr "Votre résultat est %(result)s%%."
+
+#: templates/qcm/start_training.html:8
+msgid "Chose a number of question for this training"
+msgstr "Choisissez un nombre de questions pour cet entrainement"
 
 #: templates/qcm/training.html:10
 msgid "Training"
 msgstr "Entrainement"
+
+#: templates/qcm/training.html:24
+msgid "Previous"
+msgstr "Précédent"
+
+#: templates/qcm/training.html:25
+msgid "Next"
+msgstr "Suivant"
+
+#: templates/qcm/training.html:26
+msgid "Submit"
+msgstr "Soumettre"

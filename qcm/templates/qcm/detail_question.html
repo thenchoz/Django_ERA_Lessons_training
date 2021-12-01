@@ -2,6 +2,8 @@
 
 {% extends 'qcm/base_qcm.html' %}
 
+{% load i18n %}
+
 {% block content %}
 <form
   action="{% url 'qcm:answer' question.questions_subset.parent_branch.id question.id %}"
@@ -23,6 +25,6 @@
     <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
     {% endfor %}
   </fieldset>
-  <input type="submit" value="Answer" />
+  <input type="submit" value="{% translate "Answer" %}" />
 </form>
 {% endblock %}
