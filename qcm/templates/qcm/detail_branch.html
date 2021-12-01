@@ -14,7 +14,7 @@
     <ul>
       {% for questions_set in branch.questionssubset_set.all %}
         <li>
-          <a href="{% url 'qcm:detail_questions_set' branch.id questions_set.id %}">
+          <a href="{% url 'qcm:detail_questions_subset' branch.id questions_set.id %}">
           {{ questions_set.id }} - {{ questions_set.questions_set_name }}</a>
         </li>
       {% endfor %}
