@@ -1,7 +1,9 @@
 {% extends 'qcm/base_qcm.html' %}
 
+{% load i18n %}
+
 {% block content %}
-  <h2>Create a new branch<h2>
+  <h2>{% translate "Create a new branch" %}<h2>
   <form action="{% url 'qcm:create_branch' %}" method="post">
   {% csrf_token %}
     {{ form }}

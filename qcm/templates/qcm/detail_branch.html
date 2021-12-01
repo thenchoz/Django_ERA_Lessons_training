@@ -2,13 +2,15 @@
 
 {% extends 'qcm/base_qcm.html' %}
 
+{% load i18n %}
+
 {% block title %}{{ branch.branch_name }}{% endblock %}
 
 {% block content %}
 {% if branch %}
   <h1>{{ branch.name }}</h1>
   {% if branch.questionssubset_set.all %}
-    <h2>List of Questions set</h2>
+    <h2>{% translate "List of Questions set" %}</h2>
     <ul>
       {% for questions_set in branch.questionssubset_set.all %}
         <li>
@@ -18,7 +20,7 @@
       {% endfor %}
     </ul>
     {% if branch.get_training_ordered_datetime %}
-      <h2>List of Training</h2>
+      <h2>{% translate "List of Training" %}</h2>
       <ul>
         {% for training in branch.get_training_ordered_datetime %}
           <li>
@@ -28,18 +30,18 @@
       </ul>
     {% endif %}
     {% if branch.get_questions_shuffled %}
-      <a href="{% url 'qcm:start_training_branch' branch.id %}">Start a general training</a>
+      <a href="{% url 'qcm:start_training_branch' branch.id %}">{% translate "Start a general training" %}</a>
     {% endif %}
   {% else %}
-    <p>No questions are available.</p>
+    <p>{% translate "No questions are available." %}</p>
   {% endif %}
   {% if user.is_staff or user.is_instructor %}
     <br>
-    <a href="{% url 'qcm:create_questions_subset' branch.id %}">Create a new quesions subset</a>
+    <a href="{% url 'qcm:create_questions_subset' branch.id %}">{% translate "Create a new quesions subset" %}</a>
     <br>
-    <a class="confirm_delete" href="{% url 'qcm:delete_branch' branch.id %}" method="post" onClick="return confirm('Are you sure?');">Delete</a>
+    <a class="confirm_delete" href="{% url 'qcm:delete_branch' branch.id %}" method="post" onClick="return confirm('Are you sure?');">{% translate "Delete" %}</a>
   {% endif %}
 {% else %}
-  <p>No branch are available.</p>
+  <p>{% translate "No branch are available." %}</p>
 {% endif %}
 {% endblock %}

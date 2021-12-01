@@ -2,12 +2,14 @@
 
 {% extends 'qcm/base_qcm.html' %}
 
+{% load i18n %}
+
 {% block content %}
 <h1>{{ question.question_text }}</h1>
 
 {% if given_answer %}
 <p>
-  Your answer was "{{ given_answer.choice_text }}", this answer is {{ given_answer.is_true }}.
+  {% blocktranslate with choice_text=given_answer.choice_text right=given_answer.is_true|yesno:"true,false" %}Your answer was "{{ choice_text }}", this answer is {{ right }}.{% endblocktranslate %}
 </p>
 {% endif %}
 
@@ -18,8 +20,8 @@
 </ul>
 
 <a href="{% url 'qcm:detail_question' question.questions_subset.parent_branch.id question.id %}"
-  >Answer again?</a
+  >{% translate "Answer again?" %}</a
 >
 <br />
-<a href="{% url 'qcm:detail' question.questions_subset.parent_branch.id %}">Return to branch</a>
+<a href="{% url 'qcm:detail' question.questions_subset.parent_branch.id %}">{% translate "Return to branch" %}</a>
 {% endblock %}

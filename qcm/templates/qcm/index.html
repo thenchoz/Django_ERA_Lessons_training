@@ -2,6 +2,8 @@
 
 {% extends 'qcm/base_qcm.html' %}
 
+{% load i18n %}
+
 {% block content %}
 {% if branch_list %}
 <ul>
@@ -12,9 +14,9 @@
   {% endfor %}
 </ul>
 {% else %}
-<p>No branch are available.</p>
+<p>{% translate "No branch are available." %}</p>
 {% endif %}
 {% if user.is_staff or user.is_instructor %}
-  <a href="{% url 'qcm:create_branch' %}">Create a new Branch</a>
+  <a href="{% url 'qcm:create_branch' %}">{% translate "Create a new Branch" %}</a>
 {% endif %}
 {% endblock %}

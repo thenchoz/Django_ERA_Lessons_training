@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <!-- qcm/training -->
+
+{% load static %}
+{% load i18n %}
+
 <html>
   <head>
-  {% load static %}
     <meta charset="utf-8">
-    <title>{% block title %}Training{% endblock %}</title>
+    <title>{% block title %}{% translate "Training" %}{% endblock %}</title>
     <link rel="icon"href="{% static 'qcm/img/favicon.ico' %}">
   </head>
   <body>

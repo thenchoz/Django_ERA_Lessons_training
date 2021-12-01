@@ -1,11 +1,13 @@
 {% extends 'qcm/base_qcm.html' %}
 
+{% load i18n %}
+
 {% block content %}
-  <h2>Create a new questions subset for {{ branch.name }}<h2>
+  <h2>{% blocktranslate with name=branch.name %}Create a new questions subset for {{ name }}{% endblocktranslate %}<h2>
   <form action="{% url 'qcm:create_questions_subset' branch.id %}" method="post">
   {% csrf_token %}
     {{ form }}
     <input type="submit" value="Create">
   </form>
-  <a href="{% url 'qcm:detail' branch.id %}">Return to branch.</a>
+  <a href="{% url 'qcm:detail' branch.id %}">{% translate "Return to branch." %}</a>
 {% endblock %}

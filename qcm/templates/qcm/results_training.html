@@ -2,11 +2,13 @@
 
 {% extends 'qcm/base_qcm.html' %}
 
+{% load i18n %}
+
 {% block content %}
 <h1>{{ training.id }} {{ training }}</h1>
 
 <p>
-  Your result is {{ training.results }}%.
+  {% blocktranslate with result=training.results %}Your result is {{ result }}%.{% endblocktranslate %}
 </p>
 
 <ul>
@@ -16,5 +18,5 @@
   {%endfor%}
 </ul>
 
-<a href="{% url 'qcm:detail' training.questions_set.get_branch_id %}">Return to branch</a>
+<a href="{% url 'qcm:detail' training.questions_set.get_branch_id %}">{% translate "Return to branch" %}</a>
 {% endblock %}
