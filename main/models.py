@@ -12,6 +12,8 @@ from django.db import models
 class EraUser(AbstractUser):
     """Own user type for this website"""
 
+    email = models.EmailField(unique=True)
+
     is_student = models.BooleanField(default=False)
     is_instructor = models.BooleanField(default=False)
     is_pilot = models.BooleanField(default=True)

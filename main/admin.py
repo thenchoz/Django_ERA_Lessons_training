@@ -10,4 +10,16 @@ from django.contrib.auth.admin import UserAdmin
 
 from .models import EraUser
 
-admin.site.register(EraUser, UserAdmin)
+
+class CustomUserAdmin(UserAdmin):
+    """Model to manage user in the admin panel"""
+
+    fieldsets = UserAdmin.fieldsets + (
+        (
+            "Access authorisation",
+            {"fields": ["is_student", "is_instructor", "is_pilot", "is_beta_test"]},
+        ),
+    )
+
+
+admin.site.register(EraUser, CustomUserAdmin)
