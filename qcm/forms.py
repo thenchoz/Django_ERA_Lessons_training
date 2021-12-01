@@ -5,7 +5,9 @@ qcm forms to add new branch and question
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Branch, Question, QuestionsSubset
+from user_data.models import Student
+
+from .models import Branch, Question, QuestionsSet, QuestionsSubset, Training
 
 
 class BranchForm(forms.ModelForm):
@@ -16,9 +18,9 @@ class BranchForm(forms.ModelForm):
         fields = ["name", "lesson"]
 
     def __init__(self, *args, **kwargs):
-        student = kwargs.pop("student", "")
+        instructor = kwargs.pop("instructor", "")
         super().__init__(*args, **kwargs)
-        lessons = student.lessons
+        lessons = instructor.lessons
         self.fields["lesson"].queryset = lessons
 
     def clean_name(self):
@@ -45,7 +47,7 @@ class QuestionsSubsetForm(forms.ModelForm):
         self.parent_branch = branch
 
     def clean(self):
-        """Chekc that name does not already exist inside the given branch"""
+        """Check that name does not already exist inside the given branch"""
         data = self.cleaned_data
         for name in self.parent_branch.questionssubset_set.all().values_list(
             "name", flat=True
@@ -66,7 +68,7 @@ class QuestionForm(forms.ModelForm):
 
     # set at 4 choices per question
     # use first is right
-    choices_text_1 = forms.CharField(max_length=200)
+    right_choices_text = forms.CharField(max_length=200)
     choices_text_2 = forms.CharField(max_length=200)
     choices_text_3 = forms.CharField(max_length=200)
     choices_text_4 = forms.CharField(max_length=200)
@@ -82,8 +84,27 @@ class QuestionForm(forms.ModelForm):
         """
 
         question.choice_set.create(
-            choice_text=self.cleaned_data.get("choices_text_1"), is_true=True
+            choice_text=self.cleaned_data.get("right_choices_text"), is_true=True
         )
         question.choice_set.create(choice_text=self.cleaned_data.get("choices_text_2"))
         question.choice_set.create(choice_text=self.cleaned_data.get("choices_text_3"))
         question.choice_set.create(choice_text=self.cleaned_data.get("choices_text_4"))
+
+
+class TrainingForm(forms.ModelForm):
+    """Form to start a new training"""
+
+    class Meta:
+        model = Training
+        fields = ["nb_questions"]
+
+    user = Student
+    questions_set = QuestionsSet
+    # unused for now
+
+    def __init__(self, *args, **kwargs):
+        student = kwargs.pop("student", "")
+        questions_set = kwargs.pop("questions_set", "")
+        super().__init__(*args, **kwargs)
+        self.user = student
+        self.questions_set = questions_set

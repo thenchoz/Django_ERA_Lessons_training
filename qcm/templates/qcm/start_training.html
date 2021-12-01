@@ -1,0 +1,14 @@
+<!-- qcm/start_training -->
+
+{% extends 'qcm/base_qcm.html' %}
+
+{% load i18n %}
+
+{% block content %}
+<h2>{% blocktranslate %}Chose a number of question for this training{% endblocktranslate %}<h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form }}
+  <input type="submit" value="Start">
+</form>
+{% endblock %}

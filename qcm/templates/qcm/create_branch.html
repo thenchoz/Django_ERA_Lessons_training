@@ -2,11 +2,13 @@
 
 {% load i18n %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
   <h2>{% translate "Create a new branch" %}<h2>
   <form action="{% url 'qcm:create_branch' %}" method="post">
   {% csrf_token %}
-    {{ form }}
+    {{ form|crispy }}
     <input type="submit" value="Create">
   </form>
 {% endblock %}

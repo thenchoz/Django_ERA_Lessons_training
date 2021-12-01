@@ -56,7 +56,7 @@ urlpatterns = [
         name="start_training_branch",
     ),
     path(
-        "branch-<int:branch_id>/questions_set-<int:questions_set_id>/training/",
+        "branch-<int:branch_id>/questions_set-<int:questions_subset_id>/training/",
         views.start_training_questions_subset,
         name="start_training",
     ),

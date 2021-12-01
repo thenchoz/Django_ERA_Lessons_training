@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
-from user_data.shortcuts import check_user_instructor, check_user_personnal
+from user_data.shortcuts import check_user_instructor
 
 from ..forms import BranchForm
 from ..models import Branch
@@ -26,20 +26,20 @@ class DetailBranchView(generic.DetailView):
 def create_branch_view(request):
     """view to create a new Branch"""
 
-    personnal = check_user_personnal(request)
-    if personnal is None:
+    instructor = check_user_instructor(request)
+    if instructor is None:
         return HttpResponseRedirect(reverse("main:index"))
 
     if request.method == "POST":
         try:
-            branch_form = BranchForm(request.POST, student=personnal)
+            branch_form = BranchForm(request.POST, instructor=instructor)
             if branch_form.is_valid():
                 branch = branch_form.save()
                 return HttpResponseRedirect(reverse("qcm:detail", args=(branch.id,)))
         except ValidationError:
             branch_form.clean()
     else:
-        branch_form = BranchForm(student=personnal)
+        branch_form = BranchForm(instructor=instructor)
 
     return render(request, "qcm/create_branch.html", {"form": branch_form})
 

@@ -3,14 +3,16 @@ Django views for Training models
 """
 
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
-from user_data.shortcuts import check_user_student
+from qcm.forms import TrainingForm
 
 from ..models import Branch, Choice, QuestionsSubset, Training
+from ..shortcuts import redirect_student_branch
 
 
 @login_required
@@ -34,47 +36,58 @@ def during_training_view(request, training_id, question_list):
 
 
 @login_required
-def start_training_branch(request, branch_id):
+def start_training(request, questions_set, branch_id):
     """set training"""
 
-    student = check_user_student(request)
-    if student is None:
-        return HttpResponseRedirect(
-            reverse(
-                "qcm:detail",
-                args=(branch_id,),
+    student = redirect_student_branch(
+        request, redirect_url="qcm:detail", diff_arg=(branch_id,)
+    )
+
+    if request.method == "POST":
+        try:
+            training_form = TrainingForm(
+                request.POST, student=student, questions_set=questions_set
             )
-        )
+            if training_form.is_valid():
 
-    branch = get_object_or_404(Branch, pk=branch_id)
-    training = branch.training_set.create(user=student)
-    training.save()
-    training.set_questions()
-    training.save()
+                training = training_form.save(commit=False)
+                training.user = student
+                training.questions_set = questions_set
+                training.save()
+                training.set_questions()
+                training.save()
 
-    return during_training_view(request, training.id, 0)
+                return HttpResponseRedirect(
+                    reverse(
+                        "qcm:training",
+                        args=(
+                            training.id,
+                            0,
+                        ),
+                    )
+                )
+        except ValidationError:
+            training_form.clean()
+    else:
+        training_form = TrainingForm(student=student, questions_set=questions_set)
+
+    return render(request, "qcm/start_training.html", {"form": training_form})
 
 
 @login_required
-def start_training_questions_subset(request, branch_id, questions_set_id):
-    """set training"""
+def start_training_branch(request, branch_id):
+    """set training with branch"""
 
-    student = check_user_student(request)
-    if student is None:
-        return HttpResponseRedirect(
-            reverse(
-                "qcm:detail",
-                args=(branch_id,),
-            )
-        )
+    branch = get_object_or_404(Branch, pk=branch_id)
+    return start_training(request, branch, branch_id)
 
-    questions_set = get_object_or_404(QuestionsSubset, pk=questions_set_id)
-    training = questions_set.training_set.create(user=student)
-    training.save()
-    training.set_questions()
-    training.save()
 
-    return during_training_view(request, training.id, 0)
+@login_required
+def start_training_questions_subset(request, branch_id, questions_subset_id):
+    """set training with questions subset"""
+
+    questions_subset = get_object_or_404(QuestionsSubset, pk=questions_subset_id)
+    return start_training(request, questions_subset, branch_id)
 
 
 @login_required

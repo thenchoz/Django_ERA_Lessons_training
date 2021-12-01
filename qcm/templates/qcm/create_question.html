@@ -2,11 +2,13 @@
 
 {% load i18n %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
   <h2>{% translate "Create a new question for" %} {{ questions_subset.name }}<h2>
   <form action="{% url 'qcm:create_question' questionssubset.id %}" method="post">
   {% csrf_token %}
-    {{ form }}
+    {{ form|crispy }}
     <input type="submit" name="create" value="Create">
     <input type="submit" name="create_add" value="Create and add another">
   </form>
