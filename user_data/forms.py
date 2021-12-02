@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.utils.translation import gettext
 
 from .models import Instructor, Lesson, Student
 
@@ -17,6 +18,11 @@ class LessonCreationForm(forms.ModelForm):
     class Meta:
         model = Lesson
         fields = ["name", "can_join", "password"]
+        labels = {
+            "name": gettext("name"),
+            "can_join": gettext("is open to new student"),
+            "password": gettext("password"),
+        }
 
     def save(self, commit=True):
         password = self.cleaned_data.get("password")
@@ -31,9 +37,15 @@ class LessonCreationForm(forms.ModelForm):
 class LessonJoinForm(forms.Form):
     """form to join an existing lesson"""
 
-    get_id = forms.IntegerField()
-    get_name = forms.CharField(max_length=100)
-    get_password = forms.CharField(max_length=250)
+    get_id = forms.IntegerField(
+        label=gettext("Lesson's id"), help_text=gettext("a number, ex:3,4,15")
+    )
+    get_name = forms.CharField(
+        label=gettext("Lesson's name"),
+        help_text=gettext("the name of the lesson"),
+        max_length=100,
+    )
+    get_password = forms.CharField(label=gettext("Lesson's password"), max_length=250)
 
     def find_lesson(self):
         """try to find a lesson, if right return it"""
@@ -74,6 +86,12 @@ class RegisterForm(UserCreationForm):
             # "is_instructor",
             # "is_pilot",
         ]
+        labels = {
+            "username": gettext("username"),
+            "email": gettext("email"),
+            "password2": gettext("password"),
+            "is_student": gettext("I'm a student"),
+        }
 
     def save(self, commit=True):
         user = super().save(commit=True)
