@@ -14,12 +14,12 @@
   </head>
   <body>
     <div class="topnav">
-      <a class="active" href="{% url 'main:index' %}">Home</a>
+      <a class="active" href="{% url 'main:index' %}">{% translate "Home" %}</a>
       {% if user.is_authenticated %}
-        <a class="active" href="{% url 'logout' %}">Logout</a>
+        <a class="active" href="{% url 'logout' %}">{% translate "Logout" %}</a>
       {% else %}
         <a class="active" href="{% url 'user_data:register' %}">{% translate "Register" %}</a>
-        <a class="active" href="{% url 'login' %}">Login</a>
+        <a class="active" href="{% url 'login' %}">{% translate "Login" %}</a>
       {% endif %}
       {% if user.is_staff %}
         <a class="active" href="{% url 'admin:index' %}">Admin</a>

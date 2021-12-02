@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-02 08:19+0100\n"
+"POT-Creation-Date: 2021-12-02 15:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,9 +18,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: templates/main/base_site.html:17
+msgid "Home"
+msgstr "Page d'accueil"
+
+#: templates/main/base_site.html:19
+msgid "Logout"
+msgstr "Déconnexion"
+
 #: templates/main/base_site.html:21
 msgid "Register"
 msgstr "S'inscrire"
+
+#: templates/main/base_site.html:22
+msgid "Login"
+msgstr "Se connecter"
 
 #: templates/main/base_site.html:29
 msgid "Hello"
