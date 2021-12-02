@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-02 11:09+0100\n"
+"POT-Creation-Date: 2021-12-02 16:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,50 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: forms.py:22
+msgid "name"
+msgstr "nom"
+
+#: forms.py:23
+msgid "is open to new student"
+msgstr "est accessible aux étudiants"
+
+#: forms.py:24 forms.py:92
+msgid "password"
+msgstr "mot de passe"
+
+#: forms.py:41
+msgid "Lesson's id"
+msgstr "Id du cours"
+
+#: forms.py:41
+msgid "a number, ex:3,4,15"
+msgstr "un nombre, ex: 3,4,15"
+
+#: forms.py:44
+msgid "Lesson's name"
+msgstr "le nom du cours"
+
+#: forms.py:45
+msgid "the name of the lesson"
+msgstr "le nom du cours"
+
+#: forms.py:48
+msgid "Lesson's password"
+msgstr "mot de passe du cours"
+
+#: forms.py:90
+msgid "username"
+msgstr "nom d'utilisateur"
+
+#: forms.py:91
+msgid "email"
+msgstr "email"
+
+#: forms.py:93
+msgid "I'm a student"
+msgstr "Je suis un étudiant"
 
 #: templates/registration/login.html:12
 msgid "Don't have an account? Create one "
