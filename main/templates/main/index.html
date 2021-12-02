@@ -2,9 +2,11 @@
 
 {% extends 'main/base_site.html' %}
 
+{% load i18n %}
+
 {% block content %}
 <ul>
   <li><a href="{% url 'qcm:index' %}">QCM</a>
-  <li><a href="{% url 'user_data:index' %}">User</a>
+  <li><a href="{% url 'user_data:index' %}">{% translate "User" %}</a>
 </ul>
 {% endblock %}

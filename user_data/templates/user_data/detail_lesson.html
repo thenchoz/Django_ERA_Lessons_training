@@ -2,14 +2,16 @@
 
 {% extends 'user_data/base_user_data.html' %}
 
+{% load i18n %}
+
 {% block title %}{{ lesson.name }}{% endblock %}
 
 {% block content %}
 {% if lesson %}
   <h1>{{ lesson.name }}</h1>
-  <p>This lesson exists. It can{% if not lesson.can_join %}\'t{% endif %} be join.</p>
+  <p>{% blocktranslate with negativ=lesson.can_join|yesno:_(",'t") %}This lesson exists. It can{{ negativ }} be join.{% endblocktranslate %}</p>
   {% if lesson.can_join %}
-    <p>To join this branch, go <a href={% url 'user_data:join_lesson' %}>there</a> and use {{ lesson.id }}-{{ lesson.name }} with the provided password.</p>
+    <p>{% blocktranslate %}To join this branch, go {% endblocktranslate %}<a href={% url 'user_data:join_lesson' %}>{% translate "there" %}</a>{% blocktranslate with lesson_id=lesson.id lesson_name=lesson.name %} and use {{ lesson_id }}-{{ lesson_name }} with the provided password.{% endblocktranslate %}</p>
   {% endif %}
 {% endif %}
 {% endblock %}

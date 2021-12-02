@@ -2,14 +2,15 @@
 
 {% extends 'user_data/base_user_data.html' %}
 
-{% block title %}Join a new lesson{% endblock %}
-
+{% load i18n %}
 {% load crispy_forms_tags %}
+
+{% block title %}{% translate "Join a new lesson" %}{% endblock %}
 
 {% block content %}
   <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
-    <button type="submit">Join</button>
+    <button type="submit">{% translate "Join" %}</button>
   </form>
 {% endblock %}

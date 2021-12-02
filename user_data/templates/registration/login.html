@@ -1,14 +1,15 @@
 {% extends 'qcm/base_qcm.html' %}
 
-{% block title %}Login{% endblock %}
-
+{% load i18n %}
 {% load crispy_forms_tags %}
+
+{% block title %}Login{% endblock %}
 
 {% block content %}
   <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
-    <p>Don't have an account? Create one <a href="{% url 'user_data:register' %}">here</a></p>
+    <p>{% blocktranslate %}Don't have an account? Create one {% endblocktranslate %}<a href="{% url 'user_data:register' %}">{% translate "here" %}</a></p>
     <button type="submit">Login</button>
   </form>
 {% endblock %}

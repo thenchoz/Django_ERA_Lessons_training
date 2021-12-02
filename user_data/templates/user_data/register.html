@@ -2,14 +2,15 @@
 
 {% extends 'user_data/base_user_data.html' %}
 
-{% block title %}Create an Account{% endblock %}
-
+{% load i18n %}
 {% load crispy_forms_tags %}
+
+{% block title %}{% translate "Create an Account" %}{% endblock %}
 
 {% block content %}
   <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
-    <button type="submit">Register</button>
+    <button type="submit">{% translate "Register" %}</button>
   </form>
 {% endblock %}

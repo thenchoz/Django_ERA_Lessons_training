@@ -33,8 +33,6 @@ msgid "Return to branch."
 msgstr "Retour à la branche"
 
 #: templates/qcm/create_questions_subset.html:6
-#, fuzzy, python-format
-#| msgid "Create a new questions subset for %(name)s"
 msgid "Create a new questions subset for %(name)s"
 msgstr "Créer un nouveau sous-set de questions pour %(branch.name)s"
 
@@ -69,8 +67,6 @@ msgid "No branch are available."
 msgstr "Aucune branche n'est disponible"
 
 #: templates/qcm/detail_question.html:28
-#, fuzzy
-#| msgid "Answer again?"
 msgid "Answer"
 msgstr "Répondre"
 
@@ -108,7 +104,6 @@ msgid "Return to branch"
 msgstr "Retourner à la branche"
 
 #: templates/qcm/results_training.html:11
-#, fuzzy, python-format
 msgid "Your result is %(result)s%%."
 msgstr "Votre résultat est %(result)s%%."
 
