@@ -69,6 +69,10 @@ def create_lesson_view(request):
         (instructor, lesson_form) = manage_instructor_form(
             request, form=LessonCreationForm
         )
+
+        if lesson_form is None:
+            return instructor
+
         if lesson_form.is_valid():
             lesson = lesson_form.save()
 
@@ -95,6 +99,7 @@ class DetailLessonView(UserPassesTestMixin, generic.DetailView):
         user = self.request.user
         if user.is_staff:
             return True
+
         student = check_user_personnal(self.request)
         if student is None:
             return False
@@ -113,6 +118,10 @@ def joint_lesson_view(request):
 
     try:
         (personnal, lesson_form) = manage_personnal_form(request, form=LessonJoinForm)
+
+        if lesson_form is None:
+            return personnal
+
         if lesson_form.is_valid():
             lesson = lesson_form.validate_lesson(personnal)
 

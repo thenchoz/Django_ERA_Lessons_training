@@ -53,7 +53,7 @@ def manage_instructor_form(request, form, redirect_url="main:index"):
 
     instructor = check_user_instructor(request)
     if instructor is None:
-        return HttpResponseRedirect(reverse(redirect_url))
+        return (HttpResponseRedirect(reverse(redirect_url)), None)
 
     if request.method != "POST":
         return (instructor, form())
