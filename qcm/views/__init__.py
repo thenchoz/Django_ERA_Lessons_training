@@ -14,6 +14,7 @@ from .question_view import (
     ResultsView,
     create_question_view,
     question_backend,
+    result_question_view,
 )
 from .questions_subset_view import (
     DetailQuestionsSubsetView,

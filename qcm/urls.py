@@ -46,6 +46,11 @@ urlpatterns = [
         name="results",
     ),
     path(
+        "branch-<int:branch_id>/question-<int:question_id>/results-<int:choice_id>/",
+        views.result_question_view,
+        name="results_question_choice",
+    ),
+    path(
         "branch-<int:branch_id>/question-<int:question_id>/answer/",
         views.question_backend,
         name="answer",

@@ -102,3 +102,17 @@ def create_question_view(request, questions_subset_id):
         "qcm/create_question.html",
         {"form": question_form, "questions_subset": questions_subset},
     )
+
+
+def result_question_view(request, branch_id, question_id, choice_id):
+    """view for a answered question, with the given choice"""
+
+    branch = get_object_or_404(Branch, pk=branch_id)
+    question = get_object_or_404(Question, pk=question_id)
+    choice = get_object_or_404(Choice, pk=choice_id)
+
+    return render(
+        request,
+        "qcm/results.html",
+        {"branch": branch, "question": question, "given_answer": choice},
+    )

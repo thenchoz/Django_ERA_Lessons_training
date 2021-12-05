@@ -10,9 +10,7 @@ from django.utils import timezone
 
 from user_data.models import Student
 
-from .choice import Choice
-from .question import Question
-from .questionsset import QuestionsSet
+from . import Choice, Question, QuestionsSet
 
 
 class Training(models.Model):
@@ -97,6 +95,7 @@ class Training(models.Model):
 
     def get_answers(self):
         """get answered answer"""
+        self.set_from_db()
         answers = []
         for choice in self.answers:
             if choice is not None:

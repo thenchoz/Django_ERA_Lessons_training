@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-01 22:17+0100\n"
+"POT-Creation-Date: 2021-12-05 09:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgstr "Retour à la branche"
 
 #: templates/qcm/create_questions_subset.html:6
 msgid "Create a new questions subset for %(name)s"
-msgstr "Créer un nouveau sous-set de questions pour %(branch.name)s"
+msgstr "Créer un nouveau sous-set de questions pour %(name)s"
 
 #: templates/qcm/detail_branch.html:13
 msgid "List of Questions set"
@@ -99,13 +99,23 @@ msgstr "Votre réponse était \"%(choice_text)s\", cette réponse est %(right)s.
 msgid "Answer again?"
 msgstr "Répondre à nouveau ?"
 
-#: templates/qcm/results.html:26 templates/qcm/results_training.html:27
+#: templates/qcm/results.html:26 templates/qcm/results_training.html:29
 msgid "Return to branch"
 msgstr "Retourner à la branche"
 
 #: templates/qcm/results_training.html:11
+#, python-format
 msgid "Your result is %(result)s%%."
 msgstr "Votre résultat est %(result)s%%."
+
+#: templates/qcm/results_training.html:20
+msgid "True,False"
+msgstr "Vrai, Fausse"
+
+#: templates/qcm/results_training.html:20
+#, python-format
+msgid "%(question_id)s - %(question_text)s -- %(result)s"
+msgstr "%(question_id)s - %(question_text)s -- %(result)s"
 
 #: templates/qcm/start_training.html:8
 msgid "Chose a number of question for this training"
