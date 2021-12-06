@@ -34,6 +34,7 @@ class BranchAdmin(admin.ModelAdmin):
     form = BranchAdminForm
 
     list_display = ("name", "view_questions_set")
+    list_filter = ["lesson"]
 
     ordering = ["name"]
     search_fields = ["name"]
