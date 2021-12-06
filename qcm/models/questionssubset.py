@@ -19,6 +19,9 @@ class QuestionsSubset(QuestionsSet):
     parent_branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
     questions_set_name = QuestionsSet.name
 
+    def __str__(self):
+        return self.parent_branch.name + " - " + self.name
+
     def get_branch_id(self):
         return self.parent_branch.id
 

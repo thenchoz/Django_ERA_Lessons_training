@@ -17,7 +17,7 @@
       {% with question=choice.question %}
         {% if question %}
           <li><a href="{% url 'qcm:results_question_choice' training.questions_set.get_branch_id question.id choice.id %}">
-          {% blocktranslate with question_text=question.question_text choice_text=choice.choice_text result=choice.is_true|yesno:_('True,False') %}{{ question_text }} -- {{ choice_text }} -- {{ result }}{% endblocktranslate %}</a></li>
+          {% blocktranslate with question_text=question.question_text choice_text=choice.choice_text result=choice.is_true|yesno:_('correct,incorrect') %}{{ question_text }} -- {{ choice_text }} -- {{ result }}{% endblocktranslate %}</a></li>
         {% endif %}
       {% endwith %}
     {% else %}

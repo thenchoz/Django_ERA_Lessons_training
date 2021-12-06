@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-05 09:36+0100\n"
+"POT-Creation-Date: 2021-12-06 12:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,6 +33,7 @@ msgid "Return to branch."
 msgstr "Retour à la branche"
 
 #: templates/qcm/create_questions_subset.html:6
+#, python-format
 msgid "Create a new questions subset for %(name)s"
 msgstr "Créer un nouveau sous-set de questions pour %(name)s"
 
@@ -59,6 +60,7 @@ msgid "Create a new quesions subset"
 msgstr "Créer un nouveau sous-set de questions"
 
 #: templates/qcm/detail_branch.html:42
+#: templates/qcm/detail_questions_set.html:43
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -86,14 +88,18 @@ msgstr "Créer une nouvelle question"
 msgid "Create a new Branch"
 msgstr "Créer une nouvelle branche"
 
-#: templates/qcm/results.html:12 templates/qcm/results.html:18
-msgid "true,false"
-msgstr "vrai, fausse"
+#: templates/qcm/results.html:12
+msgid "right,false"
+msgstr "juste,fausse"
 
 #: templates/qcm/results.html:12
 #, python-format
 msgid "Your answer was \"%(choice_text)s\", this answer is %(right)s."
 msgstr "Votre réponse était \"%(choice_text)s\", cette réponse est %(right)s."
+
+#: templates/qcm/results.html:18 templates/qcm/results_training.html:20
+msgid "correct,incorrect"
+msgstr "juste,faux"
 
 #: templates/qcm/results.html:23
 msgid "Answer again?"
@@ -109,13 +115,13 @@ msgid "Your result is %(result)s%%."
 msgstr "Votre résultat est %(result)s%%."
 
 #: templates/qcm/results_training.html:20
-msgid "True,False"
-msgstr "Vrai, Fausse"
-
-#: templates/qcm/results_training.html:20
 #, python-format
-msgid "%(question_id)s - %(question_text)s -- %(result)s"
-msgstr "%(question_id)s - %(question_text)s -- %(result)s"
+msgid "%(question_text)s -- %(choice_text)s -- %(result)s"
+msgstr "%(question_text)s -- %(choice_text)s -- %(result)s"
+
+#: templates/qcm/results_training.html:24
+msgid "This question wasn't answered."
+msgstr "Cette question n'a pas été répondue."
 
 #: templates/qcm/start_training.html:8
 msgid "Chose a number of question for this training"
@@ -136,3 +142,6 @@ msgstr "Suivant"
 #: templates/qcm/training.html:26
 msgid "Submit"
 msgstr "Soumettre"
+
+#~ msgid "True,False"
+#~ msgstr "Vrai, Fausse"

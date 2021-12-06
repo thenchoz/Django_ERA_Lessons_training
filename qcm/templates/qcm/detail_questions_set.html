@@ -8,14 +8,14 @@
 
 {% block content %}
 {% if questionssubset %}
-  <h1>{{ questionssubset.questions_set_name }}</h1>
+  <h1>{{ questionssubset }}</h1>
   {% if questionssubset.question_set.all %}
     <h2>{% translate "List of Questions" %}</h2>
     <ul>
       {% for question in questionssubset.question_set.all %}
         <li>
           <a href="{% url 'qcm:detail_question' questionssubset.parent_branch.id question.id %}">
-          {{ question.id }} - {{ question.question_text }}</a>
+          {{ question.question_text }}</a>
         </li>
       {% endfor %}
     </ul>
@@ -40,7 +40,7 @@
     <a href="{% url 'qcm:create_question' questionssubset.id %}">{% translate "Create a new quesion" %}</a>
     <br>
     <a class="confirm_delete" href="{% url 'qcm:delete_questions_subset' questionssubset.id %}" method="post" onClick="return confirm('Are you sure?');">
-    Delete</a>
+    {% translate "Delete" %}</a>
     <br>
   {% endif %}
 {% endif %}
