@@ -3,6 +3,7 @@ Django views for Training models
 """
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import ValidationError
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -12,14 +13,19 @@ from django.views import generic
 from qcm.forms import TrainingForm
 
 from ..models import Branch, Choice, QuestionsSubset, Training
-from ..shortcuts import redirect_student_branch
+from .authorisations import student_has_branch, student_has_training
 
 
 @login_required
 def during_training_view(request, training_id, question_list):
     """manage view during training"""
+
     training = get_object_or_404(Training, pk=training_id)
     training.set_from_db()
+
+    if not student_has_training(request, training):
+        return HttpResponseRedirect(reverse("qcm:index"))
+
     question = training.get_question(question_list)
     selected_choice = training.answers[question_list]
 
@@ -39,9 +45,14 @@ def during_training_view(request, training_id, question_list):
 def start_training(request, questions_set, branch_id):
     """set training"""
 
-    student = redirect_student_branch(
-        request, redirect_url="qcm:detail", diff_arg=(branch_id,)
-    )
+    branch = get_object_or_404(Branch, pk=branch_id)
+
+    if questions_set.get_branch_id() != branch_id or not student_has_branch(
+        request, branch
+    ):
+        return HttpResponseRedirect(reverse("qcm:detail", args=(branch_id,)))
+
+    student = request.user.student
 
     if request.method == "POST":
         try:
@@ -74,7 +85,7 @@ def start_training(request, questions_set, branch_id):
     return render(request, "qcm/start_training.html", {"form": training_form})
 
 
-@login_required
+@login_required  # check in start_training
 def start_training_branch(request, branch_id):
     """set training with branch"""
 
@@ -82,7 +93,7 @@ def start_training_branch(request, branch_id):
     return start_training(request, branch, branch_id)
 
 
-@login_required
+@login_required  # check in start_training
 def start_training_questions_subset(request, branch_id, questions_subset_id):
     """set training with questions subset"""
 
@@ -93,8 +104,13 @@ def start_training_questions_subset(request, branch_id, questions_subset_id):
 @login_required
 def training_backend(request, training_id, question_list):
     """training backend, manage db post"""
+
     training = get_object_or_404(Training, pk=training_id)
     training.set_from_db()
+
+    if not student_has_training(request, training):
+        return HttpResponseRedirect(reverse("qcm:index"))
+
     question = training.get_question(question_list)
 
     try:
@@ -160,8 +176,15 @@ def training_backend(request, training_id, question_list):
         )
 
 
-class ResultsTrainingView(generic.DetailView):
+class ResultsTrainingView(UserPassesTestMixin, generic.DetailView):
     """generic view to show a test resutl"""
 
     model = Training
     template_name = "qcm/results_training.html"
+
+    def test_func(self):
+        """test if user is authenticated right personnal"""
+
+        training = self.get_object()
+
+        return student_has_training(self.request, training)

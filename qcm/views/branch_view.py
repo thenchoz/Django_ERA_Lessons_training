@@ -3,23 +3,36 @@ Django views for Branch models
 """
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import ValidationError
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
+from qcm.views.authorisations import instructor_has_branch, student_has_branch
 from user_data.shortcuts import check_user_instructor
 
 from ..forms import BranchForm
 from ..models import Branch
 
 
-class DetailBranchView(generic.DetailView):
-    """generic view of branch question"""
+class DetailBranchView(UserPassesTestMixin, generic.DetailView):
+    """generic view of a branch"""
 
     model = Branch
     template_name = "qcm/detail_branch.html"
+
+    def test_func(self):
+        """test if user is either staff or authenticated right personnal"""
+
+        user = self.request.user
+        if user.is_staff:
+            return True
+
+        branch = self.get_object()
+
+        return student_has_branch(self.request, branch)
 
 
 @login_required
@@ -48,11 +61,11 @@ def create_branch_view(request):
 def delete_branch_view(request, branch_id):
     """view to delete a Branch"""
 
-    instructor = check_user_instructor(request)
-    if instructor is None:
+    branch = get_object_or_404(Branch, pk=branch_id)
+
+    if not instructor_has_branch(request, branch):
         return HttpResponseRedirect(reverse("qcm:detail", args=(branch_id)))
 
-    branch = get_object_or_404(Branch, pk=branch_id)
     branch.delete()
 
     return HttpResponseRedirect(reverse("qcm:index"))

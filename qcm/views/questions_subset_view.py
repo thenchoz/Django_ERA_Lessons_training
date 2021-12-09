@@ -3,35 +3,47 @@ Django views for Question_Subset models
 """
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import ValidationError
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
-from user_data.shortcuts import check_user_instructor
+from qcm.views.authorisations import instructor_has_branch, student_has_branch
 
 from ..forms import QuestionsSubsetForm
 from ..models import Branch, QuestionsSubset
 from ..shortcuts import redirect_questions_subset
 
 
-class DetailQuestionsSubsetView(generic.DetailView):
+class DetailQuestionsSubsetView(UserPassesTestMixin, generic.DetailView):
     """generic view of branch question"""
 
     model = QuestionsSubset
     template_name = "qcm/detail_questions_set.html"
+
+    def test_func(self):
+        """test if either staff or questions subset in user lesson"""
+
+        user = self.request.user
+        if user.is_staff:
+            return True
+
+        questions_subset = self.get_object()
+        branch = questions_subset.parent_branch
+
+        return student_has_branch(self.request, branch)
 
 
 @login_required
 def create_questions_subset_view(request, branch_id):
     """view to create a new questions subset"""
 
-    instructor = check_user_instructor(request)
-    if instructor is None:
-        return HttpResponseRedirect(reverse("qcm:detail", args=(branch_id)))
-
     branch = get_object_or_404(Branch, pk=branch_id)
+
+    if instructor_has_branch(request, branch):
+        return HttpResponseRedirect(reverse("qcm:detail", args=(branch_id)))
 
     if request.method == "POST":
         try:
@@ -62,8 +74,7 @@ def delete_questions_subset_view(request, questions_subset_id):
 
     questions_subset = get_object_or_404(QuestionsSubset, pk=questions_subset_id)
 
-    instructor = check_user_instructor(request)
-    if instructor is None:
+    if instructor_has_branch(request, questions_subset.parent_branch):
         return redirect_questions_subset(questions_subset)
 
     branch_id = questions_subset.parent_branch.id
