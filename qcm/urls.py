@@ -16,6 +16,11 @@ urlpatterns = [
         "delete_branch-<int:branch_id>/", views.delete_branch_view, name="delete_branch"
     ),
     path(
+        "branch-<int:branch_id>/questions_set-<int:pk>/",
+        views.DetailQuestionsSubsetView.as_view(),
+        name="detail_questions_subset",
+    ),
+    path(
         "branch-<int:branch_id>/create_questions_subset/",
         views.create_questions_subset_view,
         name="create_questions_subset",
@@ -26,19 +31,19 @@ urlpatterns = [
         name="delete_questions_subset",
     ),
     path(
+        "branch-<int:branch_id>/question-<int:pk>/",
+        views.DetailQuestionView.as_view(),
+        name="detail_question",
+    ),
+    path(
         "questions_subset-<int:questions_subset_id>/create_question/",
         views.create_question_view,
         name="create_question",
     ),
     path(
-        "branch-<int:branch_id>/questions_set-<int:pk>/",
-        views.DetailQuestionsSubsetView.as_view(),
-        name="detail_questions_subset",
-    ),
-    path(
-        "branch-<int:branch_id>/question-<int:pk>/",
-        views.DetailQuestionView.as_view(),
-        name="detail_question",
+        "branch-<int:branch_id>/question-<int:question_id>/answer/",
+        views.question_backend,
+        name="answer",
     ),
     path(
         "branch-<int:branch_id>/question-<int:pk>/results/",
@@ -49,11 +54,6 @@ urlpatterns = [
         "branch-<int:branch_id>/question-<int:question_id>/results-<int:choice_id>/",
         views.result_question_view,
         name="results_question_choice",
-    ),
-    path(
-        "branch-<int:branch_id>/question-<int:question_id>/answer/",
-        views.question_backend,
-        name="answer",
     ),
     path(
         "branch-<int:branch_id>/training/",
