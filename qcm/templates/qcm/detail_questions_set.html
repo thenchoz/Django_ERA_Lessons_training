@@ -19,10 +19,10 @@
         </li>
       {% endfor %}
     </ul>
-    {% if questionssubset.training_set %}
+    {% if user_trainings %}
       <h2>{% translate "List of Training" %}</h2>
       <ul>
-        {% for training in questionssubset.training_set.all %}
+        {% for training in user_trainings %}
           <li>
             <a href="{% url 'qcm:results_training' questionssubset.parent_branch.id training.id %}">
             {{ training }} - {{ training.results }}%</a>

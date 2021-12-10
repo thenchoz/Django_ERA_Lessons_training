@@ -35,6 +35,17 @@ class DetailQuestionsSubsetView(UserPassesTestMixin, generic.DetailView):
 
         return student_has_branch(self.request, branch)
 
+    def get_context_data(self, **kwargs):
+        """add context, manage user related training"""
+
+        context = super().get_context_data(**kwargs)
+
+        questions_subset = self.get_object()
+        user_trainings = questions_subset.get_user_trainings_ordered(self.request)
+        context["user_trainings"] = user_trainings
+
+        return context
+
 
 @login_required
 def create_questions_subset_view(request, branch_id):

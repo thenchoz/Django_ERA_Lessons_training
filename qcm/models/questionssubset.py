@@ -2,9 +2,10 @@
 QuestionsSubset model
 """
 
-from random import random
 
 from django.db import models
+
+from user_data.shortcuts import check_user_student
 
 from .branch import Branch
 from .questionsset import QuestionsSet
@@ -23,12 +24,21 @@ class QuestionsSubset(QuestionsSet):
         return self.parent_branch.name + " - " + self.name
 
     def get_branch_id(self):
+        """get branch id, to manage diff between Branch and Questions Subset subclass"""
         return self.parent_branch.id
 
-    def question_shuffled(self):
-        """return related questions, order shuffle"""
-        questions = sorted(self.question_set.all(), key=lambda x: random())
-        return questions
+    def get_questions_set(self):
+        """get every question, for polymorphic use"""
+        return self.question_set.all()
 
-    def get_questions_shuffled(self):
-        return self.question_shuffled()
+    def get_user_trainings(self, request):
+        """return all training linked to a given user
+        check if user is student before doing so
+        """
+
+        student = check_user_student(request)
+
+        if student is None:
+            return None
+
+        return list(self.training_set.filter(user=student))
