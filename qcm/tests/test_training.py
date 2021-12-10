@@ -12,15 +12,22 @@ from django.test import TestCase
 from user_data.tests import create_student
 
 from ..models import Training
-from .test_shortcuts import create_training
+from .test_shortcuts import create_branch_training, create_questions_subset_training
 
 
 class TrainingModelTest(TestCase):
     """class to test the Training model"""
 
-    def test_create_training(self):
+    def test_create_questions_subset_training(self):
         """test a training creation"""
         student = create_student(username="test")
-        training = create_training(user=student)
+        training = create_questions_subset_training(user=student)
+        trainings = Training.objects.all()
+        self.assertQuerysetEqual(trainings, [training])
+
+    def test_create_branch_training(self):
+        """test a training creation"""
+        student = create_student(username="test")
+        training = create_branch_training(user=student)
         trainings = Training.objects.all()
         self.assertQuerysetEqual(trainings, [training])

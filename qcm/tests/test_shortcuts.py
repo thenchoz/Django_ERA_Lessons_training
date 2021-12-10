@@ -53,7 +53,7 @@ def create_choice(choice_text, is_true=False, question_id=None):
     return question.choice_set.create(choice_text=choice_text, is_true=is_true)
 
 
-def create_training(user, questions_subset_id=None):
+def create_questions_subset_training(user, questions_subset_id=None):
     """usage fct
     create a training
     using the questions_subset corresponding to questions_subset_id
@@ -64,6 +64,19 @@ def create_training(user, questions_subset_id=None):
     else:
         questions_subset = QuestionsSubset.objects.get(id=questions_subset_id)
     return questions_subset.training_set.create(user=user)
+
+
+def create_branch_training(user, branch_id=None):
+    """usage fct
+    create a training
+    using the questions_subset corresponding to questions_subset_id
+    empty basic branch and questions_subset if questions_subset_id is None
+    """
+    if branch_id is None:
+        branch = create_branch(branch_name="empty name")
+    else:
+        branch = Branch.objects.get(id=branch_id)
+    return branch.training_set.create(user=user)
 
 
 def create_random_questions(questions_subset):
