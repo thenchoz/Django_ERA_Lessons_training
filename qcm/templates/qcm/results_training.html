@@ -5,7 +5,7 @@
 {% load i18n %}
 
 {% block content %}
-<h1>{{ training.id }} {{ training }}</h1>
+<h1>{{ training }}</h1>
 
 <p>
   {% blocktranslate with result=training.results %}Your result is {{ result }}%.{% endblocktranslate %}
