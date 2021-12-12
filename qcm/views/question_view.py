@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.utils.translation import gettext
 from django.views import generic
 
 from qcm.views.authorisations import instructor_has_branch, student_has_branch
@@ -56,7 +57,7 @@ def question_backend(request, branch_id, question_id):
     """answering question view"""
 
     question = get_object_or_404(Question, pk=question_id)
-    branch = question.questions_subset.parent_branch
+    branch = get_object_or_404(Branch, pk=branch_id)
 
     if (
         not student_has_branch(request, branch)
@@ -73,11 +74,13 @@ def question_backend(request, branch_id, question_id):
             "qcm/detail_question.html",
             {
                 "question": question,
-                "error_message": "You didn't select a choice.",
+                "error_message": gettext("You didn't select a choice."),
             },
         )
     else:
-        branch = get_object_or_404(Branch, pk=branch_id)
+        if selected_choice.question.id != question_id:
+            return HttpResponseRedirect(reverse("qcm:index"))
+
         return render(
             request,
             "qcm/results.html",
