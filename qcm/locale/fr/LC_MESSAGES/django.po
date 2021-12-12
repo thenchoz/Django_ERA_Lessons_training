@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-06 12:26+0100\n"
+"POT-Creation-Date: 2021-12-12 12:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: forms.py:31 forms.py:57
+msgid "This name already exist"
+msgstr "Ce nom est déjà utilisé."
 
 #: templates/qcm/create_branch.html:8
 msgid "Create a new branch"
@@ -142,6 +146,10 @@ msgstr "Suivant"
 #: templates/qcm/training.html:26
 msgid "Submit"
 msgstr "Soumettre"
+
+#: views/question_view.py:77
+msgid "You didn't select a choice."
+msgstr "Vous n'avez pas selectionner de réponse."
 
 #~ msgid "True,False"
 #~ msgstr "Vrai, Fausse"

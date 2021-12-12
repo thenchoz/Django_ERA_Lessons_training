@@ -4,6 +4,7 @@ qcm forms to add new branch and question
 
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext
 
 from user_data.models import Student
 
@@ -27,7 +28,7 @@ class BranchForm(forms.ModelForm):
         """Check that name does not already exist"""
         name = self.cleaned_data["name"]
         if name in Branch.objects.all().values_list("name", flat=True):
-            raise ValidationError("This name already exist")
+            raise ValidationError(gettext("This name already exist"))
 
         return name
 
@@ -53,7 +54,7 @@ class QuestionsSubsetForm(forms.ModelForm):
             "name", flat=True
         ):
             if name == data.get("name"):
-                raise ValidationError("This name already exist")
+                raise ValidationError(gettext("This name already exist"))
         return data
 
 
