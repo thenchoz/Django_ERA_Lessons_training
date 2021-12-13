@@ -12,5 +12,5 @@ urlpatterns = [
     path("register/", views.register_view, name="register"),
     path("create_lesson/", views.create_lesson_view, name="create_lesson"),
     path("lesson-<int:pk>/", views.DetailLessonView.as_view(), name="detail_lesson"),
-    path("join_lesson/", views.joint_lesson_view, name="join_lesson"),
+    path("join_lesson/", views.join_lesson_view, name="join_lesson"),
 ]

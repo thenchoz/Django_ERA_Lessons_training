@@ -7,6 +7,7 @@
 {% block content %}
 {% if user.is_authenticated %}
   {% if lesson_list %}
+  <p>{% blocktranslate with total=lesson_list.count %}You are inroled in the following lesson{{ total|pluralize }} as a student:{% endblocktranslate %}</p>
   <ul>
     {% for lesson in lesson_list %}
     <li>
@@ -16,6 +17,16 @@
   </ul>
   {% else %}
   <p>{% translate "No lesson are available." %}</p>
+  {% endif %}
+  {% if teaching_list %}
+  <p>{% blocktranslate with total=teaching_list.count %}You manage the following lesson{{ total|pluralize }} as an instructor:{% endblocktranslate %}</p>
+  <ul>
+    {% for lesson in teaching_list %}
+    <li>
+      <a href="{% url 'user_data:detail_lesson' lesson.id %}">{{ lesson.name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
   {% endif %}
   {% if user.is_student or user.is_instructor %}
     <a href="{% url 'user_data:join_lesson' %}">{% translate "Join a new lesson" %}</a>

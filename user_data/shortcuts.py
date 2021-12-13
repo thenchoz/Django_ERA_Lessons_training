@@ -4,9 +4,6 @@ Django shortcuts for user_data.
 Template or part of redondant code
 """
 
-from django.http.response import HttpResponseRedirect
-from django.urls import reverse
-
 
 def check_user_instructor(request):
     """check if user is instructor
@@ -41,43 +38,13 @@ def check_user_personnal(request):
     return user
 
 
-def manage_instructor_form(request, form, redirect_url="main:index"):
-    """manage check on
-    - user is instructor
-    - method is post
-    - form is valid
-
+def manage_form(request, form):
+    """manage check if method is post
     return valid form
     """
-    # ToDo: used *args for potential form argument # pylint: disable=W0511
-
-    instructor = check_user_instructor(request)
-    if instructor is None:
-        return (HttpResponseRedirect(reverse(redirect_url)), None)
 
     if request.method != "POST":
-        return (instructor, form())
+        return form()
 
     form = form(request.POST)
-    return (instructor, form)
-
-
-def manage_personnal_form(request, form, redirect_url="main:index"):
-    """manage check on
-    - user is instructor
-    - method is post
-    - form is valid
-
-    return valid form
-    """
-    # ToDo: used *args for potential form argument # pylint: disable=W0511
-
-    personnal = check_user_personnal(request)
-    if personnal is None:
-        return HttpResponseRedirect(reverse(redirect_url))
-
-    if request.method != "POST":
-        return (personnal, form())
-
-    form = form(request.POST)
-    return (personnal, form)
+    return form

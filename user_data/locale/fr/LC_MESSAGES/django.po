@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-02 16:11+0100\n"
+"POT-Creation-Date: 2021-12-13 21:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,7 +64,7 @@ msgstr "Je suis un étudiant"
 
 #: templates/registration/login.html:12
 msgid "Don't have an account? Create one "
-msgstr "Pas encore inscrit ? Faites le "
+msgstr "Pas encore inscrit ? Faites le "
 
 #: templates/registration/login.html:12
 msgid "here"
@@ -106,15 +106,28 @@ msgstr ""
 " et utiliser %(lesson_id)s-%(lesson_name)s avec le mot de passe "
 "correspondant."
 
-#: templates/user_data/index.html:18
+#: templates/user_data/index.html:10
+msgid ""
+"You are inroled in the following lesson%(total|pluralize)s as a student:"
+msgstr ""
+"Vous êtes inscrit dans le%(total|pluralize)s cours suivant"
+"%(total|pluralize)s en temps qu'étudiant :"
+
+#: templates/user_data/index.html:19
 msgid "No lesson are available."
 msgstr "Aucun cours n'est disponible."
 
-#: templates/user_data/index.html:21 templates/user_data/join_lesson.html:8
+#: templates/user_data/index.html:22
+msgid "You manage the following lesson%(total|pluralize)s as an instructor:"
+msgstr ""
+"Vous gérez le%(total|pluralize)s cours suivant%(total|pluralize)s en temps "
+"qu'instructeur :"
+
+#: templates/user_data/index.html:32 templates/user_data/join_lesson.html:8
 msgid "Join a new lesson"
 msgstr "Rejoindre un nouveau cours"
 
-#: templates/user_data/index.html:24
+#: templates/user_data/index.html:35
 msgid "Create a new lesson"
 msgstr "Créer un cours"
 
