@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-13 21:16+0100\n"
+"POT-Creation-Date: 2021-12-13 21:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,6 +107,7 @@ msgstr ""
 "correspondant."
 
 #: templates/user_data/index.html:10
+#, python-format
 msgid ""
 "You are inroled in the following lesson%(total|pluralize)s as a student:"
 msgstr ""
@@ -118,6 +119,7 @@ msgid "No lesson are available."
 msgstr "Aucun cours n'est disponible."
 
 #: templates/user_data/index.html:22
+#, python-format
 msgid "You manage the following lesson%(total|pluralize)s as an instructor:"
 msgstr ""
 "Vous gérez le%(total|pluralize)s cours suivant%(total|pluralize)s en temps "
@@ -142,3 +144,7 @@ msgstr "Créer un compte"
 #: templates/user_data/register.html:14
 msgid "Register"
 msgstr "S'inscrire"
+
+#: views/lesson_view.py:128
+msgid "You are not allowed to join this lesson."
+msgstr "Vous n'êtes pas authorisé à rejoindre ce cours."

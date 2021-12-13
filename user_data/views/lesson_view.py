@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils.translation import gettext
 from django.views import generic
 
 from ..forms import LessonCreationForm, LessonJoinForm
@@ -124,7 +125,9 @@ def join_lesson_view(request):
 
             if lesson is not None:
                 if not lesson.can_join:
-                    raise ValidationError("You are not allowed to join this lesson.")
+                    raise ValidationError(
+                        gettext("You are not allowed to join this lesson.")
+                    )
 
                 personnal.lessons.add(lesson)
                 return HttpResponseRedirect(
