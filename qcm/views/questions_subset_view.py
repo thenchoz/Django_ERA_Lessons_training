@@ -53,8 +53,8 @@ def create_questions_subset_view(request, branch_id):
 
     branch = get_object_or_404(Branch, pk=branch_id)
 
-    if instructor_has_branch(request, branch):
-        return HttpResponseRedirect(reverse("qcm:detail", args=(branch_id)))
+    if not instructor_has_branch(request, branch):
+        return HttpResponseRedirect(reverse("qcm:detail", args=(branch_id,)))
 
     if request.method == "POST":
         try:
@@ -85,7 +85,7 @@ def delete_questions_subset_view(request, questions_subset_id):
 
     questions_subset = get_object_or_404(QuestionsSubset, pk=questions_subset_id)
 
-    if instructor_has_branch(request, questions_subset.parent_branch):
+    if not instructor_has_branch(request, questions_subset.parent_branch):
         return redirect_questions_subset(questions_subset)
 
     branch_id = questions_subset.parent_branch.id
