@@ -42,8 +42,9 @@ def instructor_has_branch(request, branch):
     false otherwise
     """
 
-    instuctor = check_user_instructor(request)
+    instructor = check_user_instructor(request)
 
-    return instuctor is not None and any(
-        lesson.branch_set.filter(id=branch.id).exists() for lesson in instuctor.teaching
+    return instructor is not None and any(
+        lesson.branch_set.filter(id=branch.id).exists()
+        for lesson in instructor.teaching.all()
     )
