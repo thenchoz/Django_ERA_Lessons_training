@@ -83,8 +83,6 @@ class RegisterForm(UserCreationForm):
             "email",
             "password2",
             "is_student",
-            # "is_instructor",
-            # "is_pilot",
         ]
         labels = {
             "username": gettext("username"),

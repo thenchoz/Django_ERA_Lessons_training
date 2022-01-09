@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-13 21:34+0100\n"
+"POT-Creation-Date: 2022-01-09 17:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr "nom"
 msgid "is open to new student"
 msgstr "est accessible aux étudiants"
 
-#: forms.py:24 forms.py:92
+#: forms.py:24 forms.py:90
 msgid "password"
 msgstr "mot de passe"
 
@@ -50,15 +50,15 @@ msgstr "le nom du cours"
 msgid "Lesson's password"
 msgstr "mot de passe du cours"
 
-#: forms.py:90
+#: forms.py:88
 msgid "username"
 msgstr "nom d'utilisateur"
 
-#: forms.py:91
+#: forms.py:89
 msgid "email"
 msgstr "email"
 
-#: forms.py:93
+#: forms.py:91
 msgid "I'm a student"
 msgstr "Je suis un étudiant"
 
@@ -145,6 +145,6 @@ msgstr "Créer un compte"
 msgid "Register"
 msgstr "S'inscrire"
 
-#: views/lesson_view.py:128
+#: views/lesson_view.py:129
 msgid "You are not allowed to join this lesson."
 msgstr "Vous n'êtes pas authorisé à rejoindre ce cours."

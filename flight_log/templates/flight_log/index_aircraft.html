@@ -1,0 +1,23 @@
+<!-- flight_log/aircraft_index -->
+
+{% extends 'flight_log/base_flight_log.html' %}
+
+{% load i18n %}
+
+{% block content %}
+{% if aircraft_list %}
+<ul>
+  {% for aircraft in aircraft_list %}
+  <li>
+    <p>{{ aircraft.immatriculation }}</p>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>{% translate "No aircraft are available." %}</p>
+{% endif %}
+{% if user.is_pilot %}
+  <p>{% translate "Create a new aircraft" %}</p>
+{% endif %}
+<p>{% translate "Want to check aircraft by manufacturer ? Get " %}<a href="{% url 'flight_log:index_aircraft_manufacturer' %}">{% translate "there" %}</a>!</p>
+{% endblock %}

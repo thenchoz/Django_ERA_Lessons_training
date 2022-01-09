@@ -11,7 +11,7 @@ from .aircraft_type import AircraftTypeList
 class AircraftManufacturer(models.Model):
     """use to group aircraft manufacturer"""
 
-    name = models.CharField(max_length=150)
+    name = models.CharField(max_length=150, unique=True)
 
 
 class AircraftModel(models.Model):
@@ -20,7 +20,7 @@ class AircraftModel(models.Model):
     manufacturer = models.ForeignKey(AircraftManufacturer, on_delete=models.PROTECT)
     aircraft_type = models.CharField(max_length=1, choices=AircraftTypeList)
     aircraft_specific_type = models.CharField(max_length=5, blank=True)
-    model = models.CharField(max_length=200)
+    model = models.CharField(max_length=200, unique=True)
 
 
 class AircraftComponent(PolymorphicModel):
@@ -35,7 +35,7 @@ class Aircraft(PolymorphicModel):
     """a specific aircraft"""
 
     model = models.ForeignKey(AircraftModel, on_delete=models.PROTECT)
-    immatriculation = models.CharField(max_length=25)
+    immatriculation = models.CharField(max_length=10, unique=True)
 
     weight = models.IntegerField()
     passengers_seat = models.SmallIntegerField()

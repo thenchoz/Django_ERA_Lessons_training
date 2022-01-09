@@ -22,7 +22,8 @@ urlpatterns = [
     path("", include("main.urls")),
     path("qcm/", include("qcm.urls")),
     path("user_data/", include("user_data.urls")),
-    path("admin/", admin.site.urls),
+    path("flight_log/", include("flight_log.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("admin/", admin.site.urls),
     # path('i18n/',include('django.conf.urls.i18n')),
 ]

@@ -5,6 +5,11 @@ For more information on this file, see
 https://docs.djangoproject.com/en/3.2/ref/contrib/admin/actions/
 """
 
-# from django.contrib import admin
+from django.contrib import admin
 
-# Register your models here.
+from .models import Aircraft, AircraftLicence, AircraftManufacturer, Pilot
+
+admin.site.register(Aircraft)
+admin.site.register(AircraftLicence)
+admin.site.register(AircraftManufacturer)
+admin.site.register(Pilot)

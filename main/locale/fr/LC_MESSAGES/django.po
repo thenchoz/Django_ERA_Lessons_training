@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-02 15:06+0100\n"
+"POT-Creation-Date: 2022-01-09 17:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,6 +38,14 @@ msgstr "Se connecter"
 msgid "Hello"
 msgstr "Bonjour"
 
+#: templates/main/index.html:9
+msgid "QCM"
+msgstr "QCM"
+
 #: templates/main/index.html:10
 msgid "User"
 msgstr "Utilisateur"
+
+#: templates/main/index.html:11
+msgid "Aircraft"
+msgstr "Aéronefs"

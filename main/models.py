@@ -16,5 +16,5 @@ class EraUser(AbstractUser):
 
     is_student = models.BooleanField(default=False)
     is_instructor = models.BooleanField(default=False)
-    is_pilot = models.BooleanField(default=True)
+    is_pilot = models.BooleanField(default=False)
     is_beta_test = models.BooleanField(default=False)

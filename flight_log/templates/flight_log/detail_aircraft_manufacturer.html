@@ -1,0 +1,20 @@
+<!-- flight_log/detail_aircraft_manufacturer -->
+
+{% extends 'flight_log/base_flight_log.html' %}
+
+{% load i18n %}
+
+{% block content %}
+{% if aircraftmanufacturer %}
+<h2>{{ aircraftmanufacturer.name }}</h2>
+<ul>
+  {% for model in aircraftmanufacturer.aircraftmodel_set.all %}
+  <li>
+    <p>{{ model.model }}</p>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>{% translate "This aircraft manufacturer does not exist." %}</p>
+{% endif %}
+{% endblock %}

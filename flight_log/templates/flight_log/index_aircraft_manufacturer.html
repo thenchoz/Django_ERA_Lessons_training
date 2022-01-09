@@ -1,0 +1,22 @@
+<!-- flight_log/index_aircraft_manufacturer -->
+
+{% extends 'flight_log/base_flight_log.html' %}
+
+{% load i18n %}
+
+{% block content %}
+{% if aircraft_manufacturer_list %}
+<ul>
+  {% for aircraft_manufacturer in aircraft_manufacturer_list %}
+  <li>
+    <a href="{% url 'flight_log:detail_aircraft_manufacturer' aircraft_manufacturer.id %}">{{ aircraft_manufacturer.name }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>{% translate "No aircraft manufacturer are available." %}</p>
+{% endif %}
+{% if user.is_pilot %}
+  <a href="{% url 'flight_log:create_aircraft_manufacturer' %}">{% translate "Create a new aircraft manufacturer" %}</a>
+{% endif %}
+{% endblock %}

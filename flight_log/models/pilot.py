@@ -12,13 +12,13 @@ from .aircraft import Aircraft
 class Pilot(models.Model):
     """Pilot class"""
 
-    user = models.OneToOneField(User(), on_delete=models.CASCADE)
+    user = models.OneToOneField(User(), on_delete=models.CASCADE, primary_key=True)
 
 
 class FlightBook(PolymorphicModel):
     """a list of flights from a pilot"""
 
-    pilot = models.OneToOneField(Pilot, on_delete=models.CASCADE)
+    pilot = models.ForeignKey(Pilot, on_delete=models.CASCADE)
 
 
 class Flight(PolymorphicModel):

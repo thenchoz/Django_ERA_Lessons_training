@@ -1,0 +1,16 @@
+<!-- flight_log/create_aircraft_manufacturer -->
+
+{% extends 'flight_log/base_flight_log.html' %}
+
+{% load i18n %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h2>{% translate "Create a new aircraft manufacturer" %}<h2>
+  <form action="{% url 'flight_log:create_aircraft_manufacturer' %}" method="post">
+  {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" name="create" value="Create">
+  </form>
+{% endblock %}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-09 12:15+0100\n"
+"POT-Creation-Date: 2022-01-09 17:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -181,6 +181,35 @@ msgstr "Classe 2"
 #: models/licence.py:39
 msgid "LAPL"
 msgstr "LAPL"
+
+#: templates/flight_log/create_aircraft_manufacturer.html:10
+#: templates/flight_log/index_aircraft_manufacturer.html:20
+msgid "Create a new aircraft manufacturer"
+msgstr "Créer un nouveau fabricant d'aéronef"
+
+#: templates/flight_log/detail_aircraft_manufacturer.html:18
+msgid "This aircraft manufacturer does not exist."
+msgstr "Cet aéronef n'existe pas"
+
+#: templates/flight_log/index_aircraft.html:17
+msgid "No aircraft are available."
+msgstr "Aucun aéronefs n'a été trouvé."
+
+#: templates/flight_log/index_aircraft.html:20
+msgid "Create a new aircraft"
+msgstr "Créer un nouvel aéronef"
+
+#: templates/flight_log/index_aircraft.html:22
+msgid "Want to check aircraft by manufacturer ? Get "
+msgstr "Envie de parcourir les aéronefs par fabricant ? Allez "
+
+#: templates/flight_log/index_aircraft.html:22
+msgid "there"
+msgstr "là"
+
+#: templates/flight_log/index_aircraft_manufacturer.html:17
+msgid "No aircraft manufacturer are available."
+msgstr "Aucun fabricant d'aéronefs n'a été trouvé."
 
 #~ msgid "Mixed Balloon"
 #~ msgstr "Ballon mixe"

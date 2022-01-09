@@ -7,6 +7,9 @@ For more information on this file, see
 https://docs.djangoproject.com/en/3.2/topics/http/views/
 """
 
-# from django.shortcuts import render
-
-# Create your views here.
+from .aircraft_views import (
+    DetailAircraftManufacturerView,
+    IndexAircraftManufacturerView,
+    IndexAircraftView,
+    create_aircraft_manufacturer_view,
+)
