@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "main.apps.MainAdminConfig",
     "qcm.apps.QcmConfig",
     "user_data.apps.UserDataConfig",
+    "flight_log.apps.FlightLogConfig",
 ]
 
 MIDDLEWARE = [

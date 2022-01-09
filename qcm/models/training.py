@@ -10,7 +10,9 @@ from django.utils import timezone
 
 from user_data.models import Student
 
-from . import Choice, Question, QuestionsSet
+from .choice import Choice
+from .question import Question
+from .questionsset import QuestionsSet
 
 
 class Training(models.Model):

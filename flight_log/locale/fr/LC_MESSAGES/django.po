@@ -1,0 +1,186 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-01-09 12:15+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: models/aircraft_type.py:14
+msgid "Airplane"
+msgstr "Avion"
+
+#: models/aircraft_type.py:15
+msgid "Helicopter"
+msgstr "Hélicoptère"
+
+#: models/aircraft_type.py:16
+msgid "Sailplane"
+msgstr "Planeur"
+
+#: models/aircraft_type.py:17
+msgid "Balloon"
+msgstr "Ballon"
+
+#: models/aircraft_type.py:18
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: models/aircraft_type.py:23
+msgid "Generic Airplane"
+msgstr "Avion général"
+
+#: models/aircraft_type.py:24
+msgid "Unknown Airplane"
+msgstr "Avion inconnu"
+
+#: models/aircraft_type.py:27
+msgid "Generic Helicopter"
+msgstr "Hélicoptère général"
+
+#: models/aircraft_type.py:28
+msgid "Unknown Helicopter"
+msgstr "Hélicoptère inconnu"
+
+#: models/aircraft_type.py:31
+msgid "Generic Sailplane"
+msgstr "Planeur général"
+
+#: models/aircraft_type.py:32
+msgid "Unknown Sailplane"
+msgstr "Planeur inconnu"
+
+#: models/aircraft_type.py:35
+msgid "Generic Balloon"
+msgstr "Ballon général"
+
+#: models/aircraft_type.py:36 models/aircraft_type.py:67
+msgid "Generic Hot-Air Balloon"
+msgstr "Ballon à air chaud général"
+
+#: models/aircraft_type.py:37
+msgid "Hot-Air Balloon, class A"
+msgstr "Ballon à air chaud, classe A"
+
+#: models/aircraft_type.py:38
+msgid "Hot-Air Balloon, class B"
+msgstr "Ballon à air chaud, classe B"
+
+#: models/aircraft_type.py:39
+msgid "Hot-Air Balloon, class C"
+msgstr "Ballon à air chaud, classe C"
+
+#: models/aircraft_type.py:40
+msgid "Hot-Air Balloon, class D"
+msgstr "Ballon à air chaud, classe D"
+
+#: models/aircraft_type.py:41
+msgid "Generic Gas Balloon"
+msgstr "Ballon à gaz général"
+
+#: models/aircraft_type.py:42
+msgid "Generic Mixed Balloon"
+msgstr "Ballon mixe général"
+
+#: models/aircraft_type.py:43
+msgid "Generic Hot-Air Airship"
+msgstr "Dirigeable à air chaud général"
+
+#: models/aircraft_type.py:44
+msgid "Unknown Balloon"
+msgstr "Ballon inconnu"
+
+#: models/aircraft_type.py:46
+msgid "Unknown type"
+msgstr "Type inconnu"
+
+#: models/aircraft_type.py:51
+msgid "Generic Airplane licence"
+msgstr "Licence générale d'Avion'"
+
+#: models/aircraft_type.py:52
+msgid "European airplane private pilot licence"
+msgstr "Licence européenne de pilote privé d'avion"
+
+#: models/aircraft_type.py:53
+msgid "Unknown Airplane licence"
+msgstr "Licence d'Avion inconnue"
+
+#: models/aircraft_type.py:56
+msgid "Generic Helicopter licence"
+msgstr "Licence générale d'Hélicoptère"
+
+#: models/aircraft_type.py:57
+msgid "European helicopter private pilot licence"
+msgstr "Licence européenne de pilote privé d'hélicoptère"
+
+#: models/aircraft_type.py:58
+msgid "Unknown Helicopter licence"
+msgstr "Licence d'Hélicoptère inconnue"
+
+#: models/aircraft_type.py:61
+msgid "Generic Sailplane licence"
+msgstr "Licence générale de planeur"
+
+#: models/aircraft_type.py:62
+msgid "European sailplane pilot licence"
+msgstr "Licence européenne de pilote de planeur"
+
+#: models/aircraft_type.py:63
+msgid "Unknown Sailplane licence"
+msgstr "Licence de planeur inconnue"
+
+#: models/aircraft_type.py:66
+msgid "Generic Balloon licence"
+msgstr "Licence de Ballon générale"
+
+#: models/aircraft_type.py:68
+msgid "European balloon pilot licence"
+msgstr "Licence européenne de pilote de ballon"
+
+#: models/aircraft_type.py:69
+msgid "Unknown Balloon licence"
+msgstr "Licence de Ballon inconnue"
+
+#: models/aircraft_type.py:71
+msgid "Unknown licence type"
+msgstr "Licence de type inconnu"
+
+#: models/balloon.py:57
+msgid "4 mounting points"
+msgstr "4 points d'ancrage"
+
+#: models/balloon.py:58
+msgid "8 mounting points"
+msgstr "8 points d'ancrage"
+
+#: models/balloon.py:59
+msgid "Gas type"
+msgstr "Type ballon à gaz"
+
+#: models/licence.py:37
+msgid "Class 1"
+msgstr "Classe 1"
+
+#: models/licence.py:38
+msgid "Class 2"
+msgstr "Classe 2"
+
+#: models/licence.py:39
+msgid "LAPL"
+msgstr "LAPL"
+
+#~ msgid "Mixed Balloon"
+#~ msgstr "Ballon mixe"
